@@ -7,9 +7,9 @@ const productRoute = require('./route/product');
 
 const db = config.get('mongoConnect');
 const app = express();
-express.json();
 
 app.use(cors());
+app.use(express.json({ extended: false }));
 
 app.use(userRoute);
 app.use(productRoute);
@@ -25,6 +25,7 @@ const dbConnection = async () => {
     await mongoose.connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
     });
     console.log('Connection to MongoDB is successfull');
   } catch (error) {

@@ -1,3 +1,4 @@
 {
-    "mongoConnect": "mongodb+srv://ashim123:ashim123@localonline.uwtzs.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority"
+    "mongoConnect": "mongodb+srv://ashim123:ashim123@localonline.uwtzs.gcp.mongodb.net/localOnline?retryWrites=true&w=majority",
+    "jwtSecret": "LocalOnline"
 }
