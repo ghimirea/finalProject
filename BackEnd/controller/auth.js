@@ -4,33 +4,37 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-exports.registerUser = async (req, res) => {
+exports.getUser = async (req, res) => {
+  try {
+    const user = await Farmer.findById(req.user.id).select('-password');
+    res.status(200).json({ status: 'OK', msg: user });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+exports.loginUser = async (req, res) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
-    return res.status(400).json({ status: 'Error', msg: errors.array() });
+    res.status(500).json({ status: 'Error', msg: errors.array() });
   }
 
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     let user = await Farmer.findOne({ email });
 
-    if (user) {
-      return res
-        .status(400)
-        .json({ status: 'Error', msg: 'User already Exists' });
+    if (!user) {
+      res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
     }
 
-    user = new Farmer({
-      name,
-      email,
-      password,
-    });
+    const matchPassword = await bcrypt.compare(password, user.password);
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
+    if (!matchPassword) {
+      res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
+    }
 
     const payload = {
       user: {
