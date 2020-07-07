@@ -12,7 +12,7 @@ router.post(
       'Password is required to be atleast 6 character'
     ).isLength({ min: 6 }),
   ],
-  userController.getUsers
+  userController.registerUser
 );
 
 module.exports = router;

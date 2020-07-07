@@ -2,8 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
 const cors = require('cors');
-const userRoute = require('./route/user');
+const registerRoute = require('./route/user');
 const productRoute = require('./route/product');
+const loginRoute = require('./route/auth');
 
 const db = config.get('mongoConnect');
 const app = express();
@@ -11,8 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json({ extended: false }));
 
-app.use(userRoute);
+app.use(registerRoute);
+app.use(loginRoute);
 app.use(productRoute);
+
 
 app.get('/', (req, res) => {
   res.send('API is up and running');
