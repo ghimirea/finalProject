@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const FarmerSchema = new Schema({
+const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -15,23 +15,14 @@ const FarmerSchema = new Schema({
     type: String,
     unique: true,
   },
-  Order: {
-    product: [],
-    quantity: {
-      type: Number,
-    },
-    Status: {
-      type: String,
-    },
-    Date: {
-      type: Date,
-      default: Date.now,
-    },
-  },
   Active: {
     type: Boolean,
     default: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model('Farmer', FarmerSchema);
+module.exports = mongoose.model('User', UserSchema);

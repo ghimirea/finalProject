@@ -1,4 +1,4 @@
-const Farmer = require('../model/Farmer');
+const Farmer = require('../model/User');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -10,7 +10,7 @@ exports.registerUser = async (req, res) => {
     return res.status(400).json({ status: 'Error', msg: errors.array() });
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     let user = await Farmer.findOne({ email });
@@ -25,6 +25,7 @@ exports.registerUser = async (req, res) => {
       name,
       email,
       password,
+      role,
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -35,6 +36,7 @@ exports.registerUser = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        role: user.role,
       },
     };
 
