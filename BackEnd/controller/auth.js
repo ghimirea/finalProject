@@ -1,4 +1,4 @@
-const Farmer = require('../model/Farmer');
+const Farmer = require('../model/User');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

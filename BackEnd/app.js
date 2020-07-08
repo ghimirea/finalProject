@@ -16,7 +16,6 @@ app.use(registerRoute);
 app.use(loginRoute);
 app.use(productRoute);
 
-
 app.get('/', (req, res) => {
   res.send('API is up and running');
 });
@@ -29,6 +28,7 @@ const dbConnection = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     });
     console.log('Connection to MongoDB is successfull');
   } catch (error) {
