@@ -62,3 +62,58 @@ exports.addProducts = async (req, res) => {
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    let product = await Product.findOne({
+      user: req.user.id,
+    });
+    console.log(req.user.id);
+    console.log('Find Product by user id---->', product);
+    console.log('product.Product--->', product.Product);
+
+    // product.Product = await product.Product.findOne({ id: req.params.id });
+    // console.log('Find by ID----->', product);
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ status: 'Error', msg: 'Product not Found' });
+    }
+
+    if (product.user.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ status: 'Error', msg: 'User is not Authorized' });
+    }
+
+    // let product_delete = product.Product.filter((product) => {
+    //   console.log(
+    //     'Product_id-->',
+    //     product._id,
+    //     typeof product._id.toString(),
+    //     'req.params.id-->',
+    //     req.params.id,
+    //     typeof req.params.id
+    //   );
+    //   console.log(product);
+    //   return product._id.toString() === req.params.id;
+    // });
+    // console.log('Deleted Product--->', product_delete);
+
+    product.Product.splice(
+      product.Product.filter((product) => {
+        product._id.toString() == req.params.id;
+      }),
+      1
+    );
+    await product.save();
+
+    return res
+      .status(200)
+      .json({ status: 'OK', msg: 'Product has been deleted' });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
