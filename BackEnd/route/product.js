@@ -20,7 +20,10 @@ router.post(
   productController.addProducts
 );
 
-//! logges in user delete product
+//! logged in user can delete product
 router.delete('/products/:id', auth, productController.deleteProduct);
+
+//! logged in use can update products
+router.put('/products/:id', [auth], productController.updateProduct);
 
 module.exports = router;
