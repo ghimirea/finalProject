@@ -23,6 +23,29 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  cart: {
+    items: [
+      {
+        user_id: {
+          type: Schema.Types.ObjectId,
+          ref: 'Product',
+        },
+        product_id: {
+          type: Schema.Types.ObjectId,
+          ref: 'Product',
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    totalPrice: [
+      {
+        price: { type: Number, default: 0 },
+      },
+    ],
+  },
 });
 
 module.exports = mongoose.model('User', UserSchema);
