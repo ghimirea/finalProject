@@ -46,7 +46,7 @@ exports.addProducts = async (req, res) => {
 
   try {
     let product = await Product.findOne({ user: req.user.id });
-    console.log('PRODUCTS----->', product.Product);
+    console.log('PRODUCTS----->', product);
     if (product) {
       product.Product.push(req.body);
       await product.save();
