@@ -51,7 +51,7 @@ exports.addProducts = async (req, res) => {
       product.Product.push(req.body);
       await product.save();
       console.log('INSIDE IF PRODUCT-->', product);
-      return res.status(200).json({ status: 'OK', msg: product });
+      return res.status(201).json({ status: 'OK', msg: product });
     }
     product = new Product(allItems);
     await product.save();
