@@ -12,7 +12,7 @@ exports.postToCart = async (req, res) => {
       product = product.Product.filter((product) => {
         return product._id.toString() === req.body.prod_id;
       });
-      console.log('Product Matched--->', product[0].price_per_lb);
+      console.log('Product Matched--->', product);
 
       let prod_price = user.cart.totalPrice;
       console.log('TYpe--->', typeof prod_price);
@@ -110,5 +110,23 @@ exports.updateCart = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+exports.deleteProdCart = async (req, res) => {
+  try {
+    let user = await User.findOne({ _id: req.user.id }).populate('cart');
+    console.log(user);
+
+    await user.cart.items.pull({ _id: req.params.id });
+
+    //! Price change should be reflected on the total price and the inventory for the farmer(Fix it)
+
+    await user.save();
+
+    res.status(200).json({ status: 'OK', msg: 'Product has been deleted' });
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({ status: 'Error', msg: 'Server Error' });
   }
 };
