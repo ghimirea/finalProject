@@ -24,19 +24,22 @@ const UserSchema = new Schema({
     required: true,
   },
   cart: {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'product',
+    },
+    product_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'product',
+    },
     items: [
       {
-        user_id: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-        },
-        product_id: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-        },
         quantity: {
           type: Number,
           required: true,
+        },
+        price_per_lb: {
+          type: Number,
         },
       },
     ],

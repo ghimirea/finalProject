@@ -14,15 +14,10 @@ exports.postToCart = async (req, res) => {
       });
       console.log('Product Matched--->', product[0].price_per_lb);
 
-      // user.cart.totalPrice = {
-      //   number: 0,
-      // };
-
       let prod_price = user.cart.totalPrice;
       console.log('TYpe--->', typeof prod_price);
 
       let cart_item = user.cart.items.push(req.body);
-      // let cart = User.cart.populate(user.cart.totalPrice);
 
       await user.save();
 
@@ -34,10 +29,8 @@ exports.postToCart = async (req, res) => {
       );
 
       const product_price = product[0].price_per_lb;
-      // for (let price in Object.values(user.cart.totalPrice)) {
+      user.cart.items[0].price_per_lb = product_price;
 
-      //   return price += user.cart.items.map((item) => item.quantity * product_price);
-      // }
       console.log('Total Price Before--->', user.cart.totalPrice);
       let price_prod = user.cart.items.map(
         (item) => item.quantity * product_price
@@ -49,8 +42,6 @@ exports.postToCart = async (req, res) => {
 
       console.log('Map Price', price_prod);
       console.log('totalPrice', total_price);
-
-      //user.cart.totalPrice[0].price = total_price;
 
       user.cart.totalPrice.push({ price: total_price });
 
@@ -69,6 +60,55 @@ exports.postToCart = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+exports.updateCart = async (req, res) => {
+  try {
+    let user = await User.findOne({ _id: req.user.id }).populate('cart');
+    console.log(user);
+
+    if (user._id.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ status: 'Error', msg: 'User is not Authorized' });
+    }
+
+    const { quantity, price_per_lb } = req.body;
+
+    // let fullPrice = user.cart.totalPrice.length - 1
+    // let updatedPrice = user.cart.totalPrice[user.cart.totalPrice.length - 1].price -  (quantity * price_per_lb);
+    //! Price change should be reflected on the cart (fix it)
+    if (user.role === 'Customer') {
+      const update = await User.updateOne(
+        {
+          _id: req.user.id,
+          'cart.items._id': req.params.id,
+        },
+        {
+          $set: {
+            'cart.items.$': {
+              quantity: req.body.quantity,
+              price_per_lb: req.body.price_per_lb,
+            },
+          },
+        },
+        { new: true }
+      );
+      console.log('Updated--->', update);
+    }
+
+    await user.save();
+
+    console.log(
+      'Cart-->',
+      user.cart.totalPrice[user.cart.totalPrice.length - 1].price
+    );
+
+    res.send('Cart Updated');
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };

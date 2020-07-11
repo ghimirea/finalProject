@@ -6,4 +6,6 @@ const { check } = require('express-validator');
 
 router.post('/cart', [auth, role], orderController.postToCart);
 
+router.patch('/cart/:id', auth, orderController.updateCart);
+
 module.exports = router;
