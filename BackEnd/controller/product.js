@@ -7,7 +7,7 @@ exports.getProducts = async (req, res) => {
   try {
     const product = await Product.findOne({
       user: req.user.id,
-    }).populate('User', ['name', 'email']);
+    }).populate('User', ('name', 'email'));
     console.log(product);
 
     if (!product) {
