@@ -1,73 +1,15 @@
 const Product = require('../model/Product');
 const User = require('../model/User');
+const Order = require('../model/Order');
+const nodemailer = require('nodemailer');
+const config = require('config');
 
-exports.postToCart = async (req, res) => {
+exports.getOrder = async (req, res) => {
   try {
-    let user = await User.findOne({ _id: req.user.id });
-    console.log('User-->', user);
-    if (user.role === 'Customer') {
-      let product = await Product.findOne({ user: req.body.farmer_id });
-      console.log('product.Product', product);
-
-      product = product.Product.filter((product) => {
-        return product._id.toString() === req.body.prod_id;
-      });
-      console.log('Product Matched--->', product);
-
-      let prod_price = user.cart.totalPrice;
-      console.log('TYpe--->', typeof prod_price);
-
-      let cart_item = user.cart.items.push(req.body);
-
-      await user.save();
-
-      console.log(
-        'Item in the cart-1-->',
-        user.cart,
-        'Item in the cart-1-->',
-        cart_item
-      );
-
-      const product_price = product[0].price_per_lb;
-      user.cart.items[0].price_per_lb = product_price;
-
-      console.log('Total Price Before--->', user.cart.totalPrice);
-      let price_prod = user.cart.items.map(
-        (item) => item.quantity * product_price
-      );
-      let total_price = 0;
-      price_prod.forEach((element) => {
-        total_price += element;
-      });
-
-      console.log('Map Price', price_prod);
-      console.log('totalPrice', total_price);
-
-      user.cart.totalPrice.push({ price: total_price });
-
-      console.log(
-        'Item in the cart-2-->',
-        user.cart,
-        'Item in the cart-2-->',
-        cart_item
-      );
-      await user.save();
-      res
-        .status(200)
-        .json({ status: 'OK', msg: 'Product added to cart', product });
-    } else {
-      res.status(401).json({ status: 'Error', msg: 'Not Authorized' });
-    }
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ status: 'Error', msg: 'Server Error' });
-  }
-};
-
-exports.updateCart = async (req, res) => {
-  try {
-    let user = await User.findOne({ _id: req.user.id }).populate('cart');
+    const user = await User.findOne({ _id: req.user.id });
     console.log(user);
+    let farmer_id = user.cart.items[0].farmer_id;
+    console.log('Farmer ID-->', farmer_id);
 
     if (user._id.toString() !== req.user.id) {
       return res
@@ -75,58 +17,182 @@ exports.updateCart = async (req, res) => {
         .json({ status: 'Error', msg: 'User is not Authorized' });
     }
 
-    const { quantity, price_per_lb } = req.body;
+    // const orderItems = {
+    //   user: req.user.id,
+    //   Order: [
+    //     {
+    //       products: user.cart.items,
+    //       totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
+    //       status: 'Pending',
+    //     },
+    //   ],
+    // };
 
-    // let fullPrice = user.cart.totalPrice.length - 1
-    // let updatedPrice = user.cart.totalPrice[user.cart.totalPrice.length - 1].price -  (quantity * price_per_lb);
-    //! Price change should be reflected on the cart (fix it)
-    if (user.role === 'Customer') {
-      const update = await User.updateOne(
+    // console.log('User Order', user.cart.items);
+    // console.log(
+    //   'User totalPrice',
+    //   user.cart.totalPrice[user.cart.totalPrice.length - 1]
+    // );
+
+    let order = await Order.findOne({ user: req.user.id });
+    // console.log('Order-->', order);
+    // if (order) {
+    //   order.Order.push({
+    //     products: user.cart.items,
+    //     totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
+    //     status: 'Pending',
+    //   });
+    //   return res
+    //     .status(200)
+    //     .json({ status: 'OK', msg: 'Here is the Order', order });
+    // }
+
+    order = new Order({
+      user: req.user.id,
+      Order: [
         {
-          _id: req.user.id,
-          'cart.items._id': req.params.id,
+          products: user.cart.items,
+          totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
+          status: 'Pending',
         },
-        {
-          $set: {
-            'cart.items.$': {
-              quantity: req.body.quantity,
-              price_per_lb: req.body.price_per_lb,
-            },
-          },
-        },
-        { new: true }
-      );
-      console.log('Updated--->', update);
-    }
+      ],
+    });
 
-    await user.save();
+    await order.save();
 
-    console.log(
-      'Cart-->',
-      user.cart.totalPrice[user.cart.totalPrice.length - 1].price
-    );
+    user.cart.items = new Array();
+    user.cart.totalPrice = new Array();
+    user.save();
 
-    res.send('Cart Updated');
+    // console.log('User Cart-->', user.cart);
+
+    //! nodemailer Email Sent
+
+    let farmer = await User.findOne({ _id: farmer_id });
+    console.log('Farmer-->', farmer);
+
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: config.get('Email'),
+        pass: config.get('Password'),
+      },
+    });
+
+    let mailOptions = {
+      from: 'playnetwork.qa@gmail.com',
+      to: user.email,
+      cc: farmer.email,
+      subject: 'Confirmation of your order',
+      text:
+        'Your order has been placed and is currently pending. Once it is ready another email will be sent.',
+    };
+
+    transporter.sendMail(mailOptions, function (err, data) {
+      if (err) {
+        console.log('Email could not be sent', err.message);
+      } else {
+        console.log('Email was succesfully sent');
+      }
+    });
+
+    res.status(200).json({ status: 'OK', msg: 'Here is the Order', order });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
 
-exports.deleteProdCart = async (req, res) => {
+exports.changeStatus = async (req, res) => {
   try {
-    let user = await User.findOne({ _id: req.user.id }).populate('cart');
-    console.log(user);
+    const farmer = await User.findOne({ _id: req.user.id });
+    //console.log('Farmer--->', farmer);
 
-    await user.cart.items.pull({ _id: req.params.id });
+    const order = await Order.find({ _id: req.params.id });
+    //console.log('Order--->', order[0]);
 
-    //! Price change should be reflected on the total price and the inventory for the farmer(Fix it)
+    const customer = await User.find({ _id: order[0].user });
+    //console.log('Customer--->', customer[0].email);
 
-    await user.save();
+    let farmer_order = order[0].Order[0];
+    //console.log('farmer product--->', farmer_order);
 
-    res.status(200).json({ status: 'OK', msg: 'Product has been deleted' });
+    //console.log('Order Products--->', farmer_order.products[0].farmer_id);
+
+    if (req.user.id != farmer_order.products[0].farmer_id) {
+      res.status(400).json({ status: 'Error', msg: 'User not authorized' });
+    }
+    console.log('Order Status--->', farmer_order.status);
+
+    if (farmer_order.status === 'Pending') {
+      farmer_order.status = 'Ready';
+      console.log('Status in Pending-->', order[0]);
+      await order[0].save();
+
+      //! Nodemailer to send Product Ready email
+
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: config.get('Email'),
+          pass: config.get('Password'),
+        },
+      });
+
+      let mailOptions = {
+        from: 'playnetwork.qa@gmail.com',
+        to: customer[0].email,
+        cc: farmer.email,
+        subject: 'Confirmation of your order',
+        text:
+          'Your order is ready for pickup. Please come and pick it up so that you can get a fresh product',
+      };
+
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          console.log('Email could not be sent', err.message);
+        } else {
+          console.log('Email was succesfully sent');
+        }
+      });
+    } else if (farmer_order.status === 'Ready') {
+      farmer_order.status = 'Completed';
+      console.log('Status inside Ready-->', order[0]);
+      await order[0].save();
+
+      //! Nodemailer to send Product Ready email
+
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: config.get('Email'),
+          pass: config.get('Password'),
+        },
+      });
+
+      let mailOptions = {
+        from: 'playnetwork.qa@gmail.com',
+        to: customer[0].email,
+        cc: farmer.email,
+        subject: 'Confirmation of your order',
+        text:
+          'Thank you for choosing our Farm. Please do leave a feedback and the rating. Hope to serve you again',
+      };
+
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          console.log('Email could not be sent', err.message);
+        } else {
+          console.log('Email was succesfully sent');
+        }
+      });
+    }
+
+    res
+      .status(200)
+      .json({ status: 'OK', msg: 'Status has been changed', order });
   } catch (error) {
-    console.log(error);
-    res.status(200).json({ status: 'Error', msg: 'Server Error' });
+    console.log(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };

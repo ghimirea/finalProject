@@ -4,10 +4,8 @@ const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 const { check } = require('express-validator');
 
-router.post('/cart', [auth, role], orderController.postToCart);
+router.get('/order', auth, orderController.getOrder);
 
-router.patch('/cart/:id', auth, orderController.updateCart);
-
-router.delete('/cart/:id', auth, orderController.deleteProdCart)
+router.patch('/order/:id',auth, orderController.changeStatus)
 
 module.exports = router;
