@@ -24,16 +24,16 @@ const UserSchema = new Schema({
     required: true,
   },
   cart: {
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'product',
-    },
-    product_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'product',
-    },
     items: [
       {
+        farmer_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'product',
+        },
+        prod_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'product',
+        },
         quantity: {
           type: Number,
           required: true,

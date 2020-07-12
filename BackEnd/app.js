@@ -5,6 +5,7 @@ const cors = require('cors');
 const registerRoute = require('./route/user');
 const productRoute = require('./route/product');
 const loginRoute = require('./route/auth');
+const cartRoute = require('./route/cart');
 const orderRoute = require('./route/order');
 
 const db = config.get('mongoConnect');
@@ -16,6 +17,7 @@ app.use(express.json({ extended: false }));
 app.use(registerRoute);
 app.use(loginRoute);
 app.use(productRoute);
+app.use(cartRoute);
 app.use(orderRoute);
 
 app.get('/', (req, res) => {

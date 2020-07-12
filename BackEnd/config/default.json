@@ -1,4 +1,6 @@
 {
     "mongoConnect": "mongodb+srv://ashim123:ashim123@localonline.uwtzs.gcp.mongodb.net/localOnline?retryWrites=true&w=majority",
-    "jwtSecret": "LocalOnline"
+    "jwtSecret": "LocalOnline",
+    "Email":"playnetwork.qa@gmail.com",
+    "Password":"play4now"
 }
