@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const userController = require('../controller/user');
+const role = require('../middleware/role');
 const { check, validationResult } = require('express-validator');
 
 router.post(
@@ -14,5 +15,8 @@ router.post(
   ],
   userController.registerUser
 );
+
+//router.get('/users', role, userController.getAllUsers);
+//router.patch('/users/:id', role, userController.changeActive)
 
 module.exports = router;

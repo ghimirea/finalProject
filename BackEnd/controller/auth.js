@@ -14,6 +14,8 @@ exports.getUser = async (req, res) => {
   }
 };
 
+
+
 exports.loginUser = async (req, res) => {
   const errors = validationResult(req);
 

@@ -1,4 +1,4 @@
-const Farmer = require('../model/User');
+const User = require('../model/User');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -13,7 +13,7 @@ exports.registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
   try {
-    let user = await Farmer.findOne({ email });
+    let user = await User.findOne({ email });
 
     if (user) {
       return res
@@ -21,7 +21,7 @@ exports.registerUser = async (req, res) => {
         .json({ status: 'Error', msg: 'User already Exists' });
     }
 
-    user = new Farmer({
+    user = new User({
       name,
       email,
       password,
@@ -54,3 +54,26 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
+
+// //! Admin can see all users
+// exports.getAllUsers = async (req, res) => {
+//   try {
+//     const allUsers = await User.find({_id:req.params.id});
+//     res.status(200).json({ status: 'OK', msg: allUsers });
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({ status: 'Error', msg: 'Server Error' });
+//   }
+// };
+
+// //! Admin can change the Active status
+// exports.changeActive = async (req, res) => {
+//   try {
+//     const user = await User.findOne()
+      
+//   } catch (error) {
+//       console.error(error.message);
+      
+      
+//   }
+// }

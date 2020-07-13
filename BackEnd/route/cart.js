@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 const { check } = require('express-validator');
 
-router.post('/cart', [auth, role], cartController.postToCart);
+router.post('/cart', auth, cartController.postToCart);
 
 router.patch('/cart/:id', auth, cartController.updateCart);
 
