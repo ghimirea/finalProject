@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
+import Navbar from './component/Navbar/navbar';
+import Homepage from './component/Homepage/homepage'
 
 function App() {
   return (
     <>
-      <h1>Welcome to Online Farmer's Market</h1>
+      <Navbar />
+      <Homepage />
+      
     </>
   );
 }
