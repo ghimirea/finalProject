@@ -55,25 +55,30 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// //! Admin can see all users
-// exports.getAllUsers = async (req, res) => {
-//   try {
-//     const allUsers = await User.find({_id:req.params.id});
-//     res.status(200).json({ status: 'OK', msg: allUsers });
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({ status: 'Error', msg: 'Server Error' });
-//   }
-// };
+//! Admin can see all users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const allUsers = await User.find();
+    res.status(200).json({ status: 'OK', msg: allUsers });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
 
-// //! Admin can change the Active status
-// exports.changeActive = async (req, res) => {
-//   try {
-//     const user = await User.findOne()
-      
-//   } catch (error) {
-//       console.error(error.message);
-      
-      
-//   }
-// }
+//! Admin can change the Active status
+exports.changeActive = async (req, res) => {
+  try {
+    const user = await User.updateOne(
+      { _id: req.params.id },
+      {
+        $set: { Active: req.body.Active },
+      }
+    );
+    console.log('User---->', user);
+
+    res.status(200).json({ status: 'OK', msg: 'User Status Changed' });
+  } catch (error) {
+    console.error(error.message);
+  }
+};

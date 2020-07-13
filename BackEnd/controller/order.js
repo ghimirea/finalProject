@@ -206,13 +206,13 @@ exports.changeStatus = async (req, res) => {
   }
 };
 
-// //! Admin can get all orders
-// exports.getAllOrders = async (req, res) => {
-//   try {
-//     const allOrders = await Order.find();
-//     res.status(200).json({ status: 'OK', msg: allOrders });
-//   } catch (error) {
-//     console.log(error.message);
-//     res.status(500).json({ status: 'Error', msg: 'Server Error' });
-//   }
-// };
+//! Admin can get all orders
+exports.getAllOrders = async (req, res) => {
+  try {
+    const allOrders = await Order.find();
+    res.status(200).json({ status: 'OK', msg: allOrders });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};

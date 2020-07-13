@@ -6,8 +6,8 @@ const { check } = require('express-validator');
 
 router.get('/order', auth, orderController.makeOrder);
 router.get('/orders', auth, orderController.getOrder);
-//router.get('/allorders', role, orderController.getAllOrders);
+router.get('/allorders', auth,role, orderController.getAllOrders);
 
-//router.patch('/order/:id', auth, orderController.changeStatus);
+router.patch('/order/:id', auth, orderController.changeStatus);
 
 module.exports = router;

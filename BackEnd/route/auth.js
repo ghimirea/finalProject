@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const role = require('../middleware/role');
 const authController = require('../controller/auth');
 const { check } = require('express-validator');
 
@@ -14,5 +15,7 @@ router.post(
   ],
   authController.loginUser
 );
+
+router.patch('/auth/:id', auth, role, authController.changePassword)
 
 module.exports = router;
