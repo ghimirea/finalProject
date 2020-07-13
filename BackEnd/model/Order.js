@@ -6,21 +6,22 @@ const OrderSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  Order: [
-    {
-      products: [Object],
-      total_price: {
-        type: Number,
-      },
-      status: {
-        type: String,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-  ],
+  // Order: {
+  farmer_id: {
+    type: String,
+  },
+  products: [Object],
+  total_price: {
+    type: Number,
+  },
+  status: {
+    type: String,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  // },
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

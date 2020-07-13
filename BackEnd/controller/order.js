@@ -4,7 +4,8 @@ const Order = require('../model/Order');
 const nodemailer = require('nodemailer');
 const config = require('config');
 
-exports.getOrder = async (req, res) => {
+//! Customer can make order once checked out
+exports.makeOrder = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user.id });
     console.log(user);
@@ -17,45 +18,17 @@ exports.getOrder = async (req, res) => {
         .json({ status: 'Error', msg: 'User is not Authorized' });
     }
 
-    // const orderItems = {
-    //   user: req.user.id,
-    //   Order: [
-    //     {
-    //       products: user.cart.items,
-    //       totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
-    //       status: 'Pending',
-    //     },
-    //   ],
-    // };
-
-    // console.log('User Order', user.cart.items);
-    // console.log(
-    //   'User totalPrice',
-    //   user.cart.totalPrice[user.cart.totalPrice.length - 1]
-    // );
-
     let order = await Order.findOne({ user: req.user.id });
-    // console.log('Order-->', order);
-    // if (order) {
-    //   order.Order.push({
-    //     products: user.cart.items,
-    //     totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
-    //     status: 'Pending',
-    //   });
-    //   return res
-    //     .status(200)
-    //     .json({ status: 'OK', msg: 'Here is the Order', order });
-    // }
 
     order = new Order({
       user: req.user.id,
-      Order: [
-        {
-          products: user.cart.items,
-          totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
-          status: 'Pending',
-        },
-      ],
+      //   Order:
+      //     {
+      farmer_id: farmer_id,
+      products: user.cart.items,
+      totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
+      status: 'Pending',
+      // },
     });
 
     await order.save();
@@ -63,8 +36,6 @@ exports.getOrder = async (req, res) => {
     user.cart.items = new Array();
     user.cart.totalPrice = new Array();
     user.save();
-
-    // console.log('User Cart-->', user.cart);
 
     //! nodemailer Email Sent
 
@@ -103,6 +74,44 @@ exports.getOrder = async (req, res) => {
   }
 };
 
+//!Farmer can see all the orders for their farm
+exports.getOrder = async (req, res) => {
+  try {
+    console.log('Farmer ID--->', req.user.id);
+
+    //console.log(Order.farmer_id);
+
+    // {
+    //     product: 1,
+
+    //   }
+    const farmer_order = await Order.find({ farmer_id: req.user.id });
+
+    console.log('Orders--->', farmer_order);
+
+    let order = [];
+
+    // farmer_order.forEach((farmer) => {
+    //   if (farmer.farmer_id === req.user.id) {
+    //     order.push(farmer);
+    //   }
+    // });
+
+    // console.log('Order-->', order);
+
+    // const farmer = await Order.aggregate([
+    //   { $match: { 'farmer_id': '5f0925c5bb32a31dac51c7f9' } },
+    // ]);
+    // console.log('Farmer--->', farmer);
+
+    res.status(200).json({ status: 'OK', msg: 'order' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+//! Farmer can change the status of order
 exports.changeStatus = async (req, res) => {
   try {
     const farmer = await User.findOne({ _id: req.user.id });
@@ -196,3 +205,14 @@ exports.changeStatus = async (req, res) => {
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
+
+// //! Admin can get all orders
+// exports.getAllOrders = async (req, res) => {
+//   try {
+//     const allOrders = await Order.find();
+//     res.status(200).json({ status: 'OK', msg: allOrders });
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).json({ status: 'Error', msg: 'Server Error' });
+//   }
+// };
