@@ -1,6 +1,7 @@
 import React from 'react';
 import './style.css';
 import { Button, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const homepage = () => {
   return (
@@ -16,17 +17,17 @@ const homepage = () => {
             and organic goodness
           </Typography>
           <div className='buttons'>
-            <a href='#'>
-              <Button variant='contained' color='primary' href='#'>
+            <Link to='/register'>
+              <Button variant='contained' color='primary'>
                 Register
               </Button>
-            </a>
+            </Link>
 
-            <a href='#'>
-              <Button variant='contained' color='primary' href='#'>
+            <Link to='/login'>
+              <Button variant='contained' color='primary'>
                 Login
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
