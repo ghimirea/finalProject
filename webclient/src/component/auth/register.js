@@ -12,11 +12,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-// import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Login from '../auth/login';
 import './style.css';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import setAlert from '../Action/alert';
+import { authenticate } from '../Action/auth';
+import PropTypes from 'prop-types';
 
 const Styles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +43,7 @@ const Styles = makeStyles((theme) => ({
   },
 }));
 
-const Register = () => {
+const Register = ({ setAlert, authenticate, isAuth }) => {
   const classes = Styles();
   const [registerData, setRegisterData] = useState({
     name: '',
@@ -59,31 +63,36 @@ const Register = () => {
   const signUp = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
-      console.log('Passwords do not match');
+      setAlert('Passwords do not match', 'danger');
     } else {
       console.log('User Details--->', registerData);
-      const newUser = {
-        name,
-        email,
-        password,
-        role,
-      };
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
-        const body = JSON.stringify(newUser);
-        console.log('Body--->', body);
+      authenticate({ name, email, password, role });
+      // const newUser = {
+      //   name,
+      //   email,
+      //   password,
+      //   role,
+      // };
+      // try {
+      //   const config = {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   };
+      //   const body = JSON.stringify(newUser);
+      //   console.log('Body--->', body);
 
-        const response = await axios.post('/users', body, config);
-        console.log('Response--->', response);
-      } catch (err) {
-        console.error(err.response.data);
-      }
+      //   const response = await axios.post('/users', body, config);
+      //   console.log('Response--->', response);
+      // } catch (err) {
+      //   console.error(err.response.data);
+      // }
     }
   };
+
+  if (isAuth) {
+    return <Redirect to='/localMarket' />;
+  }
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -107,7 +116,7 @@ const Register = () => {
                   autoComplete='name'
                   name='name'
                   variant='outlined'
-                  required
+                  required={true}
                   fullWidth
                   value={name}
                   onChange={(event) => onChange(event)}
@@ -173,7 +182,7 @@ const Register = () => {
                   control={
                     <Checkbox value='allowExtraEmails' color='primary' />
                   }
-                  label='I want to receive inspiration, marketing promotions and updates via email.'
+                  label='I want to receive local products, marketing promotions and updates via email.'
                 />
               </Grid>
             </Grid>
@@ -200,4 +209,14 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  authenticate: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuth,
+});
+
+export default connect(mapStateToProps, { setAlert, authenticate })(Register);

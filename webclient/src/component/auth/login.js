@@ -12,11 +12,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-// import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Register from '../auth/register';
 import './style.css';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../Action/auth';
 
 const Styles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +42,7 @@ const Styles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
+const Login = ({ login, isAuth }) => {
   const classes = Styles();
   const [loginData, setLoginData] = useState({
     email: '',
@@ -54,26 +57,31 @@ const Login = () => {
       [event.target.name]: event.target.value,
     });
 
-  const signUp = async (event) => {
+  const signIn = async (event) => {
     event.preventDefault();
+    login(email, password, role);
 
-    console.log('User Details--->', loginData);
+    // console.log('User Details--->', loginData);
 
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-      const body = JSON.stringify(loginData);
-      console.log('Body--->', body);
+    // try {
+    //   const config = {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   };
+    //   const body = JSON.stringify(loginData);
+    //   console.log('Body--->', body);
 
-      const response = await axios.post('/auth', body, config);
-      console.log('Response--->', response);
-    } catch (err) {
-      console.error(err.response.data);
-    }
+    //   const response = await axios.post('/auth', body, config);
+    //   console.log('Response--->', response);
+    // } catch (err) {
+    //   console.error(err.response.data);
+    // }
   };
+
+  if (isAuth) {
+    return <Redirect to='/localMarket' />;
+  }
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -84,12 +92,12 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Register
+            Login
           </Typography>
           <form
             className={classes.form}
             noValidate
-            onSubmit={(event) => signUp(event)}
+            onSubmit={(event) => signIn(event)}
           >
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -156,4 +164,13 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.prototypes = {
+  login: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuth,
+});
+
+export default connect(mapStateToProps, { login })(Login);
