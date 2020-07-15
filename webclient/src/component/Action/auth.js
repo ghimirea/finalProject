@@ -19,7 +19,7 @@ export const getUser = () => async (dispatch) => {
 
   try {
     const response = await axios.get('/auth');
-    console.log('Response on Action/auth-->', response);
+    console.log('Response on Action/auth-->', response.data.msg);
     dispatch({
       type: GET_USER,
       payload: response.data.msg,
@@ -46,6 +46,7 @@ export const authenticate = ({ name, email, password, role }) => async (
   try {
     const response = await axios.post('/users', body, header);
     console.log('SIGNUP RES--->', response);
+    
 
     dispatch({
       type: SIGNUP_SUCCESS,
@@ -80,19 +81,21 @@ export const login = (email, password, role) => async (dispatch) => {
 
   try {
     const response = await axios.post('/auth', body, header);
-    console.log('SIGNUP RES--->', response);
+    console.log('SIGNIN RES--->', response.data.msg);
+    
 
     dispatch({
       type: SIGNIN_SUCCESS,
       payload: response.data.msg,
     });
+    console.log('After dispatch siginSuccess');
     dispatch(getUser());
   } catch (error) {
-    const errors = error.response.data.msg;
-    console.log(errors);
+    //const errors = error.response.data.msg;
+    console.log("Error signIN-->",error);
 
-    if (errors) {
-      errors.forEach((error) => {
+    if (error) {
+      error.forEach((error) => {
         dispatch(setAlert(error.msg, 'danger'));
       });
     }

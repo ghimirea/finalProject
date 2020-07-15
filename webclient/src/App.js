@@ -10,6 +10,8 @@ import store from './component/Store/store';
 import Alert from '../src/component/Alert/alert';
 import { getUser } from './component/Action/auth';
 import authToken from './component/utils/authToken';
+import LocalMarket from './component/localMarket/localMarket';
+import SecuredRoute from './component/securedRoute/securedRoute';
 
 if (localStorage.token) {
   authToken(localStorage.token);
@@ -27,9 +29,13 @@ function App() {
           <Route exact path='/' component={Homepage} />
           <section>
             <Alert />
+
             <Switch>
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
+              <SecuredRoute exact path='/localMarket' component={LocalMarket} />
+              <SecuredRoute exact path='/products' component={LocalMarket} />
+              <SecuredRoute exact path='/orders' component={LocalMarket} />
             </Switch>
           </section>
         </>
