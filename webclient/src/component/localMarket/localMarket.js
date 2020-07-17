@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getOrders } from '../Action/orders';
 
 const LocalMarket = ({ getOrders, auth, orders: { orders, isLoading } }) => {
-  console.log('LOCALMARKET--->', getOrders);
+  console.log('LOCALMARKET--->', orders);
 
   useEffect(() => {
     const y = getOrders();
