@@ -24,6 +24,7 @@ const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
   }, [getOrder]);
 
   const statusChange = (event) => {
+    console.log('EVENTS ON STATUSCHANGE---->', event);
     changeStatus(match.params.id);
   };
 
