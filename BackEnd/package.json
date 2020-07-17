@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "client": "cd ../webclient && npm start ",
+    "both": "concurrently \" npm start \" \"npm run client\""
   },
   "author": "Ashim Ghimire",
   "license": "MIT",
@@ -18,5 +20,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.21",
     "nodemailer": "^6.4.10"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0"
   }
 }

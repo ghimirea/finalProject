@@ -19,7 +19,7 @@ exports.loginUser = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    res.status(500).json({ status: 'Error', msg: errors.array() });
+    return res.status(500).json({ status: 'Error', msg: errors.array() });
   }
 
   const { email, password } = req.body;
@@ -28,13 +28,13 @@ exports.loginUser = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
+      return res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
     }
 
     const matchPassword = await bcrypt.compare(password, user.password);
 
     if (!matchPassword) {
-      res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
+      return res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
     }
 
     const payload = {
@@ -48,6 +48,7 @@ exports.loginUser = async (req, res) => {
       config.get('jwtSecret'),
       { expiresIn: 360000 },
       (err, token) => {
+        console.log('TOKEN====>', token);
         if (err) throw err;
         res.status(200).json({ status: 'OK', msg: token });
       }
