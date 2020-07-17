@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const { check } = require('express-validator');
 
 //! logged in users product list
-router.get('/products/list', auth, productController.getProducts);
+router.get('/products', auth, productController.getProducts);
 
 //! logged in user add product
 router.post(
