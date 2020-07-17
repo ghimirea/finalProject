@@ -17,18 +17,19 @@ exports.makeOrder = async (req, res) => {
         .status(401)
         .json({ status: 'Error', msg: 'User is not Authorized' });
     }
-
-    let order = await Order.findOne({ user: req.user.id });
+    // let order = new Order();
+    order = await Order.find({ user: req.user.id }).populate('user', [
+      'name',
+      'email',
+    ]);
+    console.log('Farmer Order--->', order);
 
     order = new Order({
       user: req.user.id,
-      //   Order:
-      //     {
       farmer_id: farmer_id,
       products: user.cart.items,
       totalPrice: user.cart.totalPrice[user.cart.totalPrice.length - 1],
       status: 'Pending',
-      // },
     });
 
     await order.save();
@@ -75,7 +76,7 @@ exports.makeOrder = async (req, res) => {
 };
 
 //!Farmer can see all the orders for their farm
-exports.getOrder = async (req, res) => {
+exports.getOrders = async (req, res) => {
   try {
     console.log('Farmer ID--->', req.user.id);
 
@@ -87,7 +88,7 @@ exports.getOrder = async (req, res) => {
     //   }
     const farmer_order = await Order.find({ farmer_id: req.user.id });
 
-    console.log('Orders--->', farmer_order);
+    console.log("Farmer's Orders--->", farmer_order);
 
     let order = [];
 
@@ -104,9 +105,46 @@ exports.getOrder = async (req, res) => {
     // ]);
     // console.log('Farmer--->', farmer);
 
-    res.status(200).json({ status: 'OK', msg: 'order' });
+    res.status(200).json({ status: 'OK', msg: farmer_order });
   } catch (error) {
     console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+//! Farmers can see paticular order
+exports.getOrder = async (req, res) => {
+  try {
+    const farmer = await User.findOne({ _id: req.user.id });
+    console.log('Farmer--->', farmer);
+
+    const order = await Order.find({ _id: req.params.id });
+    //console.log('Order--->', order[0]);
+
+    const customer = await User.find({ _id: order[0].user });
+    //console.log('Customer--->', customer[0].email);
+
+    let farmer_order = order[0].products;
+    //console.log('farmer product--->', farmer_order);
+
+    //console.log('Order Products--->', farmer_order.products[0].farmer_id);
+
+    if (req.user.id != farmer_order[0].farmer_id) {
+      console.log(
+        'REQ.USER.ID-->',
+        req.user.id,
+        'FARMER_ORDER.FARMER_ID--->',
+        farmer_order.farmer_id
+      );
+      return res
+        .status(400)
+        .json({ status: 'Error', msg: 'User not authorized' });
+    }
+    console.log('Order Status--->', order[0].status);
+
+    res.status(200).json({ status: 'OK', msg: order });
+  } catch (error) {
+    console.log(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
@@ -115,28 +153,31 @@ exports.getOrder = async (req, res) => {
 exports.changeStatus = async (req, res) => {
   try {
     const farmer = await User.findOne({ _id: req.user.id });
-    //console.log('Farmer--->', farmer);
+    console.log('Farmer--->', farmer);
 
     const order = await Order.find({ _id: req.params.id });
-    //console.log('Order--->', order[0]);
+    console.log('Order--->', order[0]);
 
     const customer = await User.find({ _id: order[0].user });
-    //console.log('Customer--->', customer[0].email);
+    console.log('Customer--->', customer[0].email);
 
-    let farmer_order = order[0].Order[0];
-    //console.log('farmer product--->', farmer_order);
+    let order_status = order[0].status;
+    console.log('Order Status--->', order_status);
 
     //console.log('Order Products--->', farmer_order.products[0].farmer_id);
 
-    if (req.user.id != farmer_order.products[0].farmer_id) {
-      res.status(400).json({ status: 'Error', msg: 'User not authorized' });
+    if (req.user.id != order[0].farmer_id) {
+      console.log('Inside if-1');
+      return res
+        .status(400)
+        .json({ status: 'Error', msg: 'User not authorized' });
     }
-    console.log('Order Status--->', farmer_order.status);
 
-    if (farmer_order.status === 'Pending') {
-      farmer_order.status = 'Ready';
-      console.log('Status in Pending-->', order[0]);
+    if (order[0].status === 'Pending') {
+      order[0].status = 'Ready';
+      console.log('Status in Pending-->', order[0].status);
       await order[0].save();
+      console.log('Order after Status Change--READY', order[0]);
 
       //! Nodemailer to send Product Ready email
 
@@ -164,9 +205,9 @@ exports.changeStatus = async (req, res) => {
           console.log('Email was succesfully sent');
         }
       });
-    } else if (farmer_order.status === 'Ready') {
-      farmer_order.status = 'Completed';
-      console.log('Status inside Ready-->', order[0]);
+    } else if (order[0].status === 'Ready') {
+      order[0].status = 'Completed';
+      console.log('Status inside Ready-->', order[0].status);
       await order[0].save();
 
       //! Nodemailer to send Product Ready email
@@ -197,9 +238,7 @@ exports.changeStatus = async (req, res) => {
       });
     }
 
-    res
-      .status(200)
-      .json({ status: 'OK', msg: 'Status has been changed', order });
+    res.status(200).json({ status: 'OK', msg: order });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
