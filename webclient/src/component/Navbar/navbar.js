@@ -20,7 +20,7 @@ const navbar = ({ auth: { isAuth, isLoading }, signOut }) => {
           <Link to='/products'>Products</Link>
         </li>
         <li>
-          <Link to='/orders'>Orders</Link>
+          <Link to='/localMarket'>Orders</Link>
         </li>
         <li>
           <Link to='/' onClick={signOut}>
@@ -37,9 +37,6 @@ const navbar = ({ auth: { isAuth, isLoading }, signOut }) => {
         <Link to='/'>Local Online</Link>
       </div>
       <ul className='nav-links'>
-        {/* <li>
-      <Link to='/'>Home</Link>
-    </li> */}
         <li>
           <Link to='/register'>Register</Link>
         </li>
@@ -52,11 +49,7 @@ const navbar = ({ auth: { isAuth, isLoading }, signOut }) => {
   return (
     <>
       <nav>
-        {/* <div className='hamburger'>
-          <div className='line1'></div>
-          <div className='line2'></div>
-          <div className='line3'></div>
-        </div> */}
+       
         {!isLoading && <>{isAuth ? loggedInLinks : notLoggedInLinks}</>}
       </nav>
     </>
