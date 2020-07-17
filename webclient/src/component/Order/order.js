@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import { getOrder, changeStatus } from '../Action/orders';
 import { matchPath } from 'react-router';
 
-
 const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
-  //console.log('GETORDER--->', changeStatus);
+  console.log('GETORDER--->', orders);
   const match = matchPath(location.pathname, {
     path: '/orders/:id',
     exact: true,
@@ -30,7 +29,6 @@ const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
 
   return (
     <>
-      
       <h1>
         <strong>Order Details</strong>
       </h1>
