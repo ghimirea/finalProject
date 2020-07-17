@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getOrder, changeStatus } from '../Action/orders';
 import { matchPath } from 'react-router';
-import { axios } from 'axios';
+
 
 const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
   //console.log('GETORDER--->', changeStatus);
@@ -30,6 +30,7 @@ const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
 
   return (
     <>
+      
       <h1>
         <strong>Order Details</strong>
       </h1>
