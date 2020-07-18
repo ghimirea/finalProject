@@ -12,4 +12,7 @@ export const GET_ORDER = 'GET_ORDER';
 export const ORDER_FAIL = 'ORDER_FAIL';
 export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const GET_PRODUCTS = 'GET_PRODUCTS';
+export const GET_PRODUCT = 'GET_PRODUCT';
 export const PRODUCTS_FAIL = 'PRODUCTS_FAIL';
+export const EDIT_PRODUCTS = 'EDIT_PRODUCTS';
+export const DELETE_PRODUCTS = 'DELETE_PRODUCTS';

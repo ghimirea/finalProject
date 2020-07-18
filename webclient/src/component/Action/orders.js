@@ -45,17 +45,17 @@ export const getOrder = (id) => async (dispatch) => {
 
 //! Change Status of the Order
 export const changeStatus = (id) => async (dispatch) => {
-    try {
-      const response = await axios.patch(`/orders/${id}`);
-      console.log('PATCH ORDER-->', response);
-  
-      dispatch({
-        type: CHANGE_STATUS,
-        payload: response.data.msg,
-      });
-    } catch (error) {
-      dispatch({
-        type: ORDER_FAIL,
-      });
-    }
-  };
+  try {
+    const response = await axios.patch(`/orders/${id}`);
+    console.log('PATCH ORDER-->', response);
+
+    dispatch({
+      type: CHANGE_STATUS,
+      payload: response.data.msg,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_FAIL,
+    });
+  }
+};
