@@ -1,4 +1,10 @@
-import { GET_PRODUCTS, PRODUCTS_FAIL } from '../Action/types';
+import {
+  GET_PRODUCTS,
+  GET_PRODUCT,
+  PRODUCTS_FAIL,
+  EDIT_PRODUCTS,
+  DELETE_PRODUCTS,
+} from '../Action/types';
 
 const initialState = {
   products: [],
@@ -11,15 +17,20 @@ const farmer_products = (state = initialState, action) => {
 
   switch (type) {
     case GET_PRODUCTS:
-      return {
+    case EDIT_PRODUCTS:
+    case DELETE_PRODUCTS:
+    case GET_PRODUCT:
+      state = {
         ...state,
         products: payload,
         isLoading: false,
       };
+
     case PRODUCTS_FAIL:
       return {
         ...state,
         isLoading: false,
+        products: payload,
         error: payload,
       };
 
