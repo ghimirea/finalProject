@@ -2,7 +2,7 @@ const Product = require('../model/Product');
 const User = require('../model/User');
 const { validationResult } = require('express-validator');
 // const mongoose = require('mongoose');
-
+//! Farmer can see their products
 exports.getProducts = async (req, res) => {
   try {
     const product = await Product.findOne({
@@ -23,6 +23,43 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+//! Farmer can get particular product
+exports.getProduct = async (req, res) => {
+  try {
+    // const farmer = await User.findOne({ _id: req.user.id });
+    // console.log('Farmer--->', farmer);
+
+    const product = await Product.findOne({ user: req.user.id });
+    console.log('Product--->', product.Product[0]._id);
+
+    //const customer = await User.find({ _id: order[0].user });
+    //console.log('Customer--->', customer[0].email);
+
+    //let farmer_order = order[0].products;
+    //console.log('farmer product--->', farmer_order);
+
+    //console.log('Order Products--->', farmer_order.products[0].farmer_id);
+
+    if (req.user.id != product.user) {
+      console.log('Inside if condition');
+      return res
+        .status(400)
+        .json({ status: 'Error', msg: 'User not authorized' });
+    }
+
+    let prod = product.Product.filter(
+      (item) => item._id.toString() === req.params.id
+    );
+    console.log('FILTER PRODUCT--->', prod);
+
+    res.status(200).json({ status: 'OK', msg: prod });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+//! Farmers can add Products
 exports.addProducts = async (req, res) => {
   const errors = validationResult(req);
 
@@ -51,7 +88,7 @@ exports.addProducts = async (req, res) => {
       product.Product.push(req.body);
       await product.save();
       console.log('INSIDE IF PRODUCT-->', product);
-      return res.status(201).json({ status: 'OK', msg: product });
+      return res.status(200).json({ status: 'OK', msg: product });
     }
     product = new Product(allItems);
     await product.save();
@@ -65,6 +102,7 @@ exports.addProducts = async (req, res) => {
   }
 };
 
+//!Farmers can delete products
 exports.deleteProduct = async (req, res) => {
   try {
     let product = await Product.findOne({
@@ -91,6 +129,7 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
+//! Farmers can update Products
 exports.updateProduct = async (req, res) => {
   const errors = validationResult(req);
 
@@ -132,9 +171,11 @@ exports.updateProduct = async (req, res) => {
       }
     );
 
+    const updatedProduct = req.body
+
     console.log('Request Body--->', req.body);
 
-    res.status(200).json({ status: 'OK', msg: update });
+    res.status(200).json({ status: 'OK', msg: updatedProduct, update });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
