@@ -9,7 +9,7 @@ router.get('/product/:id', auth, productController.getProduct)
 
 //! logged in user add product
 router.post(
-  '/products',
+  '/products/add',
   [
     auth,
     [
