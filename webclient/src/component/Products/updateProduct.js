@@ -43,12 +43,18 @@ const UpdateProducts = ({
   location,
   products: { products, isLoading },
 }) => {
+  console.log('UPDATE PRODUCTS--->', products[0]);
   const classes = Styles();
   const match = matchPath(location.pathname, {
     path: '/products/:id',
     exact: true,
     strict: false,
   });
+
+  useEffect(() => {
+    getProduct(match.params.id);
+  }, [getProduct]);
+
   let prod;
   if (products.Product !== undefined) {
     prod = products.Product.filter(
@@ -57,10 +63,15 @@ const UpdateProducts = ({
   }
 
   const [update, setUpdate] = useState({
-    type: prod[0].type,
-    product_name: prod[0].product_name,
-    quantity_in_lb: prod[0].quantity_in_lb,
-    price_per_lb: prod[0].price_per_lb,
+    type: prod[0].type || products[0].type,
+    product_name: prod[0].product_name || products[0].product_name,
+    quantity_in_lb: prod[0].quantity_in_lb || products[0].quantity_in_lb,
+    price_per_lb: prod[0].price_per_lb || products[0].price_per_lb,
+
+    // type: ' ',
+    // product_name: ' ',
+    // quantity_in_lb: null,
+    // price_per_lb: null,
   });
 
   const { type, product_name, quantity_in_lb, price_per_lb } = update;
@@ -122,7 +133,7 @@ const UpdateProducts = ({
                       id='type'
                       label='Type'
                       name='type'
-                      value={prod[0].type}
+                      value={prod[0].type || products[0].type}
                       autoComplete='type'
                     />
                   </Grid>
@@ -149,6 +160,7 @@ const UpdateProducts = ({
                       id='quantity_in_lb'
                       label='Quantity in LB'
                       name='quantity_in_lb'
+                      contentEditable='true'
                       defaultValue={prod[0].quantity_in_lb}
                       onChange={(event) => onChange(event)}
                     />

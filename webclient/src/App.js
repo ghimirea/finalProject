@@ -14,7 +14,8 @@ import LocalMarket from './component/localMarket/localMarket';
 import SecuredRoute from './component/securedRoute/securedRoute';
 import Order from './component/Order/order';
 import Products from './component/Products/products';
-import UpdateProducts from './component/Products/updateProduct'
+import UpdateProducts from './component/Products/updateProduct';
+import AddProduct from './component/Products/addProducts';
 
 if (localStorage.token) {
   authToken(localStorage.token);
@@ -38,7 +39,12 @@ function App() {
               <Route exact path='/login' component={Login} />
               <SecuredRoute exact path='/localMarket' component={LocalMarket} />
               <SecuredRoute exact path='/products' component={Products} />
-              <SecuredRoute exact path='/products/:id' component={UpdateProducts} />
+              <SecuredRoute exact path='/products/add' component={AddProduct} />
+              <SecuredRoute
+                exact
+                path='/products/:id'
+                component={UpdateProducts}
+              />
               <SecuredRoute exact path='/orders/:id' component={Order} />
             </Switch>
           </section>
