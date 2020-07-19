@@ -4,6 +4,7 @@ import {
   PRODUCTS_FAIL,
   EDIT_PRODUCTS,
   DELETE_PRODUCTS,
+  ADD_PRODUCTS,
 } from '../Action/types';
 
 const initialState = {
@@ -20,6 +21,7 @@ const farmer_products = (state = initialState, action) => {
     case EDIT_PRODUCTS:
     case DELETE_PRODUCTS:
     case GET_PRODUCT:
+    case ADD_PRODUCTS:
       state = {
         ...state,
         products: payload,
