@@ -10,7 +10,7 @@ exports.registerUser = async (req, res) => {
     return res.status(400).json({ status: 'Error', msg: errors.array() });
   }
 
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, Active } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -26,6 +26,7 @@ exports.registerUser = async (req, res) => {
       email,
       password,
       role,
+      Active: 'True',
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -69,15 +70,26 @@ exports.getAllUsers = async (req, res) => {
 //! Admin can change the Active status
 exports.changeActive = async (req, res) => {
   try {
-    const user = await User.updateOne(
-      { _id: req.params.id },
-      {
-        $set: { Active: req.body.Active },
-      }
-    );
-    console.log('User---->', user);
+    const user = await User.findOne({ _id: req.params.id });
+    //  await user.updateOne(
+    //   { _id: req.params.id },
+    //   {
+    //     $set: { Active: !user.Active },
+    //   }
+    // );
 
-    res.status(200).json({ status: 'OK', msg: 'User Status Changed' });
+    console.log('User -1---->', user);
+
+    if (user.Active === 'True') {
+      user.Active = 'False';
+    } else {
+      user.Active = 'True';
+    }
+    await user.save();
+
+    console.log('User -2---->', user);
+
+    res.status(200).json({ status: 'OK', msg: user });
   } catch (error) {
     console.error(error.message);
   }
