@@ -54,9 +54,10 @@ const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
     email: '',
     password: '',
     role: '',
+    Active: true,
   });
 
-  const { email, password, role } = loginData;
+  const { email, password, role, Active } = loginData;
   const onChange = (event) =>
     setLoginData({
       ...loginData,
@@ -65,7 +66,7 @@ const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
 
   const signIn = async (event) => {
     event.preventDefault();
-    login(email, password, role);
+    login(email, password, role, Active);
 
     // console.log('User Details--->', loginData);
 

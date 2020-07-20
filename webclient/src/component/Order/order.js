@@ -36,14 +36,16 @@ const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
       <h3>STATUS: {orders[0].status}</h3>
       {orders[0].products.map((item) => (
         <>
+          <hr />
           <h3 key={item._id}>PRICE PER POUND:{item.price_per_lb}</h3>
           <h3>QUANTITY:{item.quantity}</h3>
           <h3>TOTAL PRICE:{item.price_per_lb * item.quantity}</h3>
-          <button onClick={(event) => statusChange(event)}>
-            Change Status of The Order
-          </button>
+          <hr />
         </>
       ))}
+      <button onClick={(event) => statusChange(event)}>
+        Change Status of The Order
+      </button>
     </>
   );
 };
