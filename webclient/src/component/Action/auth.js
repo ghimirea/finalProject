@@ -32,7 +32,7 @@ export const getUser = () => async (dispatch) => {
 };
 
 //! Register User
-export const authenticate = ({ name, email, password, role }) => async (
+export const authenticate = ({ name, email, password, role, Active }) => async (
   dispatch
 ) => {
   const header = {
@@ -41,7 +41,7 @@ export const authenticate = ({ name, email, password, role }) => async (
     },
   };
 
-  const body = JSON.stringify({ name, email, password, role });
+  const body = JSON.stringify({ name, email, password, role, Active });
 
   try {
     const response = await axios.post('/users', body, header);
@@ -70,14 +70,14 @@ export const authenticate = ({ name, email, password, role }) => async (
 };
 
 //! Sign In User
-export const login = (email, password, role) => async (dispatch) => {
+export const login = (email, password, role,Active) => async (dispatch) => {
   const header = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
 
-  const body = JSON.stringify({ email, password, role });
+  const body = JSON.stringify({ email, password, role,Active });
 
   try {
     const response = await axios.post('/auth', body, header);

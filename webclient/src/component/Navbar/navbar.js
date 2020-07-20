@@ -23,10 +23,7 @@ const Navbar = ({ auth: { user, isAuth, isLoading }, signOut, getUser }) => {
             <Link to='/allorders'>All Orders</Link>
           </li>
           <li>
-            <Link to='/farmers'>Farmers</Link>
-          </li>
-          <li>
-            <Link to='/customers'>Customers</Link>
+            <Link to='/users'>Users</Link>
           </li>
           <li>
             <Link to='/' onClick={signOut}>

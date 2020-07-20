@@ -51,9 +51,10 @@ const Register = ({ setAlert, authenticate, isAuth }) => {
     password: '',
     confirmPassword: '',
     role: 'Farmer',
+    Active: 'True',
   });
 
-  const { name, email, password, confirmPassword, role } = registerData;
+  const { name, email, password, confirmPassword, role, Active } = registerData;
   const onChange = (event) =>
     setRegisterData({
       ...registerData,
@@ -66,7 +67,7 @@ const Register = ({ setAlert, authenticate, isAuth }) => {
       setAlert('Passwords do not match', 'danger');
     } else {
       console.log('User Details--->', registerData);
-      authenticate({ name, email, password, role });
+      authenticate({ name, email, password, role, Active });
       // const newUser = {
       //   name,
       //   email,
