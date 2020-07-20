@@ -3,6 +3,7 @@ const {
   ORDER_FAIL,
   GET_ORDER,
   CHANGE_STATUS,
+  ALL_ORDERS,
 } = require('../Action/types');
 
 const initialState = {
@@ -16,6 +17,7 @@ const farmerOrder = (state = initialState, action) => {
 
   switch (type) {
     case GET_ORDERS:
+    case ALL_ORDERS:
       return {
         ...state,
         orders: payload,

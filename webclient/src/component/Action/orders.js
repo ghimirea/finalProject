@@ -5,6 +5,7 @@ import {
   ORDER_FAIL,
   GET_ORDER,
   CHANGE_STATUS,
+  ALL_ORDERS,
 } from '../Action/types';
 
 //! Get current Farmer Orders
@@ -51,6 +52,23 @@ export const changeStatus = (id) => async (dispatch) => {
 
     dispatch({
       type: CHANGE_STATUS,
+      payload: response.data.msg,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_FAIL,
+    });
+  }
+};
+
+//! Get all Orders Admin
+export const getAllOrders = () => async (dispatch) => {
+  try {
+    const response = await axios.get('/allorders');
+    console.log('RESPONSE ALL ORDERS-->', response.data.msg);
+
+    dispatch({
+      type: ALL_ORDERS,
       payload: response.data.msg,
     });
   } catch (error) {
