@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,7 +19,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../Action/auth';
+import { login, getUser } from '../Action/auth';
 
 const Styles = makeStyles((theme) => ({
   paper: {
@@ -42,8 +42,14 @@ const Styles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ login, isAuth }) => {
+const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
   const classes = Styles();
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
+
+  console.log('LOGIN AUTH--->', user);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -79,6 +85,13 @@ const Login = ({ login, isAuth }) => {
     // }
   };
 
+  // if (!isLoading && isAuth) {
+  //   if (user.role === 'Admin') {
+  //     return <Redirect to='/allorders' />;
+  //   } else {
+  //     return <Redirect to='/localMarket' />;
+  //   }
+  // }
   if (isAuth) {
     return <Redirect to='/localMarket' />;
   }
@@ -166,11 +179,12 @@ const Login = ({ login, isAuth }) => {
 
 Login.prototypes = {
   login: PropTypes.func.isRequired,
-  isAuth: PropTypes.bool,
+  auth: PropTypes.object.isRequired,
+  getUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isAuth: state.auth.isAuth,
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, getUser })(Login);

@@ -1,35 +1,63 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { signOut } from '../Action/auth';
+import { getUser } from '../Action/auth';
 
-const navbar = ({ auth: { isAuth, isLoading }, signOut }) => {
-  //console.log('Navbar Auth====>', auth);
+const Navbar = ({ auth: { user, isAuth, isLoading }, signOut, getUser }) => {
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
 
-  const loggedInLinks = (
-    <>
-      <div className='navbar'>
-        <Link to='/localMarket'>Local Online</Link>
-      </div>
-      <ul className='nav-links'>
-        <li>
-          <Link to='/localMarket'>Home</Link>
-        </li>
-        <li>
-          <Link to='/products'>Products</Link>
-        </li>
-        <li>
-          <Link to='/localMarket'>Orders</Link>
-        </li>
-        <li>
-          <Link to='/' onClick={signOut}>
-            <i className='i.fas.fa-sign-out-alt'></i> Sign Out
-          </Link>
-        </li>
-      </ul>
-    </>
-  );
+  console.log('Navbar Auth====>', user);
+
+  const loggedInLinks =
+    user && user.role === 'Admin' ? (
+      <>
+        <div className='navbar'>
+          <Link to='/allorders'>Local Online</Link>
+        </div>
+        <ul className='nav-links'>
+          <li>
+            <Link to='/allorders'>All Orders</Link>
+          </li>
+          <li>
+            <Link to='/farmers'>Farmers</Link>
+          </li>
+          <li>
+            <Link to='/customers'>Customers</Link>
+          </li>
+          <li>
+            <Link to='/' onClick={signOut}>
+              <i className='i.fas.fa-sign-out-alt'></i> Sign Out
+            </Link>
+          </li>
+        </ul>
+      </>
+    ) : (
+      <>
+        <div className='navbar'>
+          <Link to='/localMarket'>Local Online</Link>
+        </div>
+        <ul className='nav-links'>
+          <li>
+            <Link to='/localMarket'>Home</Link>
+          </li>
+          <li>
+            <Link to='/products'>Products</Link>
+          </li>
+          <li>
+            <Link to='/localMarket'>Orders</Link>
+          </li>
+          <li>
+            <Link to='/' onClick={signOut}>
+              <i className='i.fas.fa-sign-out-alt'></i> Sign Out
+            </Link>
+          </li>
+        </ul>
+      </>
+    );
 
   const notLoggedInLinks = (
     <>
@@ -49,20 +77,20 @@ const navbar = ({ auth: { isAuth, isLoading }, signOut }) => {
   return (
     <>
       <nav>
-       
         {!isLoading && <>{isAuth ? loggedInLinks : notLoggedInLinks}</>}
       </nav>
     </>
   );
 };
 
-navbar.propTypes = {
+Navbar.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { signOut })(navbar);
+export default connect(mapStateToProps, { signOut, getUser })(Navbar);

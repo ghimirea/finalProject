@@ -17,3 +17,4 @@ export const PRODUCTS_FAIL = 'PRODUCTS_FAIL';
 export const EDIT_PRODUCTS = 'EDIT_PRODUCTS';
 export const DELETE_PRODUCTS = 'DELETE_PRODUCTS';
 export const ADD_PRODUCTS = 'ADD_PRODUCTS';
+export const ALL_ORDERS = 'ALL_ORDERS';

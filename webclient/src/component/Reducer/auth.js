@@ -42,6 +42,7 @@ const authetication = (state = initialState, action) => {
         isLoading: false,
       };
     case GET_USER:
+      console.log("GET USER--->", payload)
       return {
         ...state,
         isAuth: true,
