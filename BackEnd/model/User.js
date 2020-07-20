@@ -16,8 +16,8 @@ const UserSchema = new Schema({
     unique: true,
   },
   Active: {
-    type: Boolean,
-    default: true,
+    type: String,
+    // default: 'true',
   },
   role: {
     type: String,
