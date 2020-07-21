@@ -56,6 +56,18 @@ exports.registerUser = async (req, res) => {
   }
 };
 
+//! Customers can see all Farmers
+exports.getAllFarmers = async (req, res) => {
+  try {
+    const farmer = await User.find({ role: 'Farmer' });
+    console.log('FARMER---->', farmer);
+    res.status(200).json({ status: 'OK', msg: farmer });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
 //! Admin can see all users
 exports.getAllUsers = async (req, res) => {
   try {
