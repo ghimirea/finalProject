@@ -26,7 +26,7 @@ const WelcomeScreen = ({ navigation }) => {
         source={require('../assets/farmerMarket.jpg')}
       >
         <View style={styles.textContainer}>
-          <Text style={styles.logoText}>Local Online</Text>
+          <Text style={styles.logoText}>Welcome to Local Online</Text>
           <Text style={styles.logoText}>
             Organic goodness from your Computer
           </Text>
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Georgia-BoldItalic',
     fontSize: 30,
     fontWeight: 'bold',
+    justifyContent: 'flex-start',
   },
 
   registerButton: {
