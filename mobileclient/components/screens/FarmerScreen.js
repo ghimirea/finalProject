@@ -5,8 +5,7 @@ const FarmerScreen = () => {
     return (
         <View>
             <Text>Farmer will be seen here</Text>
-            <Text>User will land here after autheticated</Text>
-            <Text>Come here</Text>
+            <Text>User should come to this screen once logged in</Text>
         </View>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
 import {
   Container,
   Header,
@@ -13,10 +13,10 @@ import {
   Body,
   Title,
   Button,
-  Icon
+  Icon,
 } from 'native-base';
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation:{navigate}}) => {
   return (
     // <SafeAreaView>
     <Container>
@@ -29,7 +29,7 @@ const RegisterScreen = () => {
       </Header>
       <Content>
         <Form>
-        <Item floatingLabel>
+          <Item floatingLabel>
             <Label>Name</Label>
             <Input />
           </Item>
@@ -46,9 +46,15 @@ const RegisterScreen = () => {
           </Item>
         </Form>
         <Button full iconLeft>
-        <Icon type="MaterialCommunityIcons" name="face-recognition" />
+          <Icon type='MaterialCommunityIcons' name='face-recognition' />
           <Text>Register</Text>
         </Button>
+        <TouchableOpacity
+          style={styles.toLogin}
+          onPress={() => navigate('MATERIAL_LOGIN')}
+        >
+          <Text style={{ color: 'orange' }}>Have an account...Click Here</Text>
+        </TouchableOpacity>
       </Content>
     </Container>
     // </SafeAreaView>
@@ -57,4 +63,11 @@ const RegisterScreen = () => {
 
 export default RegisterScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  toLogin: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+});
