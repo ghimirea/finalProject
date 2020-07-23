@@ -24,18 +24,29 @@ import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
 import AuthenticatedScreen from './components/auth/authenticatedScreen';
 import { getUser } from './components/Action/auth';
+import { AsyncStorage } from 'react-native';
+import authToken from './components/utils/authToken';
 
 const StackNav = createStackNavigator();
 const MaterialBottomNav = createMaterialBottomTabNavigator();
 
 axios.defaults.baseURL = 'http://localhost:5000';
-//axios.defaults.baseURL = 'http://10.10.14.11:5000';
 
-export default function App() {
-  useEffect(() => {
-    const y = store.dispatch(getUser());
-    console.log('APP.JS USEEFFECT====>', y);
-  }, []);
+// const token = async () => {
+//   const y = await AsyncStorage.token;
+//   console.log(y);
+// };
+
+// if (AsyncStorage.token) {
+//   authToken(AsyncStorage.token);
+// }
+// const y = store.dispatch(getUser());
+// console.log('GETUSER 43---->', y);
+ const App = () => {
+  // useEffect(() => {
+  //   const y = store.dispatch(getUser());
+  //   console.log('APP.JS USEEFFECT====>', y);
+  // }, []);
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -46,7 +57,7 @@ export default function App() {
           }}
         >
           <StackNav.Screen
-            name='MATERIAL_LOGIN'
+            name='STACK_LOGIN'
             component={LoginScreen}
             options={{
               title: 'Login',
@@ -56,7 +67,7 @@ export default function App() {
             }}
           />
           <StackNav.Screen
-            name='MATERIAL_HOME'
+            name='STACK_HOME'
             component={AuthenticatedScreen}
             options={{
               title: 'Home',
@@ -66,7 +77,7 @@ export default function App() {
             }}
           />
           <StackNav.Screen
-            name='MATERIAL_REGISTER'
+            name='STACK_REGISTER'
             component={RegisterScreen}
             options={{
               title: 'Register',
@@ -83,4 +94,6 @@ export default function App() {
       </NavigationContainer>
     </Provider>
   );
-}
+};
+
+export default App;
