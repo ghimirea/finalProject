@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  AsyncStorage,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -21,21 +27,27 @@ import {
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import FarmerScreen from './FarmerScreen';
 import AuthenticatedScreen from '../auth/authenticatedScreen';
-import { login, getUser } from '../Action/auth';
+import { login } from '../Action/auth';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { color } from 'react-native-reanimated';
 
 const LoginScreen = ({
   login,
-  getUser,
-  auth: { user, isAuth, isLoading },
+  auth: { isAuth, isLoading },
   navigation: { navigate },
 }) => {
-  console.log('ISAUTH LOGIN--->', isAuth, user);
+  //const [state, setstate] = useState({
+
+  // })
+  // useEffect(() => {
+  //   const y = getUser();
+  //   console.log('GET USER--->', y);
+  // }, []);
+
   useEffect(() => {
-    const y = getUser();
-    console.log('GET USER--->', y);
-  }, [getUser]);
+    return async () => {
+      await AsyncStorage.clear();
+    };
+  }, []);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -50,8 +62,11 @@ const LoginScreen = ({
     login(email, password, role, Active);
   };
 
+  console.log('====>', isLoading);
+
   if (isAuth) {
-    navigate('MATERIAL_HOME');
+    console.log('ISAUTH INSIDE LOGIN==>', isAuth);
+    navigate('STACK_HOME');
   }
 
   return (
@@ -99,21 +114,9 @@ const LoginScreen = ({
           type='submit'
           full
           iconLeft
-          onPress={async () => {
-            login({ email, password, role, Active });
-
-            //   const header = {
-            //     headers: {
-            //       'Content-Type': 'application/json',
-            //     },
-            //   };
-
-            //   const body = JSON.stringify({ email, password, role, Active });
-            //   console.log('LOGIN BODY--->', body);
-
-            //   console.log('Before AXIOS');
-            //   const response = await axios.post('http://10.10.14.11:5000/auth', body, header);
-            //   console.log('SIGNIN RES--->', response.data.msg);
+          onPress={() => {
+            login(email, password, role, Active);
+            //navigate('MATERIAL_HOME');
           }}
         >
           <Icon type='MaterialCommunityIcons' name='login' />
@@ -121,7 +124,7 @@ const LoginScreen = ({
         </Button>
         <TouchableOpacity
           style={styles.toRegister}
-          onPress={() => navigate('MATERIAL_REGISTER')}
+          onPress={() => navigate('STACK_REGISTER')}
         >
           <Text style={{ color: 'orange' }}>
             Don't have an account...Click Here
@@ -135,14 +138,13 @@ const LoginScreen = ({
 LoginScreen.prototypes = {
   login: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  getUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { login, getUser })(LoginScreen);
+export default connect(mapStateToProps, { login })(LoginScreen);
 
 const styles = StyleSheet.create({
   toRegister: {

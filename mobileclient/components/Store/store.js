@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-//import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import roorReducer from '../Reducer/reducer';
 
@@ -10,7 +10,7 @@ const middleware = [thunk];
 const store = createStore(
   roorReducer,
   initialState,
-  applyMiddleware(...middleware)
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
 export default store;

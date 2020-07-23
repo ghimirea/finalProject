@@ -51,7 +51,7 @@ const RegisterScreen = ({navigation:{navigate}}) => {
         </Button>
         <TouchableOpacity
           style={styles.toLogin}
-          onPress={() => navigate('MATERIAL_LOGIN')}
+          onPress={() => navigate('STACK_LOGIN')}
         >
           <Text style={{ color: 'orange' }}>Have an account...Click Here</Text>
         </TouchableOpacity>
