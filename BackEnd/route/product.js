@@ -7,6 +7,9 @@ const { check } = require('express-validator');
 router.get('/products', auth, productController.getProducts);
 router.get('/product/:id', auth, productController.getProduct)
 
+//! Products by Farmer ID
+router.get('/products/:id', auth, productController.getFarmerProduct)
+
 //! logged in user add product
 router.post(
   '/products/add',
@@ -26,5 +29,7 @@ router.delete('/products/:id', auth, productController.deleteProduct);
 
 //! logged in user can update products
 router.patch('/products/:id', auth, productController.updateProduct);
+
+
 
 module.exports = router;

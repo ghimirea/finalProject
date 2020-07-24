@@ -20,7 +20,7 @@ const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
     console.log('Inside the useEffect in order-->', y);
     // const g = changeStatus(match.params.id);
     // console.log('ORDER CHANGE---->', g);
-  }, [getOrder]);
+  }, []);
 
   const statusChange = (event) => {
     console.log('EVENTS ON STATUSCHANGE---->', event);

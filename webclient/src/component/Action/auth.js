@@ -79,6 +79,8 @@ export const login = (email, password, role,Active) => async (dispatch) => {
 
   const body = JSON.stringify({ email, password, role,Active });
 
+  console.log('SIGN IN BODY---->', body)
+
   try {
     const response = await axios.post('/auth', body, header);
     console.log('SIGNIN RES--->', response.data.msg);

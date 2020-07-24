@@ -5,7 +5,8 @@ const role = require('../middleware/role');
 const authController = require('../controller/auth');
 const { check } = require('express-validator');
 
-router.get('/auth', auth, authController.getUser);
+//! router.get('/auth', auth, authController.getUser);
+router.get('/auth', auth,  authController.getUser);
 
 router.post(
   '/auth',

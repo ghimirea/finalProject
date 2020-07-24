@@ -18,7 +18,7 @@ router.post(
 );
 
 router.get('/users', auth, role, userController.getAllUsers);
-router.get('/users/farmers', auth, userController.getAllFarmers)
+router.get('/users/farmers', auth, userController.getAllFarmers);
 router.patch('/users/:id', auth, role, userController.changeActive);
 
 module.exports = router;

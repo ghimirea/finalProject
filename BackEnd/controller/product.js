@@ -1,7 +1,8 @@
 const Product = require('../model/Product');
 const User = require('../model/User');
 const { validationResult } = require('express-validator');
-// const mongoose = require('mongoose');
+
+
 //! Farmer can see their products
 exports.getProducts = async (req, res) => {
   try {
@@ -176,6 +177,27 @@ exports.updateProduct = async (req, res) => {
     console.log('Request Body--->', req.body);
 
     res.status(200).json({ status: 'OK', msg: updatedProduct, update });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+//! Get Farmer Products by Farmer ID
+exports.getFarmerProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      user: req.params.id,
+    }).populate('User', ('name', 'email'));
+    console.log(product);
+
+    if (!product) {
+      return res
+        .status(400)
+        .json({ status: 'Error', msg: 'There are no products for this User' });
+    }
+
+    res.status(200).json({ status: 'OK', msg: product });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
