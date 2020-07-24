@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
@@ -17,15 +17,16 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import ProductScreen from './productsScreen';
+import FarmerScreen from '../screens/FarmerScreen';
+import FarmerProductScreen from '../screens/FarmerProductScreen';
 import logoutScreen from '../screens/logoutScreen';
 import { signOut } from '../Action/auth';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const DrawerNav = createDrawerNavigator();
+const StackNav = createStackNavigator();
 
-const AuthenticatedScreen = ({
+const ProductScreen = ({
   signOut,
   navigation: { navigate },
   auth: { isLoading, isAuth },
@@ -34,38 +35,32 @@ const AuthenticatedScreen = ({
   //   navigate('MATERIAL_LOGIN');
   // }
   return (
-    <DrawerNav.Navigator initialRouteName='DRAWER_HOME'>
-      <DrawerNav.Screen
-        name='DRAWER_HOME'
-        component={WelcomeScreen}
+    <StackNav.Navigator initialRouteName='STACK_FARMER'>
+      <StackNav.Screen
+        name='STACK_FARMER'
+        component={FarmerScreen}
         options={{ title: 'Home' }}
       />
-      <DrawerNav.Screen
-        name='DRAWER_FARMER'
-        component={ProductScreen}
-        options={{ title: 'Farmers', headers:"Farmers" }}
+      <StackNav.Screen
+        name='STACK_PRODUCT'
+        component={FarmerProductScreen}
+        options={{ title: 'Products' }}
       />
-      <DrawerNav.Screen
-        name='DRAWER_CART'
+      {/* <StackNav.Screen
+        name='STACK_CHECKOUT'
         component={CartScreen}
         options={{ title: 'Your Cart' }}
-      />
-      <DrawerNav.Screen
-        name='DRAWER_LOGOUT'
-        component={logoutScreen}
-        options={{ title: 'Logout' }}
-      />
-    </DrawerNav.Navigator>
+      /> */}
+    </StackNav.Navigator>
   );
 };
 
-AuthenticatedScreen.propTypes = {
+ProductScreen.propTypes = {
   auth: PropTypes.object.isRequired,
-  signOut: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { signOut })(AuthenticatedScreen);
+export default connect(mapStateToProps)(ProductScreen);

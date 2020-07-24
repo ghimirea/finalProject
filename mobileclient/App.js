@@ -24,7 +24,7 @@ import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
 import AuthenticatedScreen from './components/auth/authenticatedScreen';
 import { getUser } from './components/Action/auth';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import authToken from './components/utils/authToken';
 
 const StackNav = createStackNavigator();
@@ -32,17 +32,13 @@ const MaterialBottomNav = createMaterialBottomTabNavigator();
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
-// const token = async () => {
-//   const y = await AsyncStorage.token;
-//   console.log(y);
-// };
-
-// if (AsyncStorage.token) {
-//   authToken(AsyncStorage.token);
-// }
-// const y = store.dispatch(getUser());
-// console.log('GETUSER 43---->', y);
- const App = () => {
+// const auth_token = (async () => {
+//   const a_token = await AsyncStorage.getItem('token');
+//   if (auth_token) {
+//     authToken(auth_token);
+//   }
+// })();
+const App = () => {
   // useEffect(() => {
   //   const y = store.dispatch(getUser());
   //   console.log('APP.JS USEEFFECT====>', y);

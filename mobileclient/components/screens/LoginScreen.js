@@ -7,7 +7,6 @@ import {
   Text,
   View,
   SafeAreaView,
-  AsyncStorage,
 } from 'react-native';
 import {
   Container,
@@ -24,6 +23,7 @@ import {
   Button,
   Icon,
 } from 'native-base';
+import AsyncStorage from "@react-native-community/async-storage";
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import FarmerScreen from './FarmerScreen';
 import AuthenticatedScreen from '../auth/authenticatedScreen';
@@ -43,11 +43,11 @@ const LoginScreen = ({
   //   console.log('GET USER--->', y);
   // }, []);
 
-  useEffect(() => {
-    return async () => {
-      await AsyncStorage.clear();
-    };
-  }, []);
+  // useEffect(() => {
+  //   return async () => {
+  //     await AsyncStorage.clear();
+  //   };
+  // }, []);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
