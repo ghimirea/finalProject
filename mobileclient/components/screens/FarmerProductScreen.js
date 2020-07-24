@@ -8,18 +8,25 @@ import {
   Alert,
   ScrollView,
   FlatList,
+  TextInput,
   ImageBackground,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getFarmerProducts } from '../Action/products';
+import { add_to_cart } from '../Action/cart';
+import { Label, Item, Input } from 'native-base';
 
 const FarmerProductScreen = ({
   route: { params },
   product: { products },
+  cart:{cart},
   getFarmerProducts,
+  add_to_cart,
 }) => {
   const [product, setProduct] = useState({ data: [] });
+  const [state, setState] = useState({ quanity: 0 });
   console.log('FARMER ID--->', params.id);
+  console.log('STATE IN CART-->', state.quantity);
 
   useEffect(() => {
     getFarmerProducts(params.id);
@@ -28,10 +35,11 @@ const FarmerProductScreen = ({
     }
   }, []);
   console.log('FARMER PRODUCT SCREEN----->', product.data);
+
   return (
     <View style={styles.container}>
       {!products ? (
-        'Currently there are no products listed'
+        <Text>Currently there are no products listed</Text>
       ) : (
         <FlatList
           style={styles.list}
@@ -50,14 +58,6 @@ const FarmerProductScreen = ({
             return (
               <View style={styles.card}>
                 <View style={styles.cardHeader}>
-                  {/* <ImageBackground
-                    style={{
-                      flex: 1,
-                      width: '100%',
-                      justifyContent: 'flex-start',
-                    }}
-                    source={require('../assets/farmerMarket.jpg')}
-                  ></ImageBackground> */}
                   <View style={styles.text}>
                     <Text style={styles.price}>Type:{item.type}</Text>
                     <Text style={styles.price}>Name:{item.product_name}</Text>
@@ -68,23 +68,49 @@ const FarmerProductScreen = ({
                   </View>
                 </View>
 
-                <Image style={styles.cardImage} source={require('../assets/farmerMarket.jpg')} />
+                <Image
+                  style={styles.cardImage}
+                  source={require('../assets/farmerMarket.jpg')}
+                />
 
                 <View style={styles.cardFooter}>
                   <View style={styles.socialBarContainer}>
                     <View style={styles.socialBarSection}>
                       <TouchableOpacity
                         style={styles.socialBarButton}
-                        onPress={() => this.addProductToCart()}
+                        onPress={() => {
+                          console.log('Inside onPress add To cart');
+                          add_to_cart(
+                            params.id,
+                            item._id,
+                            item.product_name,
+                            state.quantity,
+                            item.price_per_lb
+                          );
+                        }}
                       >
                         <Image
                           style={styles.icon}
                           source={require('../assets/shopping_cart.png')}
                         />
                         <Text style={[styles.socialBarLabel, styles.buyNow]}>
-                          Buy Now
+                          ADD TO CART
                         </Text>
                       </TouchableOpacity>
+                    </View>
+                    <View style={styles.socialBarSection}>
+                      <Item>
+                        <Input
+                          placeholder='QTY'
+                          onChangeText={(text) =>
+                            setState({ ...state, quantity: text })
+                          }
+                          // value={email}
+                          name='quantity'
+                          id='quantity'
+                          autoCapitalize='none'
+                        />
+                      </Item>
                     </View>
                     <View style={styles.socialBarSection}>
                       <TouchableOpacity style={styles.socialBarButton}>
@@ -108,9 +134,10 @@ const FarmerProductScreen = ({
 
 const mapStateToProps = (state) => ({
   product: state.product,
+  cart: state.cart,
 });
 
-export default connect(mapStateToProps, { getFarmerProducts })(
+export default connect(mapStateToProps, { getFarmerProducts, add_to_cart })(
   FarmerProductScreen
 );
 
@@ -207,10 +234,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-//   text: {
-//     flex: 1,
-//     paddingTop: '100%',
-//     width: '100%',
-//     justifyContent: 'flex-end',
-//   },
+  //   text: {
+  //     flex: 1,
+  //     paddingTop: '100%',
+  //     width: '100%',
+  //     justifyContent: 'flex-end',
+  //   },
 });
