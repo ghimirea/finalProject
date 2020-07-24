@@ -1,5 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -15,10 +21,50 @@ import {
   Button,
   Icon,
 } from 'native-base';
+import { authenticate } from '../Action/auth';
+import setAlert from '../Action/alert';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const RegisterScreen = ({navigation:{navigate}}) => {
+const RegisterScreen = ({
+  setAlert,
+  authenticate,
+  auth: { isAuth },
+  navigation: { navigate },
+}) => {
+  const [registerData, setRegisterData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: 'Customer',
+    Active: 'True',
+  });
+
+  const { name, email, password, confirmPassword, role, Active } = registerData;
+
+  const onChange = (event) =>
+    setRegisterData({
+      ...registerData,
+      [event.target.name]: event.target.value,
+    });
+
+  const signUp = async (event) => {
+    event.preventDefault();
+    if (password !== confirmPassword) {
+      console.log('Password do not match');
+      setAlert('Passwords do not match', 'danger');
+    } else {
+      console.log('User Details--->', registerData);
+      console.log('Going to authenticate');
+      authenticate({ name, email, password, role, Active });
+    }
+  };
+  console.log('REGISTER ISAUTH-->', isAuth);
+  if (isAuth) {
+    navigate('STACK_HOME');
+  }
   return (
-    // <SafeAreaView>
     <Container>
       <Header>
         <Left />
@@ -31,22 +77,63 @@ const RegisterScreen = ({navigation:{navigate}}) => {
         <Form>
           <Item floatingLabel>
             <Label>Name</Label>
-            <Input />
+            <Input
+              autoCapitalize='none'
+              onChangeText={(text) =>
+                setRegisterData({ ...registerData, name: text })
+              }
+            />
           </Item>
           <Item floatingLabel>
             <Label>Email</Label>
-            <Input />
+            <Input
+              autoCapitalize='none'
+              onChangeText={(text) =>
+                setRegisterData({ ...registerData, email: text })
+              }
+            />
           </Item>
           <Item floatingLabel>
             <Label>Password</Label>
-            <Input />
+            <Input
+              autoCapitalize='none'
+              secureTextEntry
+              onChangeText={(text) =>
+                setRegisterData({ ...registerData, password: text })
+              }
+            />
+          </Item>
+          <Item floatingLabel>
+            <Label>Confirm Password</Label>
+            <Input
+              autoCapitalize='none'
+              secureTextEntry
+              onChangeText={(text) =>
+                setRegisterData({ ...registerData, confirmPassword: text })
+              }
+            />
           </Item>
           <Item floatingLabel>
             <Input disabled placeholder='Customer' />
           </Item>
         </Form>
         <Button full iconLeft>
-          <Icon type='MaterialCommunityIcons' name='face-recognition' />
+          <Icon
+            type='MaterialCommunityIcons'
+            name='face-recognition'
+            onPress={(event) => {
+              if (password !== confirmPassword) {
+                console.log('Password do not match');
+                setAlert('Passwords do not match', 'danger');
+              } else {
+                console.log('User Details--->', registerData);
+                console.log('Going to authenticate');
+                authenticate({ name, email, password, role, Active });
+                console.log('REGISTER ELSE====>', isAuth);
+                navigate('STACK_HOME');
+              }
+            }}
+          />
           <Text>Register</Text>
         </Button>
         <TouchableOpacity
@@ -57,11 +144,22 @@ const RegisterScreen = ({navigation:{navigate}}) => {
         </TouchableOpacity>
       </Content>
     </Container>
-    // </SafeAreaView>
   );
 };
 
-export default RegisterScreen;
+RegisterScreen.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  authenticate: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { setAlert, authenticate })(
+  RegisterScreen
+);
 
 const styles = StyleSheet.create({
   toLogin: {

@@ -8,117 +8,111 @@ import {
   Alert,
   ScrollView,
   FlatList,
-  Button,
+  ImageBackground,
 } from 'react-native';
-
-import { getFarmers } from '../Action/user';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { getFarmerProducts } from '../Action/products';
 
-const FarmerScreen = ({
-  getFarmers,
-  user: { isLoading, users },
-  navigation: { navigate },
+const FarmerProductScreen = ({
+  route: { params },
+  product: { products },
+  getFarmerProducts,
 }) => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get('/users/farmers');
-  //     console.log('FARMER SCREEN GET FARMERS----->', res.data.msg);
-  //   };
+  const [product, setProduct] = useState({ data: [] });
+  console.log('FARMER ID--->', params.id);
 
-  const [state, setstate] = useState({ data: [] });
   useEffect(() => {
-    const y = getFarmers();
-    if (users) {
-      setstate((p) => {
-        console.log('INSIDE STATE FARMER--->', p);
-        return {
-          ...p,
-          data: users,
-        };
-      });
+    getFarmerProducts(params.id);
+    if (products) {
+      setProduct({ ...product, data: products });
     }
   }, []);
-
-  console.log('USERS IN FARMER SCREEN---->', state.data);
-
-  const goToProducts = (item) => {
-    navigate('STACK_PRODUCT', { id: item });
-  };
-
+  console.log('FARMER PRODUCT SCREEN----->', product.data);
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.list}
-        data={state.data}
-        keyExtractor={(item) => {
-          return item._id;
-        }}
-        ItemSeparatorComponent={() => {
-          return <View style={styles.separator} />;
-        }}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity onPress={() => goToProducts(item._id)}>
+      {!products ? (
+        'Currently there are no products listed'
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContainer}
+          data={product.data.Product}
+          horizontal={false}
+          numColumns={2}
+          keyExtractor={(item) => {
+            return item._id;
+          }}
+          ItemSeparatorComponent={() => {
+            return <View style={styles.separator} />;
+          }}
+          renderItem={(post) => {
+            const item = post.item;
+            return (
               <View style={styles.card}>
                 <View style={styles.cardHeader}>
-                  <View>
-                    <Text style={styles.title}>{item.name}</Text>
-                    <Text style={styles.time}>{item.email}</Text>
+                  {/* <ImageBackground
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                    }}
+                    source={require('../assets/farmerMarket.jpg')}
+                  ></ImageBackground> */}
+                  <View style={styles.text}>
+                    <Text style={styles.price}>Type:{item.type}</Text>
+                    <Text style={styles.price}>Name:{item.product_name}</Text>
+                    <Text style={styles.price}>QTY:{item.quantity_in_lb}</Text>
+                    <Text style={styles.price}>
+                      Unit Price:{item.price_per_lb}
+                    </Text>
                   </View>
                 </View>
 
-                {/* <Image style={styles.cardImage} source={{ uri: item.image }} /> */}
+                <Image style={styles.cardImage} source={require('../assets/farmerMarket.jpg')} />
 
                 <View style={styles.cardFooter}>
                   <View style={styles.socialBarContainer}>
                     <View style={styles.socialBarSection}>
-                      <TouchableOpacity style={styles.socialBarButton}>
+                      <TouchableOpacity
+                        style={styles.socialBarButton}
+                        onPress={() => this.addProductToCart()}
+                      >
                         <Image
                           style={styles.icon}
-                          source={require('../assets/thumbs_up.png')}
+                          source={require('../assets/shopping_cart.png')}
                         />
-                        <Text style={styles.socialBarLabel}>78</Text>
+                        <Text style={[styles.socialBarLabel, styles.buyNow]}>
+                          Buy Now
+                        </Text>
                       </TouchableOpacity>
                     </View>
                     <View style={styles.socialBarSection}>
                       <TouchableOpacity style={styles.socialBarButton}>
                         <Image
                           style={styles.icon}
-                          source={require('../assets/comment.png')}
+                          source={require('../assets/Heart.png')}
                         />
                         <Text style={styles.socialBarLabel}>25</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.socialBarSection}>
-                      <TouchableOpacity style={styles.socialBarButton}>
-                        <Image
-                          style={styles.icon}
-                          source={require('../assets/thumbs_down.jpg')}
-                        />
-                        <Text
-                          rkType='primary4 hintColor'
-                          style={styles.socialBarLabel}
-                        >
-                          13
-                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 </View>
               </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      )}
     </View>
   );
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  product: state.product,
 });
 
-export default connect(mapStateToProps, { getFarmers })(FarmerScreen);
+export default connect(mapStateToProps, { getFarmerProducts })(
+  FarmerProductScreen
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -126,8 +120,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   list: {
-    paddingHorizontal: 17,
+    paddingHorizontal: 5,
     backgroundColor: '#E6E6E6',
+  },
+  listContainer: {
+    alignItems: 'center',
   },
   separator: {
     marginTop: 10,
@@ -142,6 +139,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     marginVertical: 8,
     backgroundColor: 'white',
+    flexBasis: '47%',
+    marginHorizontal: 5,
   },
   cardHeader: {
     paddingVertical: 17,
@@ -174,10 +173,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     flex: 1,
   },
-  time: {
-    fontSize: 13,
-    color: '#808080',
+  price: {
+    fontSize: 16,
+    color: 'green',
     marginTop: 5,
+  },
+  buyNow: {
+    color: 'purple',
   },
   icon: {
     width: 25,
@@ -205,4 +207,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+//   text: {
+//     flex: 1,
+//     paddingTop: '100%',
+//     width: '100%',
+//     justifyContent: 'flex-end',
+//   },
 });
