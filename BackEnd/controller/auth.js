@@ -28,13 +28,17 @@ exports.loginUser = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
+      return res
+        .status(400)
+        .json({ status: 'Error', msg: 'Invalid Credentials' });
     }
 
     const matchPassword = await bcrypt.compare(password, user.password);
 
     if (!matchPassword) {
-      return res.status(400).json({ status: 'Error', msg: 'Invalid Credentials' });
+      return res
+        .status(400)
+        .json({ status: 'Error', msg: 'Invalid Credentials' });
     }
 
     const payload = {

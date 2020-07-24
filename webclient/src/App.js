@@ -17,16 +17,17 @@ import Products from './component/Products/products';
 import UpdateProducts from './component/Products/updateProduct';
 import AddProduct from './component/Products/addProducts';
 import AllOrder from './component/Order/allOrder';
-import AllUsers from './component/Admin/allUsers'
+import AllUsers from './component/Admin/allUsers';
 
-if (localStorage.token) {
-  authToken(localStorage.token);
-}
+// if (localStorage.token) {
+//   authToken(localStorage.token);
+// }
 
 function App() {
-  useEffect(() => {
-    store.dispatch(getUser());
-  }, []);
+  // useEffect(() => {
+  //   const y = store.dispatch(getUser());
+  //   console.log('APP.JS USEEFFECT------>', y);
+  // }, []);
   return (
     <Provider store={store}>
       <BrowserRouter>
