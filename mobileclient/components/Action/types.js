@@ -14,4 +14,6 @@ export const PRODUCT_FAIL = 'PRODUCT_FAIL';
 export const ADD_CART = 'ADD_CART';
 export const CART_FAIL = 'CART_FAIL';
 export const GET_CART = 'GET_CART';
-
+export const MAKE_ORDER = 'MAKE_ORDER';
+export const ORDER_FAIL = 'ORDER_FAIL';
+export const ORDER_HISTORY = 'ORDER_HISTORY';
