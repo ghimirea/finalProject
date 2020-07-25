@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_CART, CART_FAIL } from '../Action/types';
+import { ADD_CART, GET_CART, CART_FAIL } from '../Action/types';
 
 //! Add to Cart
 export const add_to_cart = (
@@ -31,6 +31,26 @@ export const add_to_cart = (
       type: ADD_CART,
       payload: response.data.msg,
     });
+  } catch (error) {
+    dispatch({
+      type: CART_FAIL,
+      //   payload: { msg: error.response, status: error.response.status },
+    });
+  }
+};
+
+//! Get Cart
+export const getCart = () => async (dispatch) => {
+  try {
+    const response = await axios.get('/cart');
+    console.log('GET CART ACTION---->', response.data.msg);
+
+    // return (dispatch) => {
+    dispatch({
+      type: GET_CART,
+      payload: response.data.msg,
+    });
+    // };
   } catch (error) {
     dispatch({
       type: CART_FAIL,

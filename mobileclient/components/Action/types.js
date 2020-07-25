@@ -13,3 +13,5 @@ export const GET_PRODUCTS = 'GET_PRODUCT';
 export const PRODUCT_FAIL = 'PRODUCT_FAIL';
 export const ADD_CART = 'ADD_CART';
 export const CART_FAIL = 'CART_FAIL';
+export const GET_CART = 'GET_CART';
+
