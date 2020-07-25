@@ -1,6 +1,23 @@
 const Product = require('../model/Product');
 const User = require('../model/User');
 
+//! Get Cart
+exports.getCart = async (req, res) => {
+  try {
+    let user = await User.findOne({ _id: req.user.id });
+
+    if (user.role !== 'Customer') {
+      res.status(400).json({ status: 'Error', msg: 'User not authorized' });
+    }
+    let cart = user.cart;
+    res.status(200).json({ status: 'OK', msg: cart });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+//! Add to Cart
 exports.postToCart = async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.user.id });
@@ -17,11 +34,18 @@ exports.postToCart = async (req, res) => {
       let prod_price = user.cart.totalPrice;
       console.log('TYpe--->', typeof prod_price);
 
-      const { farmer_id, prod_id, quantity, price_per_lb } = req.body;
+      const {
+        farmer_id,
+        prod_id,
+        product_name,
+        quantity,
+        price_per_lb,
+      } = req.body;
 
       let cart_item = user.cart.items.push({
         farmer_id,
         prod_id,
+        product_name,
         quantity,
         price_per_lb,
       });
