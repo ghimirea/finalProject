@@ -89,7 +89,7 @@ exports.postToCart = async (req, res) => {
 
         .json({ status: 'OK', msg: user.cart });
     } else {
-      res.status(401).json({ status: 'Error', msg: 'Not Authorized' });
+      res.status(401).json({ status: 'Error', msg: 'Not Authorized' }); 
     }
   } catch (error) {
     console.log(error.message);
