@@ -19,6 +19,9 @@ router.post(
 
 router.get('/users', auth, role, userController.getAllUsers);
 router.get('/users/farmers', auth, userController.getAllFarmers);
+router.patch('/users/up', auth, userController.postLike);
+router.patch('/users/down', auth, userController.postDisLike);
+router.patch('/users/comments', auth, userController.postComment);
 router.patch('/users/:id', auth, role, userController.changeActive);
 
 module.exports = router;
