@@ -1,4 +1,4 @@
-import { MAKE_ORDER, ORDER_FAIL } from '../Action/types';
+import { MAKE_ORDER, ORDER_FAIL, ORDER_HISTORY } from '../Action/types';
 
 const initialState = {
   orders: [],
@@ -11,6 +11,7 @@ const customerOrder = (state = initialState, action) => {
 
   switch (type) {
     case MAKE_ORDER:
+    case ORDER_HISTORY:
       return {
         ...state,
         orders: payload,

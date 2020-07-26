@@ -7,15 +7,16 @@ import { MaterialCommunityIcons } from 'react-native-vector-icons';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
 import CartScreen from '../screens/CartScreen';
+import OrderScreen from '../screens/OrderScreen';
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Button,
-  ImageBackground,
-} from 'react-native';
+// import {
+//   StyleSheet,
+//   Text,
+//   View,
+//   SafeAreaView,
+//   Button,
+//   ImageBackground,
+// } from 'react-native';
 
 import ProductScreen from './productsScreen';
 import logoutScreen from '../screens/logoutScreen';
@@ -43,12 +44,17 @@ const AuthenticatedScreen = ({
       <DrawerNav.Screen
         name='DRAWER_FARMER'
         component={ProductScreen}
-        options={{ title: 'Farmers', headers:"Farmers" }}
+        options={{ title: 'Farmers', headers: 'Farmers' }}
       />
       <DrawerNav.Screen
         name='DRAWER_CART'
         component={CartScreen}
         options={{ title: 'Your Cart' }}
+      />
+      <DrawerNav.Screen
+        name='DRAWER_ORDER'
+        component={OrderScreen}
+        options={{ title: 'Order History' }}
       />
       <DrawerNav.Screen
         name='DRAWER_LOGOUT'
