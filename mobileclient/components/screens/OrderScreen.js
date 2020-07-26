@@ -8,22 +8,27 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
   //console.log('PROPS FROM ORDER HISTORY===>', orders);
   const [orderState, setOrder] = useState({ data: [] });
   const [sum, setSum] = useState(0);
-  const [state, setState] = useState('');
+  const [state, setState] = useState({ search: [] });
 
-  console.log("STATE===>",state )
+  //console.log('STATE===>', state);
   useEffect(() => {
     getOrder();
-    console.log('INSIDE USE STATE');
+    //console.log('INSIDE USE STATE');
     setOrder({ ...orderState, data: orders });
   }, []);
-  console.log('ORDER HISTORY STATE===>', orderState.data);
+  //console.log('ORDER HISTORY STATE===>', orderState.data);
 
-  let order_filter = orders.filter((order) => {
-    return order.status.toLowerCase().includes(state)
-      ? order
-      : '';
-  });
-//   console.log('SEARCH FUNCTION--->', order_filter);
+  const handleSearch = (text) => {
+    console.log('SEARCH===>', text);
+
+    const filteredList = orderState.data.filter((list) => {
+      let stateStatus = list.status.toLowerCase();
+      let searchStatus = text.toLowerCase();
+      return stateStatus.includes(searchStatus);
+    });
+    console.log("FILTER====>", filteredList)
+    setState({ ...state, search: filteredList });
+  };
 
   return (
     <View style={styles.container}>
@@ -35,8 +40,10 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
             <Icon name='ios-search' />
             <Input
               placeholder='Search'
-              value={state}
-              onChange={(event) => setState(event.target.value)}
+              value={state.search}
+              onChangeText={(text) => {
+                handleSearch(text);
+              }}
             />
             <Icon name='ios-people' />
           </Item>
@@ -45,9 +52,9 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
           </Button>
         </Header>
       </View>
-      
+
       <FlatList
-        data={orderState.data}
+        data={state.search}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           return (
