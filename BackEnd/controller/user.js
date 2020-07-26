@@ -155,13 +155,15 @@ exports.postComment = async (req, res) => {
     const farmer = await User.findOne({ email: req.body.email });
     console.log('FARMER LIKE--->', farmer.ratings.comments);
 
-    farmer.ratings.comments.push(req.body.comments);
+    let farmer_comments = farmer.ratings.comments
+
+    farmer_comments.push(req.body.comments);
 
     farmer.save();
     console.log('FARMER LIKE AFTER SAVE---->', farmer.ratings.comments);
     res
       .status(200)
-      .json({ status: 'OK', msg: 'farmer Commented',  });
+      .json({ status: 'OK', msg: farmer_comments,  });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
