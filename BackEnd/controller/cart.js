@@ -86,7 +86,8 @@ exports.postToCart = async (req, res) => {
       await user.save();
       res
         .status(200)
-        .json({ status: 'OK', msg: 'Product added to cart', product });
+
+        .json({ status: 'OK', msg: user.cart });
     } else {
       res.status(401).json({ status: 'Error', msg: 'Not Authorized' });
     }
