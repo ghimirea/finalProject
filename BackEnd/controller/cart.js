@@ -20,19 +20,22 @@ exports.getCart = async (req, res) => {
 //! Add to Cart
 exports.postToCart = async (req, res) => {
   try {
+    //? Find the customer
     let user = await User.findOne({ _id: req.user.id });
     console.log('User-->', user);
     if (user.role === 'Customer') {
+      //? find the farmer and the products
       let product = await Product.findOne({ user: req.body.farmer_id });
       console.log('product.Product', product);
 
-      product = product.Product.filter((product) => {
+      //? find the particular product
+      farmer_product = product.Product.filter((product) => {
         return product._id.toString() === req.body.prod_id;
       });
-      console.log('Product Matched--->', product);
+      console.log('Product Matched--->', farmer_product);
 
       let prod_price = user.cart.totalPrice;
-      console.log('TYpe--->', typeof prod_price);
+      console.log('Total Price--->', prod_price);
 
       const {
         farmer_id,
@@ -42,6 +45,7 @@ exports.postToCart = async (req, res) => {
         price_per_lb,
       } = req.body;
 
+      //? Add to cart
       let cart_item = user.cart.items.push({
         farmer_id,
         prod_id,
@@ -51,16 +55,17 @@ exports.postToCart = async (req, res) => {
       });
       console.log('Add To Cart--->', req.body);
 
-      await user.save();
-
       console.log(
-        'Item in the cart-1-->',
-        user.cart,
-        'Item in the cart-1-->',
-        cart_item
+        'FARMER QUANTITY AND CUSTOMER QTY--->',
+        farmer_product[0].quantity_in_lb,
+        req.body.quantity
       );
+      farmer_product[0].quantity_in_lb -= req.body.quantity;
 
-      const product_price = product[0].price_per_lb;
+      await user.save();
+      await product.save();
+
+      const product_price = farmer_product[0].price_per_lb;
       user.cart.items[0].price_per_lb = product_price;
 
       console.log('Total Price Before--->', user.cart.totalPrice);
@@ -89,7 +94,7 @@ exports.postToCart = async (req, res) => {
 
         .json({ status: 'OK', msg: user.cart });
     } else {
-      res.status(401).json({ status: 'Error', msg: 'Not Authorized' }); 
+      res.status(401).json({ status: 'Error', msg: 'Not Authorized' });
     }
   } catch (error) {
     console.log(error.message);
@@ -97,6 +102,7 @@ exports.postToCart = async (req, res) => {
   }
 };
 
+//! Update Cart
 exports.updateCart = async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.user.id }).populate('cart');
@@ -146,6 +152,7 @@ exports.updateCart = async (req, res) => {
   }
 };
 
+//! Delete from cart
 exports.deleteProdCart = async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.user.id }).populate('cart');

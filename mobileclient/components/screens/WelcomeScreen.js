@@ -12,27 +12,31 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import LoginScreen from './LoginScreen';
 import RegisterScreen from './RegisterScreen';
+import { AsyncStorage } from 'react-native';
 
-const MaterialBottomNav = createMaterialBottomTabNavigator();
+const WelcomeScreen = ({ navigation: { navigate } }) => {
+  
 
-const WelcomeScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground
-        style={styles.background}
-        source={require('../assets/farmerMarket.jpg')}
-      >
-        <View style={styles.textContainer}>
-          <Text style={styles.logoText}>Welcome to Local Online</Text>
-          <Text style={styles.logoText}>
-            Organic goodness from your Computer
-          </Text>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground
+          style={styles.background}
+          source={require('../assets/farmerMarket.jpg')}
+        >
+          <View style={styles.textContainer}>
+            <Text style={styles.logoText}>Welcome to Local Online</Text>
+            <Text style={styles.logoText}>
+              Organic goodness from your Computer
+            </Text>
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -53,6 +57,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     justifyContent: 'flex-start',
+  },
+  logout: {
+    flexDirection: 'row',
+    color: 'blue',
+
+    position: 'relative',
+    height: 30,
+    fontSize: 20,
+  },
+  logoutTouch: {
+    backgroundColor: 'orange',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   registerButton: {

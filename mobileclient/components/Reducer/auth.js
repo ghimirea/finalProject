@@ -9,22 +9,11 @@ import {
 } from '../Action/types';
 import { AsyncStorage } from 'react-native';
 
-// const getToken = async () => {
-//   return await AsyncStorage.getItem('token');
+// const get_token = async () => {
+//   await AsyncStorage.getItem('token');
 // };
-// console.log('Async Storage get====>', getToken());
-
-// const setToken = async (data) => {
-//   return await AsyncStorage.setItem('token', data);
-// };
-// console.log('Async Storage set====>', setToken());
-
-// const removeToken = async () => {
-//   return await AsyncStorage.removeItem('token');
-// };
-
 const initialState = {
-  token: AsyncStorage.getItem('token'),
+  token: '',
   isAuth: null,
   isLoading: null,
   user: null,
@@ -36,9 +25,7 @@ const authetication = (state = initialState, action) => {
   switch (type) {
     case SIGNUP_SUCCESS:
     case SIGNIN_SUCCESS:
-      AsyncStorage.setItem('token', payload).then(() => {
-        console.log('Async Storage--->', payload);
-      });
+      // await AsyncStorage.setItem('token', payload);
       console.log('Token--->', payload);
       return {
         ...state,
@@ -46,12 +33,20 @@ const authetication = (state = initialState, action) => {
         isAuth: true,
         isLoading: false,
       };
+    case SIGNOUT:
+      // async () => await AsyncStorage.clear();
+      return {
+        ...state,
+        token: null,
+        isAuth: false,
+        isLoading: false,
+      };
 
     case SIGNUP_FAIL:
     case AUTH_ERROR:
     case SIGNIN_FAIL:
-    case SIGNOUT:
-      AsyncStorage.removeItem('token');
+      // case SIGNOUT:
+      // await AsyncStorage.removeItem('token');
       return {
         ...state,
         token: null,
