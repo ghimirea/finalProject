@@ -75,6 +75,18 @@ exports.makeOrder = async (req, res) => {
   }
 };
 
+//! Customers can see their order
+exports.getPatOrder = async (req, res) => {
+  try {
+    console.log('CUSTOMER ID====>', req.user.id);
+    const customerOrder = await Order.find({ user: req.user.id });
+    res.status(200).json({ status: 'OK', msg: customerOrder });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
 //!Farmer can see all the orders for their farm
 exports.getOrders = async (req, res) => {
   try {
