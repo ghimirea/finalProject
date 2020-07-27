@@ -19,14 +19,12 @@ import { Label, Item, Input } from 'native-base';
 const FarmerProductScreen = ({
   route: { params },
   product: { products },
-  cart:{cart},
+  cart: { cart },
   getFarmerProducts,
   add_to_cart,
 }) => {
   const [product, setProduct] = useState({ data: [] });
   const [state, setState] = useState({ quanity: 0 });
-  console.log('FARMER ID--->', params.id);
-  console.log('STATE IN CART-->', state.quantity);
 
   useEffect(() => {
     getFarmerProducts(params.id);
@@ -34,7 +32,6 @@ const FarmerProductScreen = ({
       setProduct({ ...product, data: products });
     }
   }, []);
-  console.log('FARMER PRODUCT SCREEN----->', product.data);
 
   return (
     <View style={styles.container}>
@@ -79,7 +76,6 @@ const FarmerProductScreen = ({
                       <TouchableOpacity
                         style={styles.socialBarButton}
                         onPress={() => {
-                          console.log('Inside onPress add To cart');
                           add_to_cart(
                             params.id,
                             item._id,

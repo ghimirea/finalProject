@@ -5,7 +5,6 @@ import axios from 'axios';
 export const makeOrder = () => async (dispatch) => {
   try {
     const response = await axios.get('/order');
-    console.log('MAKE ORDER---->', response);
 
     dispatch({
       type: MAKE_ORDER,
@@ -24,10 +23,10 @@ export const makeOrder = () => async (dispatch) => {
 export const getOrder = () => async (dispatch) => {
   try {
     const response = await axios.get('/orders/customer');
-    console.log('GET ORDER=====>', response.data.msg);
+    console.log("Get order action response---->", response.data.msg)
 
     dispatch({
-      type: MAKE_ORDER,
+      type: ORDER_HISTORY,
       payload: response.data.msg,
     });
   } catch (error) {

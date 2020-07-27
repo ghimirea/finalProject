@@ -5,29 +5,27 @@ import { getOrder } from '../Action/order';
 import { Container, Header, Item, Input, Icon, Button } from 'native-base';
 
 const OrderScreen = ({ getOrder, order: { orders } }) => {
-  //console.log('PROPS FROM ORDER HISTORY===>', orders);
   const [orderState, setOrder] = useState({ data: [] });
   const [sum, setSum] = useState(0);
-  const [state, setState] = useState({ search: [] });
+  const [state, setState] = useState({ search: '' });
 
-  //console.log('STATE===>', state);
   useEffect(() => {
     getOrder();
-    //console.log('INSIDE USE STATE');
+
     setOrder({ ...orderState, data: orders });
+    console.log('Inside Order History use effect-->', orderState.data);
   }, []);
-  //console.log('ORDER HISTORY STATE===>', orderState.data);
 
   const handleSearch = (text) => {
-    console.log('SEARCH===>', text);
-
     const filteredList = orderState.data.filter((list) => {
       let stateStatus = list.status.toLowerCase();
       let searchStatus = text.toLowerCase();
       return stateStatus.includes(searchStatus);
     });
-    console.log("FILTER====>", filteredList)
+    
+
     setState({ ...state, search: filteredList });
+    console.log("Filtered list-->", state.search)
   };
 
   return (
@@ -42,7 +40,7 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
               placeholder='Search'
               value={state.search}
               //! removed Text
-              onChange={(text) => {
+              onChangeText={(text) => {
                 handleSearch(text);
               }}
             />

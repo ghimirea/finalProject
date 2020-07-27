@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import {
   Container,
   Header,
@@ -23,11 +18,11 @@ import {
   Button,
   Icon,
 } from 'native-base';
-// import AsyncStorage from "@react-native-community/async-storage";
-// import { NavigationContainer, useNavigation } from '@react-navigation/native';
-// import FarmerScreen from './FarmerScreen';
-// import AuthenticatedScreen from '../auth/authenticatedScreen';
-import { login,getUser } from '../Action/auth';
+import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import FarmerScreen from './FarmerScreen';
+import AuthenticatedScreen from '../auth/authenticatedScreen';
+import { login, getUser } from '../Action/auth';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const LoginScreen = ({
@@ -35,19 +30,10 @@ const LoginScreen = ({
   auth: { isAuth, isLoading },
   navigation: { navigate },
 }) => {
-  //const [state, setstate] = useState({
-
-  // })
   useEffect(() => {
     const y = getUser();
-    console.log('GET USER--->', y);
   }, []);
 
-  // useEffect(() => {
-  //   return async () => {
-  //     await AsyncStorage.clear();
-  //   };
-  // }, []);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -65,20 +51,12 @@ const LoginScreen = ({
   
 
   if (isAuth) {
-    console.log('ISAUTH INSIDE LOGIN==>', isAuth);
     navigate('STACK_HOME');
   }
 
   return (
-    // <SafeAreaView>
     <Container>
       <Header />
-      {/* <Left />
-        <Body>
-          <Title>Login</Title>
-        </Body>
-        <Right />
-      </Header> */}
       <Content>
         <Form onSubmit={(event) => signIn(event)}>
           <Item floatingLabel>
@@ -87,7 +65,7 @@ const LoginScreen = ({
               onChangeText={(text) =>
                 setLoginData({ ...loginData, email: text })
               }
-              // value={email}
+              value={email}
               name='email'
               id='email'
               autoCapitalize='none'
@@ -116,7 +94,6 @@ const LoginScreen = ({
           iconLeft
           onPress={() => {
             login(email, password, role, Active);
-            //navigate('MATERIAL_HOME');
           }}
         >
           <Icon type='MaterialCommunityIcons' name='login' />
@@ -132,7 +109,6 @@ const LoginScreen = ({
         </TouchableOpacity>
       </Content>
     </Container>
-    // </SafeAreaView>
   );
 };
 LoginScreen.prototypes = {

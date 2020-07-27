@@ -19,7 +19,6 @@ import {
 
 import axios from 'axios';
 
-import WelcomeScreen from './components/screens/WelcomeScreen';
 import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
 import AuthenticatedScreen from './components/auth/authenticatedScreen';
@@ -32,16 +31,15 @@ const MaterialBottomNav = createMaterialBottomTabNavigator();
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
-// const auth_token = (async () => {
-//   const a_token = await AsyncStorage.getItem('token');
-//   if (auth_token) {
-//     authToken(auth_token);
-//   }
-// })();
+const auth_token = (async () => {
+  const a_token = await AsyncStorage.getItem('token');
+  if (a_token) {
+    authToken(a_token);
+  }
+})();
 const App = () => {
   useEffect(() => {
     const y = store.dispatch(getUser());
-    console.log('APP.JS USEEFFECT====>', y);
   }, []);
   return (
     <Provider store={store}>

@@ -5,8 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 
-// import WelcomeScreen from '../screens/WelcomeScreen';
-// import CartScreen from '../screens/CartScreen';
+
 
 import {
   StyleSheet,
@@ -19,8 +18,7 @@ import {
 
 import FarmerScreen from '../screens/FarmerScreen';
 import FarmerProductScreen from '../screens/FarmerProductScreen';
-// import logoutScreen from '../screens/logoutScreen';
-// import { signOut } from '../Action/auth';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -31,9 +29,10 @@ const ProductScreen = ({
   navigation: { navigate },
   auth: { isLoading, isAuth },
 }) => {
-  // if (!isLoading && !isAuth) {
-  //   navigate('MATERIAL_LOGIN');
-  // }
+  if (!isLoading && !isAuth) {
+    navigate('STACK_LOGIN');
+  } else {
+  }
   return (
     <StackNav.Navigator initialRouteName='STACK_FARMER'>
       <StackNav.Screen
@@ -46,11 +45,6 @@ const ProductScreen = ({
         component={FarmerProductScreen}
         options={{ title: 'Products' }}
       />
-      {/* <StackNav.Screen
-        name='STACK_CHECKOUT'
-        component={CartScreen}
-        options={{ title: 'Your Cart' }}
-      /> */}
     </StackNav.Navigator>
   );
 };

@@ -28,7 +28,9 @@ const FarmerScreen = ({
   disLikeFarmers,
   farmersFeedback,
   user: { isLoading, users },
-  navigation: { navigate },
+
+  navigation: { navigate, replace },
+
   ratings: { comments },
 }) => {
   const [state, setstate] = useState({ data: [] });
@@ -36,24 +38,20 @@ const FarmerScreen = ({
   const [comment, setComment] = useState({ feedback: [] });
   const [modal, setModal] = useState({ show: false, farmerSelected: [] });
 
-  console.log("FARMER SCREEN USERS----->", users)
 
   useEffect(() => {
+    console.log("Inside UseEffect")
     getFarmers();
-    setstate((p) => {
-      //console.log('INSIDE STATE FARMER--->', p);
-      return {
-        ...p,
-        data: users,
-      };
-    });
+
+    setstate({ ...state, data: users });
   }, []);
 
-  //console.log('USERS IN FARMER SCREEN---->', state.data);
 
   const goToProducts = (item) => {
     navigate('STACK_PRODUCT', { id: item });
   };
+
+  
 
   const handleLike = (email) => {
     likeFarmers(email);
@@ -130,6 +128,7 @@ const FarmerScreen = ({
                     </View>
                   </View>
 
+
                   <View style={styles.cardFooter}>
                     <View style={styles.socialBarContainer}>
                       <View style={styles.socialBarSection}>
@@ -166,6 +165,7 @@ const FarmerScreen = ({
                         <TouchableOpacity
                           style={styles.socialBarButton}
                           onPress={() => handleDisLike(item.email)}
+
                         >
                           <Image
                             style={styles.icon}
@@ -193,9 +193,7 @@ const FarmerScreen = ({
             <View style={styles.popup}>
               <View style={styles.popupContent}>
                 <Text style={styles.name}>{modal.farmerSelected.name}</Text>
-                {/* <Text style={styles.position}>
-                  {modal.farmerSelected.ratings.comments}
-                </Text> */}
+
 
                 <TextInput
                   style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}

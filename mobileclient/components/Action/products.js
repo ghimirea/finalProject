@@ -5,7 +5,6 @@ import { GET_PRODUCTS, PRODUCTS_FAIL } from '../Action/types';
 export const getFarmerProducts = (id) => async (dispatch) => {
   try {
     const response = await axios.get(`/products/${id}`);
-    console.log('FARMER\'S PRODUCTS BY ID---->', response.data.msg);
 
     dispatch({
       type: GET_PRODUCTS,
@@ -14,26 +13,23 @@ export const getFarmerProducts = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCTS_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };
 
 // //! Get particular products
-// export const getProduct = (id) => async (dispatch) => {
-//   try {
-//     const response = await axios.get(`/product/${id}`);
-//     console.log('GET SINGLE PRODUCT--->', response.data.msg);
+export const getProduct = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(`/product/${id}`);
 
-//     dispatch({
-//       type: GET_PRODUCT,
-//       payload: response.data.msg,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: PRODUCTS_FAIL,
-//       //   payload: { msg: error.response, status: error.response.status },
-//     });
-//   }
-// };
+    dispatch({
+      type: GET_PRODUCT,
+      payload: response.data.msg,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCTS_FAIL,
+    });
+  }
+};
 

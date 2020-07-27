@@ -13,9 +13,12 @@ const add_cart = (state = initialState, action) => {
   switch (type) {
     case ADD_CART:
     case GET_CART:
-      // return (dispatch) => {
-      return { ...state, cart: payload, isAuth: true, isLoading: false };
-    // };
+      return {
+        ...state,
+        cart: payload,
+        isAuth: true,
+        isLoading: false,
+      };
 
     case CART_FAIL:
       return {

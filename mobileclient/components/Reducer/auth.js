@@ -18,18 +18,9 @@ const getToken = async () => {
 };
 
 const clearToken = async () => {
-  console.log(
-    'Inside the clearToken auth reducer',
-    await AsyncStorage.getItem('token')
-  );
-
   await AsyncStorage.removeItem('token');
-
-  console.log(
-    'Inside the clearToken auth reducer after removing',
-    await AsyncStorage.getItem('token')
-  );
 };
+
 const initialState = {
   token: '',
   isAuth: null,
@@ -43,8 +34,10 @@ const authetication = (state = initialState, action) => {
   switch (type) {
     case SIGNUP_SUCCESS:
     case SIGNIN_SUCCESS:
+
+
       setToken(payload);
-      console.log('Token--->', payload);
+
       return {
         ...state,
         payload,
@@ -72,7 +65,6 @@ const authetication = (state = initialState, action) => {
         isLoading: false,
       };
     case GET_USER:
-      console.log('GET USER--->', payload);
       return {
         ...state,
         isAuth: true,

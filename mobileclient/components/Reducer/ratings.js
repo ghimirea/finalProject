@@ -6,7 +6,7 @@ import { AsyncStorage } from 'react-native';
 // };
 const initialState = {
   comments: '',
-  // isAuth: null,
+
   isLoading: true,
   error: {},
 };
@@ -18,17 +18,17 @@ const rateFarmer = (state = initialState, action) => {
     case THUMBS_UP:
     case THUMBS_DOWN:
     case COMMENTS:
-      // await AsyncStorage.setItem('token', payload);
+
       console.log('GET COMMENTS--->', payload);
       state = {
         ...state,
         comments: payload,
-        // isAuth: true,
+
         isLoading: false,
       };
 
     case RATING_FAIL:
-      // async () => await AsyncStorage.clear();
+
       return {
         ...state,
         error: payload,
