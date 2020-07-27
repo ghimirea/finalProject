@@ -13,7 +13,6 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
     getOrder();
 
     setOrder({ ...orderState, data: orders });
-    console.log('Inside Order History use effect-->', orderState.data);
   }, []);
 
   const handleSearch = (text) => {
@@ -22,10 +21,9 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
       let searchStatus = text.toLowerCase();
       return stateStatus.includes(searchStatus);
     });
-    
 
     setState({ ...state, search: filteredList });
-    console.log("Filtered list-->", state.search)
+    console.log("Filtered List--->",state.search)
   };
 
   return (

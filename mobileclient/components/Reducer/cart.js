@@ -2,7 +2,6 @@ import { ADD_CART, CART_FAIL, GET_CART } from '../Action/types';
 
 const initialState = {
   cart: [],
-  isAuth: null,
   isLoading: true,
   error: {},
 };
@@ -16,7 +15,6 @@ const add_cart = (state = initialState, action) => {
       return {
         ...state,
         cart: payload,
-        isAuth: true,
         isLoading: false,
       };
 

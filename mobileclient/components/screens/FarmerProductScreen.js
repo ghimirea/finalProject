@@ -94,9 +94,10 @@ const FarmerProductScreen = ({
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.socialBarSection}>
+                    <View style={styles.quantity}>
                       <Item>
                         <Input
+                          // style={styles.quantity}
                           placeholder='QTY'
                           onChangeText={(text) =>
                             setState({ ...state, quantity: text })
@@ -109,13 +110,13 @@ const FarmerProductScreen = ({
                       </Item>
                     </View>
                     <View style={styles.socialBarSection}>
-                      <TouchableOpacity style={styles.socialBarButton}>
+                      {/* <TouchableOpacity style={styles.socialBarButton}>
                         <Image
                           style={styles.icon}
                           source={require('../assets/Heart.png')}
                         />
                         <Text style={styles.socialBarLabel}>25</Text>
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </View>
                   </View>
                 </View>
@@ -207,6 +208,8 @@ const styles = StyleSheet.create({
   icon: {
     width: 25,
     height: 25,
+   
+
   },
   /******** social bar ******************/
   socialBarContainer: {
@@ -227,13 +230,12 @@ const styles = StyleSheet.create({
   },
   socialBarButton: {
     flexDirection: 'row',
+    
     justifyContent: 'center',
     alignItems: 'center',
   },
-  //   text: {
-  //     flex: 1,
-  //     paddingTop: '100%',
-  //     width: '100%',
-  //     justifyContent: 'flex-end',
-  //   },
+  quantity:{
+   flex:1,
+   marginLeft:30
+  }
 });

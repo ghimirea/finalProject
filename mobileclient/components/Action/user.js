@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 //! Get FARMERS
 export const getFarmers = () => async (dispatch) => {
   const auth_token = await AsyncStorage.getItem('token');
+  console.log('AUTH TOKEN--->', auth_token)
   if (auth_token) {
     authToken(auth_token);
   }
