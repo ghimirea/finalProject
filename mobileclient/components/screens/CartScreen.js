@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'native-base';
 import { makeOrder } from '../Action/order';
-import authenticatedScreen from '../auth/authenticatedScreen';
+// import authenticatedScreen from '../auth/authenticatedScreen';
 
 const CartScreen = ({
   getCart,

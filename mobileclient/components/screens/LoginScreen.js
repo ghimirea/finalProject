@@ -23,11 +23,11 @@ import {
   Button,
   Icon,
 } from 'native-base';
-import AsyncStorage from "@react-native-community/async-storage";
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import FarmerScreen from './FarmerScreen';
-import AuthenticatedScreen from '../auth/authenticatedScreen';
-import { login } from '../Action/auth';
+// import AsyncStorage from "@react-native-community/async-storage";
+// import { NavigationContainer, useNavigation } from '@react-navigation/native';
+// import FarmerScreen from './FarmerScreen';
+// import AuthenticatedScreen from '../auth/authenticatedScreen';
+import { login,getUser } from '../Action/auth';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const LoginScreen = ({
@@ -38,10 +38,10 @@ const LoginScreen = ({
   //const [state, setstate] = useState({
 
   // })
-  // useEffect(() => {
-  //   const y = getUser();
-  //   console.log('GET USER--->', y);
-  // }, []);
+  useEffect(() => {
+    const y = getUser();
+    console.log('GET USER--->', y);
+  }, []);
 
   // useEffect(() => {
   //   return async () => {
@@ -62,7 +62,7 @@ const LoginScreen = ({
     login(email, password, role, Active);
   };
 
-  console.log('====>', isLoading);
+  
 
   if (isAuth) {
     console.log('ISAUTH INSIDE LOGIN==>', isAuth);

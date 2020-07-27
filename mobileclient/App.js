@@ -39,15 +39,15 @@ axios.defaults.baseURL = 'http://localhost:5000';
 //   }
 // })();
 const App = () => {
-  // useEffect(() => {
-  //   const y = store.dispatch(getUser());
-  //   console.log('APP.JS USEEFFECT====>', y);
-  // }, []);
+  useEffect(() => {
+    const y = store.dispatch(getUser());
+    console.log('APP.JS USEEFFECT====>', y);
+  }, []);
   return (
     <Provider store={store}>
       <NavigationContainer>
         <StackNav.Navigator
-          initialRouteName='MATERIAL_LOGIN'
+          initialRouteName='STACK_LOGIN'
           screenOptions={{
             headerLeft: null,
           }}

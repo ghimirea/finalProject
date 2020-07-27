@@ -12,11 +12,11 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import LoginScreen from './LoginScreen';
-import RegisterScreen from './RegisterScreen';
-import { AsyncStorage } from 'react-native';
+// import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
+// import LoginScreen from './LoginScreen';
+// import RegisterScreen from './RegisterScreen';
+// import { AsyncStorage } from 'react-native';
 
 const WelcomeScreen = ({ navigation: { navigate } }) => {
   

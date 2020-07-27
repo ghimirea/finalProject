@@ -9,13 +9,16 @@ const clearToken = async () => {
   await AsyncStorage.clear();
 };
 
-const logoutScreen = ({ navigation: { navigate } }) => {
+const logoutScreen = ({ signOut, navigation: { navigate } }) => {
+  const logout = () => {
+    signOut();
+    clearToken();
+    navigate('STACK_LOGIN');
+  };
   return (
     <View>
       <Text>Are you sure you want to logout from the Farm</Text>
-      <TouchableOpacity
-        onPress={signOut && navigate('STACK_LOGIN')}
-      >
+      <TouchableOpacity onPress={() => logout()}>
         <Text>Click Here</Text>
       </TouchableOpacity>
     </View>
