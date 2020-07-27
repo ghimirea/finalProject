@@ -9,9 +9,27 @@ import {
 } from '../Action/types';
 import { AsyncStorage } from 'react-native';
 
-// const get_token = async () => {
-//   await AsyncStorage.getItem('token');
-// };
+const setToken = async (token) => {
+  await AsyncStorage.setItem('token', token);
+};
+
+const getToken = async () => {
+  await AsyncStorage.getItem('token');
+};
+
+const clearToken = async () => {
+  console.log(
+    'Inside the clearToken auth reducer',
+    await AsyncStorage.getItem('token')
+  );
+
+  await AsyncStorage.removeItem('token');
+
+  console.log(
+    'Inside the clearToken auth reducer after removing',
+    await AsyncStorage.getItem('token')
+  );
+};
 const initialState = {
   token: '',
   isAuth: null,
@@ -25,7 +43,7 @@ const authetication = (state = initialState, action) => {
   switch (type) {
     case SIGNUP_SUCCESS:
     case SIGNIN_SUCCESS:
-      // await AsyncStorage.setItem('token', payload);
+      setToken(payload);
       console.log('Token--->', payload);
       return {
         ...state,
@@ -34,7 +52,7 @@ const authetication = (state = initialState, action) => {
         isLoading: false,
       };
     case SIGNOUT:
-      // async () => await AsyncStorage.clear();
+      clearToken();
       return {
         ...state,
         token: null,

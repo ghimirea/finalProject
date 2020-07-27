@@ -41,7 +41,8 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
             <Input
               placeholder='Search'
               value={state.search}
-              onChangeText={(text) => {
+              //! removed Text
+              onChange={(text) => {
                 handleSearch(text);
               }}
             />

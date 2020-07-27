@@ -17,3 +17,7 @@ export const GET_CART = 'GET_CART';
 export const MAKE_ORDER = 'MAKE_ORDER';
 export const ORDER_FAIL = 'ORDER_FAIL';
 export const ORDER_HISTORY = 'ORDER_HISTORY';
+export const THUMBS_UP = 'THUMBS_UP';
+export const THUMBS_DOWN = 'THUMBS_DOWN';
+export const COMMENTS = 'COMMENTS';
+export const RATING_FAIL = 'RATING_FAIL';

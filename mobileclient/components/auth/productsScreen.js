@@ -5,8 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 
-import WelcomeScreen from '../screens/WelcomeScreen';
-import CartScreen from '../screens/CartScreen';
+// import WelcomeScreen from '../screens/WelcomeScreen';
+// import CartScreen from '../screens/CartScreen';
 
 import {
   StyleSheet,
@@ -19,8 +19,8 @@ import {
 
 import FarmerScreen from '../screens/FarmerScreen';
 import FarmerProductScreen from '../screens/FarmerProductScreen';
-import logoutScreen from '../screens/logoutScreen';
-import { signOut } from '../Action/auth';
+// import logoutScreen from '../screens/logoutScreen';
+// import { signOut } from '../Action/auth';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 

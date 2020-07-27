@@ -1,36 +1,37 @@
-import { GET_FARMERS, FARMER_FAIL } from '../Action/types';
+import { THUMBS_UP, THUMBS_DOWN, COMMENTS, RATING_FAIL } from '../Action/types';
 import { AsyncStorage } from 'react-native';
 
 // const get_token = async () => {
 //   await AsyncStorage.getItem('token');
 // };
 const initialState = {
-  users: [],
+  comments: '',
   // isAuth: null,
   isLoading: true,
   error: {},
 };
 
-const authetication = (state = initialState, action) => {
+const rateFarmer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_FARMERS:
+    case THUMBS_UP:
+    case THUMBS_DOWN:
+    case COMMENTS:
       // await AsyncStorage.setItem('token', payload);
-      console.log('GET FARMERS--->', payload);
-      return {
+      console.log('GET COMMENTS--->', payload);
+      state = {
         ...state,
-        users: payload,
+        comments: payload,
         // isAuth: true,
         isLoading: false,
       };
 
-    case FARMER_FAIL:
+    case RATING_FAIL:
       // async () => await AsyncStorage.clear();
       return {
         ...state,
         error: payload,
-        isAuth: false,
         isLoading: false,
       };
 
@@ -39,4 +40,4 @@ const authetication = (state = initialState, action) => {
   }
 };
 
-export default authetication;
+export default rateFarmer;

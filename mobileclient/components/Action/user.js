@@ -20,16 +20,7 @@ export const getFarmers = () => async (dispatch) => {
       payload: res.data.msg,
     });
 
-    // axios
-    //   .get('/users/farmers')
-    //   .then((res) => {
-    //     console.log('FARMERS', res.data.msg);
-    //     dispatch({
-    //       type: GET_FARMERS,
-    //       payload: res.data.msg,
-    //     });
-    //   })
-    //   .catch((error) => console.error(error.message));
+    
   } catch (error) {
     console.error('GET FARMER ERROR---->', error.message);
     dispatch({
