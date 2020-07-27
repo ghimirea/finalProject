@@ -27,7 +27,6 @@ const CartScreen = ({
   const [sum, setsum] = useState(0);
   const [modal, setModal] = useState({ show: false });
 
-  
   useEffect(() => {
     getCart();
     console.log('GET CART--->', state.data);
@@ -39,6 +38,7 @@ const CartScreen = ({
   const placeOrder = () => {
     makeOrder();
     setModal({ show: false });
+    setsum(0);
     navigate('DRAWER_HOME');
   };
 
