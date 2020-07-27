@@ -20,6 +20,7 @@ router.post(
 router.get('/users', auth, role, userController.getAllUsers);
 router.get('/users/farmers', auth, userController.getAllFarmers);
 
+
 router.patch('/users/up', auth, userController.postLike);
 router.patch('/users/down', auth, userController.postDisLike);
 router.post('/users/comments', auth, userController.postComment);

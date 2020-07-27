@@ -111,7 +111,11 @@ exports.changeActive = async (req, res) => {
 exports.postLike = async (req, res) => {
   try {
     const farmer = await User.findOne({ email: req.body.email });
+
     console.log('FARMER LIKE--->', farmer);
+
+    
+
 
     const farmerLike = await farmer.updateOne({
       'ratings.thumbsUp': farmer.ratings.thumbsUp + 1,
@@ -119,9 +123,11 @@ exports.postLike = async (req, res) => {
 
     // let farmerLike = farmer.ratings.thumbsUp;
     // farmerLike = farmerLike + req.body.like;
+
     //farmer.save();
     console.log('FARMER LIKE AFTER SAVE---->', farmer.ratings.thumbsUp);
     res.status(200).json({ status: 'OK', msg: farmer });
+
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
@@ -132,7 +138,9 @@ exports.postLike = async (req, res) => {
 exports.postDisLike = async (req, res) => {
   try {
     const farmer = await User.findOne({ email: req.body.email });
+
     console.log('FARMER LIKE--->', farmer);
+
 
     const farmerLike = await farmer.updateOne({
       'ratings.thumbsDown': farmer.ratings.thumbsDown + 1,
@@ -142,7 +150,10 @@ exports.postDisLike = async (req, res) => {
     // farmerLike = farmerLike + req.body.like;
     farmer.save();
     console.log('FARMER LIKE AFTER SAVE---->', farmer.ratings.thumbsUp);
+
     res.status(200).json({ status: 'OK', msg: farmer });
+
+    
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
@@ -153,6 +164,7 @@ exports.postDisLike = async (req, res) => {
 exports.postComment = async (req, res) => {
   try {
     const farmer = await User.findOne({ email: req.body.email });
+
     console.log('FARMER LIKE--->', farmer);
 
     let farmer_comments = farmer.ratings.comments;
@@ -164,6 +176,7 @@ exports.postComment = async (req, res) => {
     farmer.save();
     console.log('FARMER COMMENT AFTER SAVE---->', farmer.ratings.comments);
     res.status(200).json({ status: 'OK', msg: farmer_comments });
+
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });

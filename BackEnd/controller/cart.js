@@ -1,7 +1,6 @@
 const Product = require('../model/Product');
 const User = require('../model/User');
 
-
 //! Get Cart
 exports.getCart = async (req, res) => {
   try {
@@ -17,8 +16,6 @@ exports.getCart = async (req, res) => {
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
-
-
 
 //! Add to Cart
 exports.postToCart = async (req, res) => {
@@ -92,9 +89,9 @@ exports.postToCart = async (req, res) => {
         cart_item
       );
       await user.save();
-      res
-        .status(200)
-        .json({ status: 'OK', msg: 'Product added to cart', farmer_product });
+
+      res.status(200).json({ status: 'OK', msg: farmer_product });
+
     } else {
       res.status(401).json({ status: 'Error', msg: 'Not Authorized' });
     }

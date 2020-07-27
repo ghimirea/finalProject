@@ -33,8 +33,10 @@ const UserSchema = new Schema({
       type: Number,
       default: 0,
     },
+
     comments: [],
   },
+
 
   cart: {
     items: [
