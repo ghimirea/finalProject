@@ -1,27 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { getProducts, editProducts, deleteProduct } from '../Action/products';
 import { Button, Typography } from '@material-ui/core';
 
 const Products = ({
-  getProducts,
+  // getProducts,
   auth,
   location,
   history,
-  products: { products, isLoading },
+  farmer_products: { products, isLoading },
   editProducts,
   deleteProduct,
 }) => {
+  const dispatch = useDispatch();
+  console.log('Products--->', products);
   useEffect(() => {
-    getProducts();
-  }, [getProducts]);
-  if (!isLoading && products !== null) {
-  }
+    (() => {
+      const y = dispatch(getProducts());
+      console.log('Inside useEffect--->', y);
+
+      setstate({ ...state, data: products });
+    })();
+  }, []);
+
+  console.log('AFTER useEffect');
+
+  const [state, setstate] = useState({ data: [] });
 
   const removeProduct = (event, id) => {
-    deleteProduct(id);
+    dispatch(deleteProduct(id));
     return <Redirect to={{ pathname: '/products' }} />;
   };
 
@@ -43,8 +52,8 @@ const Products = ({
           </Button>
         </div>
         <hr />
-        {isLoading || products === null
-          ? 'Loading.....'
+        {isLoading && state.data === []
+          ? 'No Products Found, Please Add Some'
           : products.Product.map((item) => (
               <>
                 <div key={item._id}>
@@ -92,7 +101,7 @@ Products.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  products: state.products,
+  farmer_products: state.farmer_products,
 });
 
 export default connect(mapStateToProps, {

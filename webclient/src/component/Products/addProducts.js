@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import './style.css';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 import { addProduct } from '../Action/products';
@@ -39,10 +39,11 @@ const Styles = makeStyles((theme) => ({
 
 const AddProduct = ({
   auth,
-  addProduct,
+  //addProduct,
   history,
-  products: { products, isLoading },
+  farmer_products: { products, isLoading },
 }) => {
+  const dispatch = useDispatch();
   const classes = Styles();
   const [newProduct, setnewProduct] = useState({
     type: '',
@@ -58,9 +59,12 @@ const AddProduct = ({
       [event.target.name]: event.target.value,
     });
 
-  const createProduct = async (event) => {
-    event.preventDefault();
-    addProduct({ type, product_name, quantity_in_lb, price_per_lb });
+  const createProduct = (event) => {
+    // event.preventDefault();
+    const body = { type, product_name, quantity_in_lb, price_per_lb };
+    (() => {
+      dispatch(addProduct(body));
+    })();
     history.push('/products');
   };
 
@@ -157,7 +161,7 @@ AddProduct.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  products: state.products,
+  farmer_products: state.farmer_products,
 });
 
 export default connect(mapStateToProps, { addProduct })(AddProduct);

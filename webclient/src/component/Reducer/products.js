@@ -8,7 +8,10 @@ import {
 } from '../Action/types';
 
 const initialState = {
-  products: [],
+  products: {
+    Product: [],
+  },
+
   isLoading: true,
   error: {},
 };
@@ -22,12 +25,11 @@ const farmer_products = (state = initialState, action) => {
     case DELETE_PRODUCTS:
     case GET_PRODUCT:
     case ADD_PRODUCTS:
-      state = {
+      return {
         ...state,
         products: payload,
         isLoading: false,
       };
-      break; //! Recent Add
 
     case PRODUCTS_FAIL:
       return {

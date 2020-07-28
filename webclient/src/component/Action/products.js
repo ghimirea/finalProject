@@ -27,6 +27,7 @@ export const getProducts = () => async (dispatch) => {
 //! Get particular products
 export const getProduct = (id) => async (dispatch) => {
   try {
+    console.log('Inside get particular products');
     const response = await axios.get(`/product/${id}`);
 
     dispatch({

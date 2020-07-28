@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { editProducts, getProduct } from '../Action/products';
 import { matchPath } from 'react-router';
 import Avatar from '@material-ui/core/Avatar';
@@ -38,8 +38,9 @@ const Styles = makeStyles((theme) => ({
 const UpdateProducts = ({
   editProducts,
   location,
-  products: { products, isLoading },
+  farmer_products: { products, isLoading },
 }) => {
+  const dispatch = useDispatch();
   const classes = Styles();
   const match = matchPath(location.pathname, {
     path: '/products/:id',
@@ -48,7 +49,9 @@ const UpdateProducts = ({
   });
 
   useEffect(() => {
-    getProduct(match.params.id);
+    (async () => {
+      await dispatch(getProduct(match.params.id));
+    })();
   }, []);
 
   let prod;
@@ -59,10 +62,14 @@ const UpdateProducts = ({
   }
 
   const [update, setUpdate] = useState({
-    type: prod[0].type || products[0].type,
-    product_name: prod[0].product_name || products[0].product_name,
-    quantity_in_lb: prod[0].quantity_in_lb || products[0].quantity_in_lb,
-    price_per_lb: prod[0].price_per_lb || products[0].price_per_lb,
+    type: prod[0].type,
+    // || products[0].type,
+    product_name: prod[0].product_name,
+    // || products[0].product_name,
+    quantity_in_lb: prod[0].quantity_in_lb,
+    // || products[0].quantity_in_lb,
+    price_per_lb: prod[0].price_per_lb,
+    // || products[0].price_per_lb,
   });
 
   const { type, product_name, quantity_in_lb, price_per_lb } = update;
@@ -75,12 +82,14 @@ const UpdateProducts = ({
 
   const updateProduct = (event) => {
     event.preventDefault();
-    editProducts(match.params.id, {
-      type,
-      product_name,
-      quantity_in_lb,
-      price_per_lb,
-    });
+    dispatch(
+      editProducts(match.params.id, {
+        type,
+        product_name,
+        quantity_in_lb,
+        price_per_lb,
+      })
+    );
   };
 
   return (
@@ -188,7 +197,7 @@ UpdateProducts.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  products: state.products,
+  farmer_products: state.farmer_products,
 });
 
 export default connect(mapStateToProps, { editProducts, getProduct })(
