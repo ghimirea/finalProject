@@ -8,8 +8,32 @@ const loginRoute = require('./route/auth');
 const cartRoute = require('./route/cart');
 const orderRoute = require('./route/order');
 
-const db = config.get('mongoConnect');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 const app = express();
+const db = config.get('mongoConnect');
+
+const PORT = process.env.PORT || 5000;
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      version: '1.0.0',
+      title: 'Local Online',
+      description: "Online Farmer's Market",
+      contact: {
+        name: 'Ashim Ghimire',
+      },
+      servers: ['http://localhost:5000'],
+    },
+  },
+
+  apis: ['./route/*.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors());
 app.use(express.json({ extended: false }));
@@ -23,8 +47,6 @@ app.use(orderRoute);
 app.get('/', (req, res) => {
   res.send('API is up and running');
 });
-
-const PORT = process.env.PORT || 5000;
 
 const dbConnection = async () => {
   try {
