@@ -12,7 +12,6 @@ import {
 export const getProducts = () => async (dispatch) => {
   try {
     const response = await axios.get('/products');
-    console.log('FARMER PRODUCTS---->', response.data.msg);
 
     dispatch({
       type: GET_PRODUCTS,
@@ -21,7 +20,6 @@ export const getProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCTS_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };
@@ -29,8 +27,8 @@ export const getProducts = () => async (dispatch) => {
 //! Get particular products
 export const getProduct = (id) => async (dispatch) => {
   try {
+    console.log('Inside get particular products');
     const response = await axios.get(`/product/${id}`);
-    console.log('GET SINGLE PRODUCT--->', response.data.msg);
 
     dispatch({
       type: GET_PRODUCT,
@@ -39,7 +37,6 @@ export const getProduct = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCTS_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };
@@ -62,9 +59,7 @@ export const editProducts = (
       price_per_lb,
     });
 
-    console.log('BODY--->', body);
     const response = await axios.patch(`/products/${id}`, body, header);
-    console.log('EDIT PRODUCT===========>', response.data.msg);
 
     dispatch({
       type: EDIT_PRODUCTS,
@@ -73,7 +68,6 @@ export const editProducts = (
   } catch (error) {
     dispatch({
       type: PRODUCTS_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };
@@ -81,9 +75,7 @@ export const editProducts = (
 //! Delete Products
 export const deleteProduct = (id) => async (dispatch) => {
   try {
-    console.log('Delete axios');
     const response = await axios.delete(`/products/${id}`);
-    console.log('DELETE PRODUCT--->', response.data.msg);
 
     dispatch({
       type: DELETE_PRODUCTS,
@@ -92,7 +84,6 @@ export const deleteProduct = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCTS_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };
@@ -118,7 +109,6 @@ export const addProduct = ({
       price_per_lb,
     });
     const response = await axios.post('/products/add', body, header);
-    console.log('FARMER PRODUCTS---->', response.data.msg);
 
     dispatch({
       type: ADD_PRODUCTS,
@@ -127,7 +117,6 @@ export const addProduct = ({
   } catch (error) {
     dispatch({
       type: PRODUCTS_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };

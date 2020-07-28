@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { editProducts, getProduct } from '../Action/products';
 import { matchPath } from 'react-router';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,7 +27,7 @@ const Styles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -41,9 +38,9 @@ const Styles = makeStyles((theme) => ({
 const UpdateProducts = ({
   editProducts,
   location,
-  products: { products, isLoading },
+  farmer_products: { products, isLoading },
 }) => {
-  console.log('UPDATE PRODUCTS--->', products[0]);
+  const dispatch = useDispatch();
   const classes = Styles();
   const match = matchPath(location.pathname, {
     path: '/products/:id',
@@ -52,8 +49,10 @@ const UpdateProducts = ({
   });
 
   useEffect(() => {
-    getProduct(match.params.id);
-  }, [getProduct]);
+    (async () => {
+      await dispatch(getProduct(match.params.id));
+    })();
+  }, []);
 
   let prod;
   if (products.Product !== undefined) {
@@ -63,28 +62,17 @@ const UpdateProducts = ({
   }
 
   const [update, setUpdate] = useState({
-    type: prod[0].type || products[0].type,
-    product_name: prod[0].product_name || products[0].product_name,
-    quantity_in_lb: prod[0].quantity_in_lb || products[0].quantity_in_lb,
-    price_per_lb: prod[0].price_per_lb || products[0].price_per_lb,
-
-    // type: ' ',
-    // product_name: ' ',
-    // quantity_in_lb: null,
-    // price_per_lb: null,
+    type: prod[0].type,
+    // || products[0].type,
+    product_name: prod[0].product_name,
+    // || products[0].product_name,
+    quantity_in_lb: prod[0].quantity_in_lb,
+    // || products[0].quantity_in_lb,
+    price_per_lb: prod[0].price_per_lb,
+    // || products[0].price_per_lb,
   });
 
   const { type, product_name, quantity_in_lb, price_per_lb } = update;
-  console.log('TYPE--->', type);
-
-  console.log('MATCH PARAMS===>', match.params.id);
-
-  // useEffect(() => {
-  //   const y = getProduct(match.params.id);
-  //   console.log('USE EFFECT GET PRODUCT--->', y);
-  // }, []);
-
-  console.log('FILTER PRODUCTS--->', products.Product);
 
   const onChange = (event) =>
     setUpdate({
@@ -94,12 +82,14 @@ const UpdateProducts = ({
 
   const updateProduct = (event) => {
     event.preventDefault();
-    editProducts(match.params.id, {
-      type,
-      product_name,
-      quantity_in_lb,
-      price_per_lb,
-    });
+    dispatch(
+      editProducts(match.params.id, {
+        type,
+        product_name,
+        quantity_in_lb,
+        price_per_lb,
+      })
+    );
   };
 
   return (
@@ -207,7 +197,7 @@ UpdateProducts.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  products: state.products,
+  farmer_products: state.farmer_products,
 });
 
 export default connect(mapStateToProps, { editProducts, getProduct })(

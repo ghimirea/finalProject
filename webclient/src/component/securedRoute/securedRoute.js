@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
 const securedRoute = (props) => {
-  console.log('Props securedRoute===>', props.auth.isLoading);
   return (
     <Route
-    //   path={props.path}
+  
       render={(data) =>
         props.auth.isAuth && !props.auth.isLoading ? (
           <props.component {...data} />

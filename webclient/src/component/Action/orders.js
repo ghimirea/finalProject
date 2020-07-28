@@ -12,7 +12,6 @@ import {
 export const getOrders = () => async (dispatch) => {
   try {
     const response = await axios.get('/orders');
-    console.log("Farmer's Order--->", response);
 
     dispatch({
       type: GET_ORDERS,
@@ -21,7 +20,6 @@ export const getOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ORDER_FAIL,
-      //   payload: { msg: error.response, status: error.response.status },
     });
   }
 };
@@ -31,7 +29,6 @@ export const getOrders = () => async (dispatch) => {
 export const getOrder = (id) => async (dispatch) => {
   try {
     const response = await axios.get(`/orders/${id}`);
-    console.log('RESPONSE PARTICULAR ORDER-->', response);
 
     dispatch({
       type: GET_ORDER,
@@ -48,7 +45,6 @@ export const getOrder = (id) => async (dispatch) => {
 export const changeStatus = (id) => async (dispatch) => {
   try {
     const response = await axios.patch(`/orders/${id}`);
-    console.log('PATCH ORDER-->', response);
 
     dispatch({
       type: CHANGE_STATUS,
@@ -65,7 +61,6 @@ export const changeStatus = (id) => async (dispatch) => {
 export const getAllOrders = () => async (dispatch) => {
   try {
     const response = await axios.get('/allorders');
-    console.log('RESPONSE ALL ORDERS-->', response.data.msg);
 
     dispatch({
       type: ALL_ORDERS,

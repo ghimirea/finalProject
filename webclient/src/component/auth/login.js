@@ -3,20 +3,14 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router-dom';
-import Register from '../auth/register';
 import './style.css';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login, getUser } from '../Action/auth';
@@ -49,7 +43,6 @@ const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
     getUser();
   }, [getUser]);
 
-  console.log('LOGIN AUTH--->', user);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -67,32 +60,8 @@ const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
   const signIn = async (event) => {
     event.preventDefault();
     login(email, password, role, Active);
-
-    // console.log('User Details--->', loginData);
-
-    // try {
-    //   const config = {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   };
-    //   const body = JSON.stringify(loginData);
-    //   console.log('Body--->', body);
-
-    //   const response = await axios.post('/auth', body, config);
-    //   console.log('Response--->', response);
-    // } catch (err) {
-    //   console.error(err.response.data);
-    // }
   };
 
-  // if (!isLoading && isAuth) {
-  //   if (user.role === 'Admin') {
-  //     return <Redirect to='/allorders' />;
-  //   } else {
-  //     return <Redirect to='/localMarket' />;
-  //   }
-  // }
   if (isAuth) {
     return <Redirect to='/localMarket' />;
   }
@@ -178,7 +147,7 @@ const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
   );
 };
 
-Login.prototypes = {
+Login.propTypes = {
   login: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   getUser: PropTypes.func.isRequired,

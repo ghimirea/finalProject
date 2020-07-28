@@ -7,16 +7,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from 'react-router-dom';
-import Login from '../auth/login';
 import './style.css';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import setAlert from '../Action/alert';
 import { authenticate } from '../Action/auth';
@@ -35,7 +31,7 @@ const Styles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -66,28 +62,8 @@ const Register = ({ setAlert, authenticate, isAuth }) => {
     if (password !== confirmPassword) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      console.log('User Details--->', registerData);
       authenticate({ name, email, password, role, Active });
-      // const newUser = {
-      //   name,
-      //   email,
-      //   password,
-      //   role,
-      // };
-      // try {
-      //   const config = {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   };
-      //   const body = JSON.stringify(newUser);
-      //   console.log('Body--->', body);
-
-      //   const response = await axios.post('/users', body, config);
-      //   console.log('Response--->', response);
-      // } catch (err) {
-      //   console.error(err.response.data);
-      // }
+      
     }
   };
 
