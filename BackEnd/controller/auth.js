@@ -52,7 +52,6 @@ exports.loginUser = async (req, res) => {
       config.get('jwtSecret'),
       { expiresIn: 360000 },
       (err, token) => {
-        console.log('TOKEN====>', token);
         if (err) throw err;
         res.status(200).json({ status: 'OK', msg: token });
       }
@@ -67,7 +66,6 @@ exports.loginUser = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.id });
-    console.log('User-->', user);
 
     const cur_user = await User.updateOne(
       { _id: req.params.id },
@@ -77,8 +75,6 @@ exports.changePassword = async (req, res) => {
       { new: true }
     );
     await user.save();
-
-    console.log('User---->', cur_user);
 
     //! Send email with the password
     let transporter = nodemailer.createTransport({
@@ -107,5 +103,6 @@ exports.changePassword = async (req, res) => {
     res.status(200).json({ status: 'OK', msg: 'Password has Changed' });
   } catch (error) {
     console.error(error.message);
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
