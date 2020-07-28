@@ -20,29 +20,13 @@ const useStyle = makeStyles({
 });
 
 const AllOrder = ({ orders: { orders }, getAllOrders }) => {
-  console.log('GET ALL ORDERS PROPS--->', orders);
-
   const classes = useStyle();
 
   useEffect(() => {
-    const y = getAllOrders();
-    console.log('USE EFFECT GET ALL ORDERS--->', y);
+    getAllOrders();
   }, [getAllOrders]);
 
   const [modalOpen, setModalOpen] = useState(false);
-
-  const seeProducts = (event, item) => {
-    // event.preventDefault();
-    setModalOpen(true);
-    // return (
-    //   <Modal isOpen={modalOpen}>
-    //     <h2>Modal Title</h2>
-    //     <p> Modal Body</p>
-    //   </Modal>
-    // );
-  };
-  let sum;
-  console.log('SUM OF PRODUCTS==>', sum);
 
   return (
     <>
@@ -107,13 +91,14 @@ const AllOrder = ({ orders: { orders }, getAllOrders }) => {
                         Price Per LB: {product.price_per_lb}
                       </Typography>
                       <Typography variant='h6'>
-                        Sub-Total: {(product.quantity * product.price_per_lb).toFixed(2)}
+                        Sub-Total:{' '}
+                        {(product.quantity * product.price_per_lb).toFixed(2)}
                       </Typography>
-                      {/* <Typography>{sum += product.quantity * product.price_per_lb}</Typography> */}
+
                       <hr />
                     </>
                   ))}
-                  {/* <Typography>Main Total:{sum}</Typography> */}
+
                   <Button
                     variant='contained'
                     color='primary'

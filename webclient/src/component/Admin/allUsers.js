@@ -26,22 +26,17 @@ const AllUsers = ({
   auth,
   history,
 }) => {
-  console.log('GET ALL ORDERS USERS--->', users);
 
   const classes = useStyle();
 
   useEffect(() => {
     const y = getAllUsers();
-    console.log('USE EFFECT GET ALL USERS--->', y);
+    
   }, [getAllUsers]);
 
-  const statusChange = (event, id) => {
-    console.log('STATUS CHANGE ID---->', id);
-    // event.preventDefault();
-    const g = activeStatus(id);
-    console.log('ACTIVE STATUS ----->', g);
-    console.log('EVENT STATUS', event);
-  };
+  // const statusChange = (event, id) => {
+  //   const g = activeStatus(id);
+  // };
 
   return (
     <>

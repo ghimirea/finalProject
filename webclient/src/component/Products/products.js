@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getProducts, editProducts, deleteProduct } from '../Action/products';
 import { Button, Typography } from '@material-ui/core';
-import AddProducts from './addProducts';
-import { matchPath } from 'react-router';
 
 const Products = ({
   getProducts,
@@ -16,23 +14,13 @@ const Products = ({
   editProducts,
   deleteProduct,
 }) => {
-  console.log('HISTORY PRODUCT--->', history);
-  // const match = matchPath(location.pathname, {
-  //   path: '/products/:id',
-  //   exact: true,
-  //   strict: false,
-  // });
   useEffect(() => {
-    const y = getProducts();
-    console.log('USEEFFECT PRODUCTS--->', y);
-  }, [getProducts, editProducts]);
+    getProducts();
+  }, [getProducts]);
   if (!isLoading && products !== null) {
-    console.log('PRODUCTS--->', products);
   }
 
-  console.log('ISLOADING---->', isLoading);
   const removeProduct = (event, id) => {
-    console.log('ID-->', id);
     deleteProduct(id);
     return <Redirect to={{ pathname: '/products' }} />;
   };
@@ -44,20 +32,15 @@ const Products = ({
   return (
     <>
       {' '}
-      {/* {isLoading || products === null ?
-       (
-        'Loading.......'
-      ) : ( */}
       <>
         <div>
           <Typography variant='h1'>
             All your products are listed below
           </Typography>
-          {/* <Link to={'/products/add'}> */}
+
           <Button variant='outlined' onClick={(event) => addProduct(event)}>
             Add Products
           </Button>
-          {/* </Link> */}
         </div>
         <hr />
         {isLoading || products === null
@@ -96,7 +79,6 @@ const Products = ({
               </>
             ))}
       </>
-      {/* // )} */}
     </>
   );
 };

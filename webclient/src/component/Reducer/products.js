@@ -27,6 +27,7 @@ const farmer_products = (state = initialState, action) => {
         products: payload,
         isLoading: false,
       };
+      break; //! Recent Add
 
     case PRODUCTS_FAIL:
       return {
