@@ -18,6 +18,7 @@ import UpdateProducts from './component/Products/updateProduct';
 import AddProduct from './component/Products/addProducts';
 import AllOrder from './component/Order/allOrder';
 import AllUsers from './component/Admin/allUsers';
+import Logs from './component/Admin/logs';
 
 if (localStorage.token) {
   authToken(localStorage.token);
@@ -51,6 +52,7 @@ function App() {
               <SecuredRoute exact path='/orders/:id' component={Order} />
               <SecuredRoute exact path='/allorders' component={AllOrder} />
               <SecuredRoute exact path='/users' component={AllUsers} />
+              <SecuredRoute exact path='/logs' component={Logs} />
             </Switch>
           </section>
         </>
