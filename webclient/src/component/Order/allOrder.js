@@ -12,6 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Modal from 'react-modal';
+import DateFormat from '../Moment/moment';
 
 const useStyle = makeStyles({
   table: {
@@ -57,9 +58,9 @@ const AllOrder = ({ orders: { orders }, getAllOrders }) => {
           <TableBody>
             {orders.map((item) => (
               <>
-                <TableRow>
+                <TableRow key={item._id}>
                   <TableCell align='right' component='th' scope='row'>
-                    {item.date}
+                    <DateFormat date={item.date} />
                   </TableCell>
                   <TableCell align='right'>{item._id}</TableCell>
                   <TableCell align='right'>{item.farmer_id}</TableCell>
@@ -79,25 +80,27 @@ const AllOrder = ({ orders: { orders }, getAllOrders }) => {
                 <Modal isOpen={modalOpen}>
                   <Typography variant='h1'>Products</Typography>
 
-                  {item.products.map((product) => (
-                    <>
-                      <Typography variant='h6'>
-                        Product ID: {product.prod_id}
-                      </Typography>
-                      <Typography variant='h6'>
-                        Quantity: {product.quantity}
-                      </Typography>
-                      <Typography variant='h6'>
-                        Price Per LB: {product.price_per_lb}
-                      </Typography>
-                      <Typography variant='h6'>
-                        Sub-Total:{' '}
-                        {(product.quantity * product.price_per_lb).toFixed(2)}
-                      </Typography>
+                  {item.products.map((product) => {
+                    return (
+                      <>
+                        <Typography variant='h6'>
+                          Product ID: {product.prod_id}
+                        </Typography>
+                        <Typography variant='h6'>
+                          Quantity: {product.quantity}
+                        </Typography>
+                        <Typography variant='h6'>
+                          Price Per LB: {product.price_per_lb}
+                        </Typography>
+                        <Typography variant='h6'>
+                          Sub-Total:{' '}
+                          {(product.quantity * product.price_per_lb).toFixed(2)}
+                        </Typography>
 
-                      <hr />
-                    </>
-                  ))}
+                        <hr />
+                      </>
+                    );
+                  })}
 
                   <Button
                     variant='contained'

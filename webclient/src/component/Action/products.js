@@ -27,7 +27,6 @@ export const getProducts = () => async (dispatch) => {
 //! Get particular products
 export const getProduct = (id) => async (dispatch) => {
   try {
-    console.log('Inside get particular products');
     const response = await axios.get(`/product/${id}`);
 
     dispatch({
@@ -46,6 +45,13 @@ export const editProducts = (
   id,
   { type, product_name, quantity_in_lb, price_per_lb }
 ) => async (dispatch) => {
+  console.log(
+    'Inside edit action',
+    type,
+    product_name,
+    quantity_in_lb,
+    price_per_lb
+  );
   try {
     const header = {
       headers: {
@@ -61,9 +67,11 @@ export const editProducts = (
 
     const response = await axios.patch(`/products/${id}`, body, header);
 
+    console.log('RESPONSE ON EDIT ACTION---->', response.data.msg);
+
     dispatch({
       type: EDIT_PRODUCTS,
-      payload: [response.data.msg],
+      payload: response.data.msg,
     });
   } catch (error) {
     dispatch({

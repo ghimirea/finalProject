@@ -11,27 +11,24 @@ const Products = ({
   location,
   history,
   farmer_products: { products, isLoading },
-  editProducts,
-  deleteProduct,
+  //deleteProduct,
 }) => {
   const dispatch = useDispatch();
-  console.log('Products--->', products);
   useEffect(() => {
     (() => {
-      const y = dispatch(getProducts());
-      console.log('Inside useEffect--->', y);
+      dispatch(getProducts());
 
       setstate({ ...state, data: products });
     })();
   }, []);
 
-  console.log('AFTER useEffect');
-
   const [state, setstate] = useState({ data: [] });
 
   const removeProduct = (event, id) => {
-    dispatch(deleteProduct(id));
-    return <Redirect to={{ pathname: '/products' }} />;
+    (() => {
+      dispatch(deleteProduct(id));
+      return <Redirect to={{ pathname: '/localMarket' }} />;
+    })();
   };
 
   const addProduct = (event) => {
@@ -68,7 +65,7 @@ const Products = ({
                   <Typography variant='h6'>
                     Price Per Pound: {item.price_per_lb}
                   </Typography>
-                  <div>
+                  <div key={item._id}>
                     <Link to={`products/${item._id}`}>
                       <Button variant='outlined'>Edit</Button>
                     </Link>
