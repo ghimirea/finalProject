@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import setAlert from '../Alert/alert';
 import {
   StyleSheet,
   Text,
@@ -11,7 +12,7 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { getFarmerProducts } from '../Action/products';
 import { add_to_cart } from '../Action/cart';
 import { Label, Item, Input } from 'native-base';
@@ -20,17 +21,21 @@ const FarmerProductScreen = ({
   route: { params },
   product: { products },
   cart: { cart },
-  getFarmerProducts,
-  add_to_cart,
+  //getFarmerProducts,
+  //add_to_cart,
+  navigation: { navigate },
 }) => {
+  const dispatch = useDispatch();
   const [product, setProduct] = useState({ data: [] });
   const [state, setState] = useState({ quanity: 0 });
 
   useEffect(() => {
-    getFarmerProducts(params.id);
-    if (products) {
-      setProduct({ ...product, data: products });
-    }
+    (() => {
+      dispatch(getFarmerProducts(params.id));
+      if (products) {
+        setProduct({ ...product, data: products });
+      }
+    })();
   }, []);
 
   return (
@@ -76,13 +81,19 @@ const FarmerProductScreen = ({
                       <TouchableOpacity
                         style={styles.socialBarButton}
                         onPress={() => {
-                          add_to_cart(
-                            params.id,
-                            item._id,
-                            item.product_name,
-                            state.quantity,
-                            item.price_per_lb
-                          );
+                          (() => {
+                            dispatch(
+                              add_to_cart(
+                                params.id,
+                                item._id,
+                                item.product_name,
+                                state.quantity,
+                                item.price_per_lb
+                              )
+                            );
+                          })();
+                          Alert.alert('Product successfully added');
+                          navigate('STACK_FARMER');
                         }}
                       >
                         <Image
@@ -97,27 +108,17 @@ const FarmerProductScreen = ({
                     <View style={styles.quantity}>
                       <Item>
                         <Input
-                          // style={styles.quantity}
                           placeholder='QTY'
                           onChangeText={(text) =>
                             setState({ ...state, quantity: text })
                           }
-                          // value={email}
                           name='quantity'
                           id='quantity'
                           autoCapitalize='none'
                         />
                       </Item>
                     </View>
-                    <View style={styles.socialBarSection}>
-                      {/* <TouchableOpacity style={styles.socialBarButton}>
-                        <Image
-                          style={styles.icon}
-                          source={require('../assets/Heart.png')}
-                        />
-                        <Text style={styles.socialBarLabel}>25</Text>
-                      </TouchableOpacity> */}
-                    </View>
+                    <View style={styles.socialBarSection}></View>
                   </View>
                 </View>
               </View>
@@ -208,8 +209,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 25,
     height: 25,
-   
-
   },
   /******** social bar ******************/
   socialBarContainer: {
@@ -230,12 +229,12 @@ const styles = StyleSheet.create({
   },
   socialBarButton: {
     flexDirection: 'row',
-    
+
     justifyContent: 'center',
     alignItems: 'center',
   },
-  quantity:{
-   flex:1,
-   marginLeft:30
-  }
+  quantity: {
+    flex: 1,
+    marginLeft: 30,
+  },
 });

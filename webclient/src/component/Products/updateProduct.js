@@ -36,7 +36,7 @@ const Styles = makeStyles((theme) => ({
 }));
 
 const UpdateProducts = ({
-  editProducts,
+  //editProducts,
   location,
   farmer_products: { products, isLoading },
 }) => {
@@ -49,47 +49,59 @@ const UpdateProducts = ({
   });
 
   useEffect(() => {
-    (async () => {
-      await dispatch(getProduct(match.params.id));
+    (() => {
+      const y = dispatch(getProduct(match.params.id));
+      console.log('Dispatch--->', y, products.Product[0]);
     })();
   }, []);
 
-  let prod;
+  let prod = [];
   if (products.Product !== undefined) {
     prod = products.Product.filter(
       (item) => item._id.toString() === match.params.id
     );
   }
+  console.log('PROD--->', prod);
 
-  const [update, setUpdate] = useState({
-    type: prod[0].type,
-    // || products[0].type,
-    product_name: prod[0].product_name,
-    // || products[0].product_name,
-    quantity_in_lb: prod[0].quantity_in_lb,
-    // || products[0].quantity_in_lb,
-    price_per_lb: prod[0].price_per_lb,
-    // || products[0].price_per_lb,
-  });
+  const [update, setUpdate] = useState({ data: products.Product });
 
-  const { type, product_name, quantity_in_lb, price_per_lb } = update;
+  console.log('UPDATE STATE===>', update.data);
 
-  const onChange = (event) =>
-    setUpdate({
-      ...update,
-      [event.target.name]: event.target.value,
+  const { type, product_name, quantity_in_lb, price_per_lb } = update.data[0];
+  console.log(
+    'UPDATE STATE ITEMS--->',
+    type,
+    product_name,
+    quantity_in_lb,
+    price_per_lb
+  );
+
+  const onChange = (event) => {
+    console.log('EVENT====>', event);
+    event.preventDefault();
+    setUpdate(() => {
+      return {
+        ...update,
+        [event.target.name]: event.target.value,
+      };
     });
+  };
+
+  console.log('Outside onChange--->', update);
 
   const updateProduct = (event) => {
     event.preventDefault();
-    dispatch(
-      editProducts(match.params.id, {
-        type,
-        product_name,
-        quantity_in_lb,
-        price_per_lb,
-      })
-    );
+
+    (() => {
+      dispatch(
+        editProducts(match.params.id, {
+          type,
+          product_name,
+          quantity_in_lb,
+          price_per_lb,
+        })
+      );
+    })();
   };
 
   return (
@@ -123,7 +135,6 @@ const UpdateProducts = ({
                       id='type'
                       label='Type'
                       name='type'
-                      value={prod[0].type || products[0].type}
                       autoComplete='type'
                     />
                   </Grid>
@@ -138,7 +149,6 @@ const UpdateProducts = ({
                       label='Product Name'
                       type='product_name'
                       id='product_name'
-                      value={prod[0].product_name}
                     />
                   </Grid>
 
@@ -151,7 +161,7 @@ const UpdateProducts = ({
                       label='Quantity in LB'
                       name='quantity_in_lb'
                       contentEditable='true'
-                      defaultValue={prod[0].quantity_in_lb}
+                      defaultValue={quantity_in_lb}
                       onChange={(event) => onChange(event)}
                     />
                   </Grid>
@@ -163,9 +173,9 @@ const UpdateProducts = ({
                       id='price_per_lb'
                       label='Price per LB'
                       name='price_per_lb'
-                      defaultValue={prod[0].price_per_lb}
+                      defaultValue={price_per_lb}
                       contentEditable='true'
-                      onChange={(event, value) => onChange(event, value)}
+                      onChange={(event) => onChange(event)}
                     />
                   </Grid>
                 </Grid>

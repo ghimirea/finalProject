@@ -19,15 +19,15 @@ import AddProduct from './component/Products/addProducts';
 import AllOrder from './component/Order/allOrder';
 import AllUsers from './component/Admin/allUsers';
 
-// if (localStorage.token) {
-//   authToken(localStorage.token);
-// }
+if (localStorage.token) {
+  authToken(localStorage.token);
+}
 
 function App() {
-  // useEffect(() => {
-  //   const y = store.dispatch(getUser());
-  //   console.log('APP.JS USEEFFECT------>', y);
-  // }, []);
+  useEffect(() => {
+    const y = store.dispatch(getUser());
+    console.log('APP.JS USEEFFECT------>', y);
+  }, []);
   return (
     <Provider store={store}>
       <BrowserRouter>
