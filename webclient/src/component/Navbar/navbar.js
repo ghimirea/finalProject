@@ -10,7 +10,7 @@ const Navbar = ({ auth: { user, isAuth, isLoading }, signOut, getUser }) => {
     getUser();
   }, [getUser]);
 
-  console.log('Navbar Auth====>', user);
+ 
 
   const loggedInLinks =
     user && user.role === 'Admin' ? (

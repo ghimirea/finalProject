@@ -1,29 +1,21 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getOrder, changeStatus } from '../Action/orders';
 import { matchPath } from 'react-router';
 
 const Order = ({ getOrder, location, orders: { orders }, changeStatus }) => {
-  console.log('GETORDER--->', orders);
   const match = matchPath(location.pathname, {
     path: '/orders/:id',
     exact: true,
     strict: false,
   });
-  console.log('ORDERS--->', orders);
-  //   let parameter = match.params.param;
-  //   console.log('SLICED--->', parameter);
+
   useEffect(() => {
-    const y = getOrder(match.params.id);
-    console.log('Inside the useEffect in order-->', y);
-    // const g = changeStatus(match.params.id);
-    // console.log('ORDER CHANGE---->', g);
-  }, []);
+    getOrder(match.params.id);
+  }, [getOrder, match.params.id]); //! added that in place of []
 
   const statusChange = (event) => {
-    console.log('EVENTS ON STATUSCHANGE---->', event);
     changeStatus(match.params.id);
   };
 

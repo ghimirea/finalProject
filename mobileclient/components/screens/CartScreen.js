@@ -9,7 +9,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { getCart } from '../Action/cart';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -17,26 +17,26 @@ import { Button } from 'native-base';
 import { makeOrder } from '../Action/order';
 
 const CartScreen = ({
-  getCart,
-  makeOrder,
+  //getCart,
+  //makeOrder,
   cart: { cart },
   order: { orders },
   navigation: { navigate },
 }) => {
+  const dispatch = useDispatch();
   const [state, setstate] = useState({ data: [] });
   const [sum, setsum] = useState(0);
   const [modal, setModal] = useState({ show: false });
 
   useEffect(() => {
-    getCart();
-    console.log('GET CART--->', state.data);
+    (() => dispatch(getCart()))();
     if (cart) {
       setstate({ ...state, data: cart });
     }
   }, [getCart]);
 
   const placeOrder = () => {
-    makeOrder();
+    (() => dispatch(makeOrder()))();
     setModal({ show: false });
     setsum(0);
     navigate('DRAWER_HOME');

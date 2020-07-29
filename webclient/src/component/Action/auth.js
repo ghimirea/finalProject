@@ -19,7 +19,6 @@ export const getUser = () => async (dispatch) => {
 
   try {
     const response = await axios.get('/auth');
-    console.log('Response on Action/auth-->', response.data.msg);
     dispatch({
       type: GET_USER,
       payload: response.data.msg,
@@ -45,8 +44,6 @@ export const authenticate = ({ name, email, password, role, Active }) => async (
 
   try {
     const response = await axios.post('/users', body, header);
-    console.log('SIGNUP RES--->', response);
-    
 
     dispatch({
       type: SIGNUP_SUCCESS,
@@ -70,32 +67,25 @@ export const authenticate = ({ name, email, password, role, Active }) => async (
 };
 
 //! Sign In User
-export const login = (email, password, role,Active) => async (dispatch) => {
+export const login = (email, password, role, Active) => async (dispatch) => {
   const header = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
 
-  const body = JSON.stringify({ email, password, role,Active });
-
-  console.log('SIGN IN BODY---->', body)
+  const body = JSON.stringify({ email, password, role, Active });
 
   try {
     const response = await axios.post('/auth', body, header);
-    console.log('SIGNIN RES--->', response.data.msg);
-    
 
     dispatch({
       type: SIGNIN_SUCCESS,
       payload: response.data.msg,
     });
-    console.log('After dispatch siginSuccess');
+
     dispatch(getUser());
   } catch (error) {
-    //const errors = error.response.data.msg;
-    console.log("Error signIN-->",error);
-
     if (error) {
       error.forEach((error) => {
         dispatch(setAlert(error.msg, 'danger'));

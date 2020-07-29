@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { getOrder } from '../Action/order';
 import { Container, Header, Item, Input, Icon, Button } from 'native-base';
+import DateFormatter from '../Moment/moment';
 
-const OrderScreen = ({ getOrder, order: { orders } }) => {
+const OrderScreen = ({ order: { orders } }) => {
+  const dispatch = useDispatch();
   const [orderState, setOrder] = useState({ data: [] });
   const [sum, setSum] = useState(0);
   const [state, setState] = useState({ search: '' });
 
   useEffect(() => {
-    getOrder();
+    (() => dispatch(getOrder()))();
 
     setOrder({ ...orderState, data: orders });
   }, []);
@@ -23,7 +25,6 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
     });
 
     setState({ ...state, search: filteredList });
-    console.log("Filtered List--->",state.search)
   };
 
   return (
@@ -37,7 +38,6 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
             <Input
               placeholder='Search'
               value={state.search}
-              //! removed Text
               onChangeText={(text) => {
                 handleSearch(text);
               }}
@@ -51,14 +51,16 @@ const OrderScreen = ({ getOrder, order: { orders } }) => {
       </View>
 
       <FlatList
-        data={state.search}
+        data={state.search} //state.search,  orderState.data
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           return (
             <View style={styles.card}>
               <View style={styles.cardHeader}>
                 <Text>Order ID:{item._id}</Text>
-                <Text>Date of Purchase: {item.date}</Text>
+                <Text>
+                  Date of Purchase: <DateFormatter date={item.date} />
+                </Text>
                 <Text>Status of Order:{item.status}</Text>
                 <Text>Total:{sum.toFixed(2)}</Text>
               </View>

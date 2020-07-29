@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const nodemailer = require('nodemailer');
+var fs = require('fs');
+const { nextTick } = require('process');
 
 exports.getUser = async (req, res) => {
   try {
@@ -104,5 +106,28 @@ exports.changePassword = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
+  }
+};
+
+//! Admin can see the logs
+exports.getLogs = async (req, res, next) => {
+  const user = await User.findOne({ _id: req.user.id });
+
+  let data = '';
+
+  try {
+    let readStream = fs.createReadStream('access.log', 'utf8');
+
+    readStream
+      .on('data', function (chunk) {
+        data += chunk;
+      })
+      .on('end', function () {
+        res.status(200).json({ status: 'OK', msg: data });
+        next();
+      });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };

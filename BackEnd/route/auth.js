@@ -19,6 +19,8 @@ const { check } = require('express-validator');
  */
 router.get('/auth', auth, authController.getUser);
 
+ router.get('/auth/log', auth, role, authController.getLogs);
+
 /**
  *@swagger
  * /auth/log:

@@ -23,7 +23,6 @@ export const makeOrder = () => async (dispatch) => {
 export const getOrder = () => async (dispatch) => {
   try {
     const response = await axios.get('/orders/customer');
-    console.log("Get order action response---->", response.data.msg)
 
     dispatch({
       type: ORDER_HISTORY,

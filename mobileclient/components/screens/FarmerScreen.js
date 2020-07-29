@@ -19,90 +19,89 @@ import {
   disLikeFarmers,
   farmersFeedback,
 } from '../Action/ratings';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 const FarmerScreen = ({
-  getFarmers,
-  likeFarmers,
-  disLikeFarmers,
-  farmersFeedback,
+  //getFarmers,
+  //likeFarmers,
+  //disLikeFarmers,
+  //farmersFeedback,
   user: { isLoading, users },
 
   navigation: { navigate, replace },
 
   ratings: { comments },
 }) => {
+  const dispatch = useDispatch();
   const [state, setstate] = useState({ data: [] });
   const [likes, setLikes] = useState({ liked: [] });
   const [comment, setComment] = useState({ feedback: [] });
   const [modal, setModal] = useState({ show: false, farmerSelected: [] });
 
-
   useEffect(() => {
-    console.log("Inside UseEffect")
-    getFarmers();
-
-    setstate({ ...state, data: users });
+    (() => {
+      dispatch(getFarmers());
+      setstate({ ...state, data: users });
+    })();
   }, []);
-
 
   const goToProducts = (item) => {
     navigate('STACK_PRODUCT', { id: item });
   };
 
-  
-
   const handleLike = (email) => {
-    likeFarmers(email);
-    state.data.map((item) => {
-      if ((email = item.email)) {
-        setstate([
-          {
-            ratings: {
-              thumbsUp: item.ratings.thumbsUp + 1,
+    (() => {
+      dispatch(likeFarmers(email));
+
+      state.data.map((item) => {
+        if ((email = item.email)) {
+          setstate([
+            {
+              ratings: {
+                thumbsUp: item.ratings.thumbsUp + 1,
+              },
             },
-          },
-        ]);
-      }
-    });
+          ]);
+        }
+      });
+      dispatch(getFarmers());
+      setstate({ ...state, data: users });
+    })();
   };
 
   const handleDisLike = (email) => {
-    disLikeFarmers(email);
-    state.data.map((item) => {
-      if ((email = item.email)) {
-        setstate([
-          {
-            ...state,
-            ratings: {
-              thumbsDown: item.ratings.thumbsDown + 1,
+    (() => {
+      dispatch(disLikeFarmers(email));
+      state.data.map((item) => {
+        if ((email = item.email)) {
+          setstate([
+            {
+              ...state,
+              ratings: {
+                thumbsDown: item.ratings.thumbsDown + 1,
+              },
             },
-          },
-        ]);
-      }
-    });
+          ]);
+        }
+      });
+    })();
   };
 
   const openModal = (item) => {
-    //console.log('ITEM--->', item);
 
     setModal({ farmerSelected: item, show: true });
 
-    // modal.farmerSelected.map((item) => {
-    //   console.log('MODAL FARMER=====>', item.email);
-    // });
+    
   };
 
   const farmerComment = () => {
-    console.log(
-      'FARMERSCREEN EMAIL====>',
-      modal.farmerSelected.email,
-      comment.feedback
-    );
+    
 
-    farmersFeedback(modal.farmerSelected.email, comment.feedback);
-    setModal({ ...modal, show: false });
+    (() => {
+      dispatch(farmersFeedback(modal.farmerSelected.email, comment.feedback));
+      setModal({ ...modal, show: false });
+    })();
   };
 
   return (
@@ -127,7 +126,6 @@ const FarmerScreen = ({
                       <Text>{item.email}</Text>
                     </View>
                   </View>
-
 
                   <View style={styles.cardFooter}>
                     <View style={styles.socialBarContainer}>
@@ -165,7 +163,6 @@ const FarmerScreen = ({
                         <TouchableOpacity
                           style={styles.socialBarButton}
                           onPress={() => handleDisLike(item.email)}
-
                         >
                           <Image
                             style={styles.icon}
@@ -193,7 +190,6 @@ const FarmerScreen = ({
             <View style={styles.popup}>
               <View style={styles.popupContent}>
                 <Text style={styles.name}>{modal.farmerSelected.name}</Text>
-
 
                 <TextInput
                   style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}

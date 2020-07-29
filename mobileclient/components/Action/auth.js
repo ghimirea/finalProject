@@ -54,9 +54,16 @@ export const authenticate = (name, email, password, role, Active) => async (
       payload: response.data.msg,
     });
 
-    //dispatch(getUser());
+    dispatch(getUser());
   } catch (error) {
     const errors = error.response.data.msg;
+    console.log(errors);
+
+    if (errors) {
+      errors.forEach((error) => {
+        dispatch(setAlert(error.msg, 'danger'));
+      });
+    }
 
     dispatch({
       type: SIGNUP_FAIL,
