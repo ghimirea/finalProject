@@ -77,7 +77,8 @@ const UpdateProducts = ({
   );
 
   const onChange = (event) => {
-    console.log('EVENT====>', event)
+    console.log('EVENT====>', event);
+    event.preventDefault();
     setUpdate(() => {
       return {
         ...update,

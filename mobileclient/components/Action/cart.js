@@ -1,4 +1,5 @@
 import axios from 'axios';
+import setAlert from '../Alert/alert';
 import { ADD_CART, GET_CART, CART_FAIL } from '../Action/types';
 
 //! Add to Cart
@@ -24,7 +25,7 @@ export const add_to_cart = (
       price_per_lb,
     });
     const response = await axios.post('/cart', body, header);
-    console.log("ADD TO CART ACTION---->", response.data.msg)
+    console.log('ADD TO CART ACTION---->', response.data.msg);
 
     dispatch({
       type: ADD_CART,
@@ -41,11 +42,12 @@ export const add_to_cart = (
 export const getCart = () => async (dispatch) => {
   try {
     const response = await axios.get('/cart');
-    console.log("ADD TO GET CART ACTION---->", response.data.msg)
+    console.log('ADD TO GET CART ACTION---->', response.data.msg);
     dispatch({
       type: GET_CART,
       payload: response.data.msg,
     });
+    dispatch(setAlert('Product added successfully to the cart'));
   } catch (error) {
     dispatch({
       type: CART_FAIL,

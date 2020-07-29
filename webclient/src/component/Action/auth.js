@@ -44,7 +44,6 @@ export const authenticate = ({ name, email, password, role, Active }) => async (
 
   try {
     const response = await axios.post('/users', body, header);
-    
 
     dispatch({
       type: SIGNUP_SUCCESS,
@@ -68,30 +67,25 @@ export const authenticate = ({ name, email, password, role, Active }) => async (
 };
 
 //! Sign In User
-export const login = (email, password, role,Active) => async (dispatch) => {
+export const login = (email, password, role, Active) => async (dispatch) => {
   const header = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
 
-  const body = JSON.stringify({ email, password, role,Active });
-
- 
+  const body = JSON.stringify({ email, password, role, Active });
 
   try {
     const response = await axios.post('/auth', body, header);
-    
-    
 
     dispatch({
       type: SIGNIN_SUCCESS,
       payload: response.data.msg,
     });
-  
+
     dispatch(getUser());
   } catch (error) {
-
     if (error) {
       error.forEach((error) => {
         dispatch(setAlert(error.msg, 'danger'));

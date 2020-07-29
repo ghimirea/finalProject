@@ -8,6 +8,8 @@ const loginRoute = require('./route/auth');
 const cartRoute = require('./route/cart');
 const orderRoute = require('./route/order');
 
+const morgan = require('morgan');
+
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -15,6 +17,8 @@ const app = express();
 const db = config.get('mongoConnect');
 
 const PORT = process.env.PORT || 5000;
+
+app.use(morgan('dev'));
 
 const swaggerOptions = {
   swaggerDefinition: {
