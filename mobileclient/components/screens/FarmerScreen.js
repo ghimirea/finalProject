@@ -40,7 +40,6 @@ const FarmerScreen = ({
   const [modal, setModal] = useState({ show: false, farmerSelected: [] });
 
   useEffect(() => {
-    console.log('Inside UseEffect');
     (() => {
       dispatch(getFarmers());
       setstate({ ...state, data: users });
@@ -90,21 +89,14 @@ const FarmerScreen = ({
   };
 
   const openModal = (item) => {
-    //console.log('ITEM--->', item);
 
     setModal({ farmerSelected: item, show: true });
 
-    // modal.farmerSelected.map((item) => {
-    //   console.log('MODAL FARMER=====>', item.email);
-    // });
+    
   };
 
   const farmerComment = () => {
-    console.log(
-      'FARMERSCREEN EMAIL====>',
-      modal.farmerSelected.email,
-      comment.feedback
-    );
+    
 
     (() => {
       dispatch(farmersFeedback(modal.farmerSelected.email, comment.feedback));

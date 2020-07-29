@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { getOrder } from '../Action/order';
 import { Container, Header, Item, Input, Icon, Button } from 'native-base';
-import DateFormat from '../Moment/moment.js';
+import DateFormatter from '../Moment/moment';
 
 const OrderScreen = ({ order: { orders } }) => {
   const dispatch = useDispatch();
@@ -25,7 +25,6 @@ const OrderScreen = ({ order: { orders } }) => {
     });
 
     setState({ ...state, search: filteredList });
-    console.log('Filtered List--->', state.search);
   };
 
   return (
@@ -60,7 +59,7 @@ const OrderScreen = ({ order: { orders } }) => {
               <View style={styles.cardHeader}>
                 <Text>Order ID:{item._id}</Text>
                 <Text>
-                  Date of Purchase: <DateFormat date={item.date} />
+                  Date of Purchase: <DateFormatter date={item.date} />
                 </Text>
                 <Text>Status of Order:{item.status}</Text>
                 <Text>Total:{sum.toFixed(2)}</Text>

@@ -30,7 +30,6 @@ const CartScreen = ({
 
   useEffect(() => {
     (() => dispatch(getCart()))();
-    console.log('GET CART--->', state.data);
     if (cart) {
       setstate({ ...state, data: cart });
     }
