@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import {
   Container,
   Header,
@@ -47,7 +42,6 @@ const RegisterScreen = ({
       [event.target.name]: event.target.value,
     });
 
-  
   if (isAuth) {
     navigate('STACK_HOME');
   }
@@ -109,7 +103,8 @@ const RegisterScreen = ({
             name='face-recognition'
             onPress={(event) => {
               if (password !== confirmPassword) {
-                Alert.alert('Passwords do not match');
+                setAlert('Passwords do not match', 'danger');
+                // Alert.alert('Passwords do not match');
               } else {
                 authenticate({ name, email, password, role, Active });
                 navigate('STACK_HOME');
