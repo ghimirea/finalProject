@@ -7,18 +7,34 @@ const productRoute = require('./route/product');
 const loginRoute = require('./route/auth');
 const cartRoute = require('./route/cart');
 const orderRoute = require('./route/order');
-
+const fs = require('fs');
 const morgan = require('morgan');
+const helmet = require('helmet');
+var rfs = require('rotating-file-stream');
+var path = require('path');
 
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const app = express();
+app.use(helmet());
+let logStream = rfs.createStream('access.log', {
+  interval: '1d',
+  path: path.join(__dirname, 'log'),
+});
+
+
+app.use(morgan('tiny', { stream: logStream }));
+// app.use(
+//   morgan('dev', {
+//     stream: fs.createWriteStream(path.join(__dirname, 'access.log'), {
+//       flags: 'a',
+//     }),
+//   })
+// );
 const db = config.get('mongoConnect');
 
 const PORT = process.env.PORT || 5000;
-
-app.use(morgan('dev'));
 
 const swaggerOptions = {
   swaggerDefinition: {
