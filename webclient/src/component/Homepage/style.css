@@ -1,3 +1,9 @@
+.bgimg {
+  position: relative;
+  background: url('./image/LogedPage.jpg') no-repeat center center/cover;
+  height: 100vh;
+}
+
 .homepage {
   position: relative;
   background: url('./image/farmerMarket.jpg') no-repeat center center/cover;
@@ -5,7 +11,7 @@
 }
 
 .overimage {
-  background-color: rgba(235, 228, 228, 0.7);
+  background-color: rgba(253, 251, 251, 0.116);
   position: relative;
   top: 0;
   left: 0;
@@ -15,7 +21,7 @@
 
 .text {
   position: relative;
-  color: rgb(12, 12, 12);
+  color: white;
   height: 100%;
   width: 100%;
   margin: auto;

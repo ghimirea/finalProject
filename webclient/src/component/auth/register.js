@@ -31,7 +31,7 @@ const Styles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', 
+    width: '100%',
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -63,12 +63,11 @@ const Register = ({ setAlert, authenticate, isAuth }) => {
       setAlert('Passwords do not match', 'danger');
     } else {
       authenticate({ name, email, password, role, Active });
-      
     }
   };
 
   if (isAuth) {
-    return <Redirect to='/localMarket' />;
+    return <Redirect to='/home' />;
   }
 
   return (
