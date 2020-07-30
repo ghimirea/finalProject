@@ -18,6 +18,7 @@ import UpdateProducts from './component/Products/updateProduct';
 import AddProduct from './component/Products/addProducts';
 import AllOrder from './component/Order/allOrder';
 import AllUsers from './component/Admin/allUsers';
+import LoggedPage from './component/Homepage/loggedInHomepage';
 
 if (localStorage.token) {
   authToken(localStorage.token);
@@ -40,6 +41,7 @@ function App() {
             <Switch>
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
+              <SecuredRoute exact path='/home' component={LoggedPage} />
               <SecuredRoute exact path='/localMarket' component={LocalMarket} />
               <SecuredRoute exact path='/products' component={Products} />
               <SecuredRoute exact path='/products/add' component={AddProduct} />

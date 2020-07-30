@@ -63,7 +63,7 @@ const Login = ({ login, auth: { user, isAuth, isLoading } }) => {
   };
 
   if (isAuth) {
-    return <Redirect to='/localMarket' />;
+    return <Redirect to='/home' />;
   }
 
   return (
