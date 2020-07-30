@@ -89,15 +89,10 @@ const FarmerScreen = ({
   };
 
   const openModal = (item) => {
-
     setModal({ farmerSelected: item, show: true });
-
-    
   };
 
   const farmerComment = () => {
-    
-
     (() => {
       dispatch(farmersFeedback(modal.farmerSelected.email, comment.feedback));
       setModal({ ...modal, show: false });

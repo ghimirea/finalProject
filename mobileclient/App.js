@@ -29,7 +29,7 @@ import authToken from './components/utils/authToken';
 const StackNav = createStackNavigator();
 const MaterialBottomNav = createMaterialBottomTabNavigator();
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'http://localhost:8080';
 
 const auth_token = (async () => {
   const a_token = await AsyncStorage.getItem('token');

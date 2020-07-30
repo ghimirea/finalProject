@@ -51,7 +51,7 @@ const OrderScreen = ({ order: { orders } }) => {
       </View>
 
       <FlatList
-        data={state.search} //state.search,  orderState.data
+        data={orderState.data} //state.search,  orderState.data
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           return (
