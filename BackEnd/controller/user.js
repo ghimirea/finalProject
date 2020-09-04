@@ -137,12 +137,14 @@ exports.postComment = async (req, res) => {
   try {
     const farmer = await User.findOne({ email: req.body.email });
 
+
     let farmer_comments = farmer.ratings.comments;
 
     const comment = farmer.ratings.comments.push(req.body.comments);
 
     farmer.save();
     res.status(200).json({ status: 'OK', msg: farmer_comments });
+
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
