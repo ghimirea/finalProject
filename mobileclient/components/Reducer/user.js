@@ -16,17 +16,14 @@ const authetication = (state = initialState, action) => {
 
   switch (type) {
     case GET_FARMERS:
-      // await AsyncStorage.setItem('token', payload);
-      console.log('GET FARMERS--->', payload);
-      state = {
+
+      return {
         ...state,
         users: payload,
-        // isAuth: true,
         isLoading: false,
       };
 
     case FARMER_FAIL:
-      // async () => await AsyncStorage.clear();
       return {
         ...state,
         error: payload,

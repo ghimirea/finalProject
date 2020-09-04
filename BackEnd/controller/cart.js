@@ -7,7 +7,7 @@ exports.getCart = async (req, res) => {
     let user = await User.findOne({ _id: req.user.id });
 
     if (user.role !== 'Customer') {
-      res.status(400).json({ status: 'Error', msg: 'User not authorized' });
+      res.status(401).json({ status: 'Error', msg: 'User not authorized' });
     }
     let cart = user.cart;
     res.status(200).json({ status: 'OK', msg: cart });
@@ -22,20 +22,16 @@ exports.postToCart = async (req, res) => {
   try {
     //? Find the customer
     let user = await User.findOne({ _id: req.user.id });
-    console.log('User-->', user);
     if (user.role === 'Customer') {
       //? find the farmer and the products
       let product = await Product.findOne({ user: req.body.farmer_id });
-      console.log('product.Product', product);
 
       //? find the particular product
       farmer_product = product.Product.filter((product) => {
         return product._id.toString() === req.body.prod_id;
       });
-      console.log('Product Matched--->', farmer_product);
 
       let prod_price = user.cart.totalPrice;
-      console.log('Total Price--->', prod_price);
 
       const {
         farmer_id,
@@ -53,13 +49,7 @@ exports.postToCart = async (req, res) => {
         quantity,
         price_per_lb,
       });
-      console.log('Add To Cart--->', req.body);
-
-      console.log(
-        'FARMER QUANTITY AND CUSTOMER QTY--->',
-        farmer_product[0].quantity_in_lb,
-        req.body.quantity
-      );
+     
       farmer_product[0].quantity_in_lb -= req.body.quantity;
 
       await user.save();
@@ -68,7 +58,6 @@ exports.postToCart = async (req, res) => {
       const product_price = farmer_product[0].price_per_lb;
       user.cart.items[0].price_per_lb = product_price;
 
-      console.log('Total Price Before--->', user.cart.totalPrice);
       let price_prod = user.cart.items.map(
         (item) => item.quantity * product_price
       );
@@ -77,17 +66,11 @@ exports.postToCart = async (req, res) => {
         total_price += element;
       });
 
-      console.log('Map Price', price_prod);
-      console.log('totalPrice', total_price);
+     
 
       user.cart.totalPrice.push({ price: total_price });
 
-      console.log(
-        'Item in the cart-2-->',
-        user.cart,
-        'Item in the cart-2-->',
-        cart_item
-      );
+      
       await user.save();
 
       res.status(200).json({ status: 'OK', msg: farmer_product });
@@ -105,7 +88,7 @@ exports.postToCart = async (req, res) => {
 exports.updateCart = async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.user.id }).populate('cart');
-    console.log(user);
+   
 
     if (user._id.toString() !== req.user.id) {
       return res
@@ -115,8 +98,7 @@ exports.updateCart = async (req, res) => {
 
     const { quantity, price_per_lb } = req.body;
 
-    // let fullPrice = user.cart.totalPrice.length - 1
-    // let updatedPrice = user.cart.totalPrice[user.cart.totalPrice.length - 1].price -  (quantity * price_per_lb);
+    
     //! Price change should be reflected on the cart (fix it)
     if (user.role === 'Customer') {
       const update = await User.updateOne(
@@ -134,15 +116,12 @@ exports.updateCart = async (req, res) => {
         },
         { new: true }
       );
-      console.log('Updated--->', update);
+      
     }
 
     await user.save();
 
-    console.log(
-      'Cart-->',
-      user.cart.totalPrice[user.cart.totalPrice.length - 1].price
-    );
+    
 
     res.send('Cart Updated');
   } catch (error) {
@@ -155,7 +134,7 @@ exports.updateCart = async (req, res) => {
 exports.deleteProdCart = async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.user.id }).populate('cart');
-    console.log(user);
+    
 
     await user.cart.items.pull({ _id: req.params.id });
 
@@ -166,6 +145,6 @@ exports.deleteProdCart = async (req, res) => {
     res.status(200).json({ status: 'OK', msg: 'Product has been deleted' });
   } catch (error) {
     console.log(error);
-    res.status(200).json({ status: 'Error', msg: 'Server Error' });
+    res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };

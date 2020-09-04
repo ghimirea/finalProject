@@ -9,7 +9,7 @@ exports.getProducts = async (req, res) => {
     const product = await Product.findOne({
       user: req.user.id,
     }).populate('User', ('name', 'email'));
-    console.log(product);
+    
 
     if (!product) {
       return res
@@ -27,35 +27,25 @@ exports.getProducts = async (req, res) => {
 //! Farmer can get particular product
 exports.getProduct = async (req, res) => {
   try {
-    // const farmer = await User.findOne({ _id: req.user.id });
-    // console.log('Farmer--->', farmer);
+    
 
     const product = await Product.findOne({ user: req.user.id });
-    console.log('Product--->', product.Product[0]._id);
+    
 
-    //const customer = await User.find({ _id: order[0].user });
-    //console.log('Customer--->', customer[0].email);
-
-    //let farmer_order = order[0].products;
-    //console.log('farmer product--->', farmer_order);
-
-    //console.log('Order Products--->', farmer_order.products[0].farmer_id);
 
     if (req.user.id != product.user) {
-      console.log('Inside if condition');
       return res
-        .status(400)
+        .status(401)
         .json({ status: 'Error', msg: 'User not authorized' });
     }
 
     let prod = product.Product.filter(
       (item) => item._id.toString() === req.params.id
     );
-    console.log('FILTER PRODUCT--->', prod);
 
     res.status(200).json({ status: 'OK', msg: prod });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
@@ -80,25 +70,25 @@ exports.addProducts = async (req, res) => {
       },
     ],
   };
-  console.log('ALLITEMS--->', allItems);
+ 
 
   try {
     let product = await Product.findOne({ user: req.user.id });
-    console.log('PRODUCTS----->', product);
+   
     if (product) {
       product.Product.push(req.body);
       await product.save();
-      console.log('INSIDE IF PRODUCT-->', product);
+     
       return res.status(200).json({ status: 'OK', msg: product });
     }
     product = new Product(allItems);
     await product.save();
 
-    console.log('PRODUCTS----->', product);
+    
 
     res.status(200).json({ status: 'OK', msg: product });
   } catch (error) {
-    console.error('Error--->', error.message);
+    console.error( error.message);
     res.status(500).json({ status: 'Error', msg: 'Server Error' });
   }
 };
@@ -109,8 +99,7 @@ exports.deleteProduct = async (req, res) => {
     let product = await Product.findOne({
       user: req.user.id,
     });
-    console.log(req.user.id);
-    console.log('Find Product by user id---->', product);
+    
 
     if (product.user.toString() !== req.user.id) {
       return res
@@ -140,7 +129,7 @@ exports.updateProduct = async (req, res) => {
 
   try {
     let product = await Product.findOne({ user: req.user.id });
-    console.log('Product.product--->', product.Product);
+    
 
     if (product.user.toString() !== req.user.id) {
       return res
@@ -148,12 +137,7 @@ exports.updateProduct = async (req, res) => {
         .json({ status: 'Error', msg: 'User is not Authorized' });
     }
 
-    console.log(
-      'product.Product._id',
-      product.Product[0]._id,
-      'req.params.id',
-      req.params.id
-    );
+   
 
     const update = await Product.updateOne(
       {
@@ -174,7 +158,7 @@ exports.updateProduct = async (req, res) => {
 
     const updatedProduct = req.body
 
-    console.log('Request Body--->', req.body);
+   
 
     res.status(200).json({ status: 'OK', msg: updatedProduct, update });
   } catch (error) {
@@ -189,7 +173,7 @@ exports.getFarmerProduct = async (req, res) => {
     const product = await Product.findOne({
       user: req.params.id,
     }).populate('User', ('name', 'email'));
-    console.log(product);
+   
 
     if (!product) {
       return res

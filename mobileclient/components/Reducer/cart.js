@@ -2,7 +2,6 @@ import { ADD_CART, CART_FAIL, GET_CART } from '../Action/types';
 
 const initialState = {
   cart: [],
-  isAuth: null,
   isLoading: true,
   error: {},
 };
@@ -13,9 +12,11 @@ const add_cart = (state = initialState, action) => {
   switch (type) {
     case ADD_CART:
     case GET_CART:
-      // return (dispatch) => {
-      return { ...state, cart: payload, isAuth: true, isLoading: false };
-    // };
+      return {
+        ...state,
+        cart: payload,
+        isLoading: false,
+      };
 
     case CART_FAIL:
       return {

@@ -9,56 +9,49 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { getCart } from '../Action/cart';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'native-base';
 import { makeOrder } from '../Action/order';
-import authenticatedScreen from '../auth/authenticatedScreen';
 
 const CartScreen = ({
-  getCart,
-  makeOrder,
+  //getCart,
+  //makeOrder,
   cart: { cart },
   order: { orders },
   navigation: { navigate },
 }) => {
+  const dispatch = useDispatch();
   const [state, setstate] = useState({ data: [] });
   const [sum, setsum] = useState(0);
   const [modal, setModal] = useState({ show: false });
+
   useEffect(() => {
-    getCart();
-    console.log('CART IN CARTSCREEN', cart);
+    (() => dispatch(getCart()))();
     if (cart) {
       setstate({ ...state, data: cart });
     }
   }, [getCart]);
 
-  console.log('GET CART STATE--->', state.data);
-  console.log('CART___>', cart);
-
   const placeOrder = () => {
-    makeOrder();
+    (() => dispatch(makeOrder()))();
     setModal({ show: false });
+    setsum(0);
     navigate('DRAWER_HOME');
   };
 
   return (
     <View>
-      {/* {state.data.items.length === 0 ? (
-        <Text>Currently There are no items in your cart</Text>
-      ) : ( */}
       <>
         <FlatList
           data={state.data.items}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
-            console.log('ITEMS___>', item.quantity, item.price_per_lb);
             let total = 0;
             total += item.quantity * item.price_per_lb;
             setsum(total);
-            console.log('SUM-2--->', sum);
             return (
               <View style={styles.row}>
                 <Image

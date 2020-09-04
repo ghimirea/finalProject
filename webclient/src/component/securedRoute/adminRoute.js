@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-//let jwtDecode = require('jwt-decode');
+
 
 const AdminRoute = ({
   auth: { user, isLoading, isAuth },
@@ -15,7 +15,7 @@ const AdminRoute = ({
 
   return (
     <Route
-      //   path={props.path}
+     
       render={(data) =>
         isAuth && !isLoading && user.role === 'Admin' ? (
           <Component {...data} />

@@ -6,32 +6,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //! Get FARMERS
 export const getFarmers = () => async (dispatch) => {
-  //const auth_token = await AsyncStorage.token;
-  // if (auth_token) {
-  //   authToken(auth_token);
-  // }
+  const auth_token = await AsyncStorage.getItem('token');
+  if (auth_token) {
+    authToken(auth_token);
+  }
 
   try {
-    console.log('BEFORE AXIOS GET FARMER');
     const res = await axios.get('/users/farmers');
-    console.log('Response on GET FARMERS Action/auth=======>', res.data.msg);
     dispatch({
       type: GET_FARMERS,
       payload: res.data.msg,
     });
-
-    // axios
-    //   .get('/users/farmers')
-    //   .then((res) => {
-    //     console.log('FARMERS', res.data.msg);
-    //     dispatch({
-    //       type: GET_FARMERS,
-    //       payload: res.data.msg,
-    //     });
-    //   })
-    //   .catch((error) => console.error(error.message));
   } catch (error) {
-    console.error('GET FARMER ERROR---->', error.message);
     dispatch({
       type: FARMER_FAIL,
     });

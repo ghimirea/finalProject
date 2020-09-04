@@ -9,40 +9,94 @@ import {
   ScrollView,
   FlatList,
   Button,
+  Modal,
+  TextInput,
 } from 'react-native';
 
 import { getFarmers } from '../Action/user';
-import { connect } from 'react-redux';
+import {
+  likeFarmers,
+  disLikeFarmers,
+  farmersFeedback,
+} from '../Action/ratings';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 const FarmerScreen = ({
-  getFarmers,
+  //getFarmers,
+  //likeFarmers,
+  //disLikeFarmers,
+  //farmersFeedback,
   user: { isLoading, users },
-  navigation: { navigate },
+
+  navigation: { navigate, replace },
+
+  ratings: { comments },
 }) => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get('/users/farmers');
-  //     console.log('FARMER SCREEN GET FARMERS----->', res.data.msg);
-  //   };
-
+  const dispatch = useDispatch();
   const [state, setstate] = useState({ data: [] });
-  useEffect(() => {
-    const y = getFarmers();
-    if (users) {
-      setstate((p) => {
-        console.log('INSIDE STATE FARMER--->', p);
-        return {
-          ...p,
-          data: users,
-        };
-      });
-    }
-  }, []);
+  const [likes, setLikes] = useState({ liked: [] });
+  const [comment, setComment] = useState({ feedback: [] });
+  const [modal, setModal] = useState({ show: false, farmerSelected: [] });
 
-  console.log('USERS IN FARMER SCREEN---->', state.data);
+  useEffect(() => {
+    (() => {
+      dispatch(getFarmers());
+      setstate({ ...state, data: users });
+    })();
+  }, []);
 
   const goToProducts = (item) => {
     navigate('STACK_PRODUCT', { id: item });
+  };
+
+  const handleLike = (email) => {
+    (() => {
+      dispatch(likeFarmers(email));
+
+      state.data.map((item) => {
+        if ((email = item.email)) {
+          setstate([
+            {
+              ratings: {
+                thumbsUp: item.ratings.thumbsUp + 1,
+              },
+            },
+          ]);
+        }
+      });
+      dispatch(getFarmers());
+      setstate({ ...state, data: users });
+    })();
+  };
+
+  const handleDisLike = (email) => {
+    (() => {
+      dispatch(disLikeFarmers(email));
+      state.data.map((item) => {
+        if ((email = item.email)) {
+          setstate([
+            {
+              ...state,
+              ratings: {
+                thumbsDown: item.ratings.thumbsDown + 1,
+              },
+            },
+          ]);
+        }
+      });
+    })();
+  };
+
+  const openModal = (item) => {
+    setModal({ farmerSelected: item, show: true });
+  };
+
+  const farmerComment = () => {
+    (() => {
+      dispatch(farmersFeedback(modal.farmerSelected.email, comment.feedback));
+      setModal({ ...modal, show: false });
+    })();
   };
 
   return (
@@ -58,67 +112,109 @@ const FarmerScreen = ({
         }}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity onPress={() => goToProducts(item._id)}>
-              <View style={styles.card}>
-                <View style={styles.cardHeader}>
-                  <View>
-                    <Text style={styles.title}>{item.name}</Text>
-                    <Text style={styles.time}>{item.email}</Text>
+            <>
+              <TouchableOpacity onPress={() => goToProducts(item._id)}>
+                <View style={styles.card}>
+                  <View style={styles.cardHeader}>
+                    <View>
+                      <Text style={styles.title}>{item.name}</Text>
+                      <Text>{item.email}</Text>
+                    </View>
                   </View>
-                </View>
 
-                {/* <Image style={styles.cardImage} source={{ uri: item.image }} /> */}
-
-                <View style={styles.cardFooter}>
-                  <View style={styles.socialBarContainer}>
-                    <View style={styles.socialBarSection}>
-                      <TouchableOpacity style={styles.socialBarButton}>
-                        <Image
-                          style={styles.icon}
-                          source={require('../assets/thumbs_up.png')}
-                        />
-                        <Text style={styles.socialBarLabel}>78</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.socialBarSection}>
-                      <TouchableOpacity style={styles.socialBarButton}>
-                        <Image
-                          style={styles.icon}
-                          source={require('../assets/comment.png')}
-                        />
-                        <Text style={styles.socialBarLabel}>25</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.socialBarSection}>
-                      <TouchableOpacity style={styles.socialBarButton}>
-                        <Image
-                          style={styles.icon}
-                          source={require('../assets/thumbs_down.jpg')}
-                        />
-                        <Text
-                          rkType='primary4 hintColor'
-                          style={styles.socialBarLabel}
+                  <View style={styles.cardFooter}>
+                    <View style={styles.socialBarContainer}>
+                      <View style={styles.socialBarSection}>
+                        <TouchableOpacity
+                          style={styles.socialBarButton}
+                          onPress={() => {
+                            handleLike(item.email);
+                          }}
                         >
-                          13
-                        </Text>
-                      </TouchableOpacity>
+                          <Image
+                            style={styles.icon}
+                            source={require('../assets/thumbs_up.png')}
+                          />
+                          <Text style={styles.socialBarLabel}>
+                            {item.ratings.thumbsUp}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.socialBarSection}>
+                        <TouchableOpacity
+                          style={styles.socialBarButton}
+                          onPress={() => openModal(item)}
+                        >
+                          <Image
+                            style={styles.icon}
+                            source={require('../assets/comment.png')}
+                          />
+                          <Text style={styles.socialBarLabel}>
+                            {item.ratings.comments.length}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.socialBarSection}>
+                        <TouchableOpacity
+                          style={styles.socialBarButton}
+                          onPress={() => handleDisLike(item.email)}
+                        >
+                          <Image
+                            style={styles.icon}
+                            source={require('../assets/thumbs_down.jpg')}
+                          />
+                          <Text
+                            rkType='primary4 hintColor'
+                            style={styles.socialBarLabel}
+                          >
+                            {item.ratings.thumbsDown}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </>
           );
         }}
       />
+      <Modal animationType='slide' transparent={false} visible={modal.show}>
+        <>
+          <View style={styles.popupOverlay}>
+            <View style={styles.popup}>
+              <View style={styles.popupContent}>
+                <Text style={styles.name}>{modal.farmerSelected.name}</Text>
+
+                <TextInput
+                  style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                  value={state.feedback}
+                  onChangeText={(text) =>
+                    setComment({ ...comment, feedback: text })
+                  }
+                />
+              </View>
+            </View>
+          </View>
+
+          <Button title='Leave Feedback' onPress={() => farmerComment()} />
+        </>
+      </Modal>
     </View>
   );
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  ratings: state.ratings,
 });
 
-export default connect(mapStateToProps, { getFarmers })(FarmerScreen);
+export default connect(mapStateToProps, {
+  getFarmers,
+  likeFarmers,
+  disLikeFarmers,
+  farmersFeedback,
+})(FarmerScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -141,7 +237,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
     marginVertical: 8,
-    backgroundColor: 'white',
+    backgroundColor: '#f7fbe1',
   },
   cardHeader: {
     paddingVertical: 17,
@@ -182,6 +278,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 25,
     height: 25,
+    backgroundColor: '#f7fbe1',
   },
   /******** social bar ******************/
   socialBarContainer: {
@@ -204,5 +301,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  popup: {
+    backgroundColor: 'white',
+    marginTop: 80,
+    marginHorizontal: 20,
+    borderRadius: 7,
+  },
+  popupOverlay: {
+    backgroundColor: '#00000057',
+    flex: 1,
+    marginTop: 30,
+  },
+  popupContent: {
+    margin: 5,
+    height: '90%',
+  },
+  modalInfo: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

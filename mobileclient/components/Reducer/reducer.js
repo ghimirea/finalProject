@@ -5,6 +5,7 @@ import user from './user';
 import product from './product';
 import cart from './cart';
 import order from './order';
+import ratings from './ratings'
 
 const rootReducer = combineReducers({
   alert,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   product,
   cart,
   order,
+  ratings
 });
 
 export default rootReducer;

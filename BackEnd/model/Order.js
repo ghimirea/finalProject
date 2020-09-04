@@ -6,7 +6,7 @@ const OrderSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  // Order: {
+
   farmer_id: {
     type: String,
   },
@@ -21,7 +21,6 @@ const OrderSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  // },
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

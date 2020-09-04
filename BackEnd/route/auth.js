@@ -5,9 +5,50 @@ const role = require('../middleware/role');
 const authController = require('../controller/auth');
 const { check } = require('express-validator');
 
-//! router.get('/auth', auth, authController.getUser);
-router.get('/auth', auth,  authController.getUser);
+/**
+ *@swagger
+ * /auth:
+ *   get:
+ *      description: Get User. 
+ *      responses:
+ *       "200":
+ *         description : Get the logged in User.
+ *       "500":
+ *         description: Server Error
+ 
+ */
+router.get('/auth', auth, authController.getUser);
 
+ router.get('/auth/log', auth, role, authController.getLogs);
+
+/**
+ *@swagger
+ * /auth/log:
+ *   get:
+ *      description: Get the logs for the user. 
+ *      responses:
+ *       "200":
+ *         description : Getting logs was successfull.
+ *       "500":
+ *         description: Server Error
+ 
+ */
+router.get('/auth/log', auth, role, authController.getLogs);
+
+/**
+ *@swagger
+ * /auth:
+ *   post:
+ *      description: Login User. 
+ *      responses:
+ *       "200":
+ *         description : User will be logged in
+ *       "400":
+ *         description: Invalid Credentials
+ *       "500":
+ *         description: Server Error
+ 
+ */
 router.post(
   '/auth',
   [
@@ -17,6 +58,18 @@ router.post(
   authController.loginUser
 );
 
-router.patch('/auth/:id', auth, role, authController.changePassword)
+/**
+ *@swagger
+ * /auth:
+ *   patch:
+ *      description: Admin can reset the password and send the customer an email with the default password. 
+ *      responses:
+ *       "200":
+ *         description : Password has been reset and email has been sent.
+ *       "500":
+ *         description: Server Error
+ 
+ */
+router.patch('/auth/:id', auth, role, authController.changePassword);
 
 module.exports = router;

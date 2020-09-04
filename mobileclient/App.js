@@ -19,7 +19,6 @@ import {
 
 import axios from 'axios';
 
-import WelcomeScreen from './components/screens/WelcomeScreen';
 import LoginScreen from './components/screens/LoginScreen';
 import RegisterScreen from './components/screens/RegisterScreen';
 import AuthenticatedScreen from './components/auth/authenticatedScreen';
@@ -30,24 +29,23 @@ import authToken from './components/utils/authToken';
 const StackNav = createStackNavigator();
 const MaterialBottomNav = createMaterialBottomTabNavigator();
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'http://localhost:8080';
 
-// const auth_token = (async () => {
-//   const a_token = await AsyncStorage.getItem('token');
-//   if (auth_token) {
-//     authToken(auth_token);
-//   }
-// })();
+const auth_token = (async () => {
+  const a_token = await AsyncStorage.getItem('token');
+  if (a_token) {
+    authToken(a_token);
+  }
+})();
 const App = () => {
-  // useEffect(() => {
-  //   const y = store.dispatch(getUser());
-  //   console.log('APP.JS USEEFFECT====>', y);
-  // }, []);
+  useEffect(() => {
+    const y = store.dispatch(getUser());
+  }, []);
   return (
     <Provider store={store}>
       <NavigationContainer>
         <StackNav.Navigator
-          initialRouteName='MATERIAL_LOGIN'
+          initialRouteName='STACK_LOGIN'
           screenOptions={{
             headerLeft: null,
           }}

@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import {
   Container,
   Header,
@@ -17,7 +11,6 @@ import {
   Left,
   Right,
   Body,
-  Title,
   Button,
   Icon,
 } from 'native-base';
@@ -49,18 +42,6 @@ const RegisterScreen = ({
       [event.target.name]: event.target.value,
     });
 
-  const signUp = async (event) => {
-    event.preventDefault();
-    if (password !== confirmPassword) {
-      console.log('Password do not match');
-      setAlert('Passwords do not match', 'danger');
-    } else {
-      console.log('User Details--->', registerData);
-      console.log('Going to authenticate');
-      authenticate({ name, email, password, role, Active });
-    }
-  };
-  console.log('REGISTER ISAUTH-->', isAuth);
   if (isAuth) {
     navigate('STACK_HOME');
   }
@@ -68,9 +49,8 @@ const RegisterScreen = ({
     <Container>
       <Header>
         <Left />
-        <Body>
-          <Title>Register</Title>
-        </Body>
+        <Body />
+
         <Right />
       </Header>
       <Content>
@@ -123,13 +103,10 @@ const RegisterScreen = ({
             name='face-recognition'
             onPress={(event) => {
               if (password !== confirmPassword) {
-                console.log('Password do not match');
                 setAlert('Passwords do not match', 'danger');
+                // Alert.alert('Passwords do not match');
               } else {
-                console.log('User Details--->', registerData);
-                console.log('Going to authenticate');
                 authenticate({ name, email, password, role, Active });
-                console.log('REGISTER ELSE====>', isAuth);
                 navigate('STACK_HOME');
               }
             }}

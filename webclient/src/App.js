@@ -19,15 +19,18 @@ import AddProduct from './component/Products/addProducts';
 import AllOrder from './component/Order/allOrder';
 import AllUsers from './component/Admin/allUsers';
 
-// if (localStorage.token) {
-//   authToken(localStorage.token);
-// }
+import LoggedPage from './component/Homepage/loggedInHomepage';
+
+
+if (localStorage.token) {
+  authToken(localStorage.token);
+}
 
 function App() {
-  // useEffect(() => {
-  //   const y = store.dispatch(getUser());
-  //   console.log('APP.JS USEEFFECT------>', y);
-  // }, []);
+  useEffect(() => {
+    const y = store.dispatch(getUser());
+    console.log('APP.JS USEEFFECT------>', y);
+  }, []);
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -40,6 +43,7 @@ function App() {
             <Switch>
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
+              <SecuredRoute exact path='/home' component={LoggedPage} />
               <SecuredRoute exact path='/localMarket' component={LocalMarket} />
               <SecuredRoute exact path='/products' component={Products} />
               <SecuredRoute exact path='/products/add' component={AddProduct} />
@@ -51,6 +55,7 @@ function App() {
               <SecuredRoute exact path='/orders/:id' component={Order} />
               <SecuredRoute exact path='/allorders' component={AllOrder} />
               <SecuredRoute exact path='/users' component={AllUsers} />
+              <SecuredRoute exact path='/logs' component={Logs} />
             </Switch>
           </section>
         </>

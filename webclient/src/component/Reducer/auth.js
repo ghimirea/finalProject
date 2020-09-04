@@ -22,7 +22,6 @@ const authetication = (state = initialState, action) => {
     case SIGNUP_SUCCESS:
     case SIGNIN_SUCCESS:
       localStorage.setItem('token', payload);
-      console.log('Token--->', payload);
       return {
         ...state,
         payload,
@@ -42,7 +41,6 @@ const authetication = (state = initialState, action) => {
         isLoading: false,
       };
     case GET_USER:
-      console.log("GET USER--->", payload)
       return {
         ...state,
         isAuth: true,

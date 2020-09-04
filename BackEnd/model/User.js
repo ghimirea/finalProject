@@ -23,6 +23,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+
   ratings: {
     thumbsUp: {
       type: Number,
@@ -32,12 +33,11 @@ const UserSchema = new Schema({
       type: Number,
       default: 0,
     },
-    comments: [
-      {
-        type: String,
-      },
-    ],
+
+    comments: [],
   },
+
+
   cart: {
     items: [
       {

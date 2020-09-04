@@ -11,7 +11,6 @@ import {
 export const getAllUsers = () => async (dispatch) => {
   try {
     const response = await axios.get('/users');
-    console.log('RESPONSE ALL USERS-->', response.data.msg);
 
     dispatch({
       type: ALL_USERS,
@@ -28,7 +27,6 @@ export const getAllUsers = () => async (dispatch) => {
 export const activeStatus = (id) => async (dispatch) => {
   try {
     const response = await axios.patch(`/users/${id}`);
-    console.log('CHANGE STATUS ACTION--->', response);
 
     dispatch({
       type: CHANGE_ACTIVE,
@@ -45,7 +43,6 @@ export const activeStatus = (id) => async (dispatch) => {
 export const resetPassword = (id) => async (dispatch) => {
   try {
     const response = await axios.patch(`/auth/${id}`);
-    console.log('CHANGE STATUS ACTION--->', response);
 
     dispatch({
       type: RESET_PASSWORD,
