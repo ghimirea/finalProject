@@ -26,6 +26,9 @@ const Navbar = ({ auth: { user, isAuth, isLoading }, signOut, getUser }) => {
             <Link to='/users'>Users</Link>
           </li>
           <li>
+            <Link to='/logs'>Log</Link>
+          </li>
+          <li>
             <Link to='/' onClick={signOut}>
               <i className='i.fas.fa-sign-out-alt'></i> Sign Out
             </Link>

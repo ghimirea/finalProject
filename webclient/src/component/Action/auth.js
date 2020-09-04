@@ -86,11 +86,11 @@ export const login = (email, password, role, Active) => async (dispatch) => {
 
     dispatch(getUser());
   } catch (error) {
-    if (error) {
-      error.forEach((error) => {
-        dispatch(setAlert(error.msg, 'danger'));
-      });
-    }
+    // if (error) {
+    //   error.forEach((error) => {
+    //     dispatch(setAlert(error.msg, 'danger'));
+    //   });
+    // }
     dispatch({
       type: SIGNIN_FAIL,
     });
