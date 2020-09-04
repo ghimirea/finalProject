@@ -16,7 +16,7 @@ const Navbar = ({ auth: { user, isAuth, isLoading }, signOut, getUser }) => {
     user && user.role === 'Admin' ? (
       <>
         <div className='navbar'>
-          <Link to='/allorders'>Local Online</Link>
+          <Link to='/home'>Local Online</Link>
         </div>
         <ul className='nav-links'>
           <li>
@@ -38,12 +38,12 @@ const Navbar = ({ auth: { user, isAuth, isLoading }, signOut, getUser }) => {
     ) : (
       <>
         <div className='navbar'>
-          <Link to='/localMarket'>Local Online</Link>
+          <Link to='/home'>Local Online</Link>
         </div>
         <ul className='nav-links'>
-          <li>
-            <Link to='/localMarket'>Home</Link>
-          </li>
+          {/* <li>
+            <Link to='/home'>Home</Link>
+          </li> */}
           <li>
             <Link to='/products'>Products</Link>
           </li>

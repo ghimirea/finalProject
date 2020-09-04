@@ -23,6 +23,20 @@ router.get('/auth', auth, authController.getUser);
 
 /**
  *@swagger
+ * /auth/log:
+ *   get:
+ *      description: Get the logs for the user. 
+ *      responses:
+ *       "200":
+ *         description : Getting logs was successfull.
+ *       "500":
+ *         description: Server Error
+ 
+ */
+router.get('/auth/log', auth, role, authController.getLogs);
+
+/**
+ *@swagger
  * /auth:
  *   post:
  *      description: Login User. 

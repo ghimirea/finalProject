@@ -34,7 +34,7 @@ app.use(morgan('tiny', { stream: logStream }));
 // );
 const db = config.get('mongoConnect');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 const swaggerOptions = {
   swaggerDefinition: {
